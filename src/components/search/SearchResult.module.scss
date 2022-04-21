@@ -1,0 +1,27 @@
+@import '../../theme/colors-theme.scss';
+@import '../../styles/font-style.scss';
+
+.wrap {
+  // background-color: red;
+}
+
+.head-wrap {
+  margin-bottom: .25rem;
+}
+
+.title {
+  @extend .font-weight-medium;
+  color: $im-link;
+  margin-bottom: 0
+}
+
+.url {
+  @extend .font-weight-medium;
+  color: $im-caption;
+  margin-bottom: 0;
+}
+
+.desc {
+  @extend .font-weight-regular;
+  margin-bottom: 0;
+}

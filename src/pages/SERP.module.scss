@@ -1,0 +1,24 @@
+.wrap {
+  max-width: 1320px;
+  padding: 0 0.75rem 3rem 132px;
+
+  .result {
+    position: relative;
+    top: -72px;
+    display: inline-block;
+    vertical-align: top;
+    width: 60%;
+    padding-right: 1.5rem;
+
+    .searchfield {
+      padding-bottom: 24px;
+    }
+  }
+
+  .saved {
+    display: inline-block;
+    width: 40%;
+    vertical-align: top;
+    padding-left: 1.5rem;
+  }
+}

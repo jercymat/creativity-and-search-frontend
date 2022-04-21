@@ -1,0 +1,34 @@
+@import '../../styles/color-style.scss';
+@import '../../styles/effect-style.scss';
+
+.picker {
+  @extend .block-border;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+
+  &.white {
+    background-color: $im-background;
+  }
+
+  &.purple {
+    background-color: $im-content-purple;
+  }
+
+  &.green {
+    background-color: $im-content-green;
+  }
+
+  &.blue {
+    background-color: $im-content-blue;
+  }
+
+  &.red {
+    background-color: $im-content-red;
+  }
+
+  &:not(:last-of-type) {
+    margin-right: .5rem;
+  }
+}

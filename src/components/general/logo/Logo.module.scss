@@ -1,0 +1,10 @@
+@import '../../../theme/colors-theme.scss';
+
+.link {
+  color: $im-dark;
+  
+  &:hover {
+    color: $im-dark;
+    text-decoration: none;
+  }
+}

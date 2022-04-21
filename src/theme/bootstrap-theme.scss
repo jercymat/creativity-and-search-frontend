@@ -1,0 +1,8 @@
+@import './colors-theme.scss';
+
+// customized bootstrap for ideamap
+
+$primary: $im-secondary;
+$danger: $im-danger;
+
+@import '~bootstrap/scss/bootstrap.scss';

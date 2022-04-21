@@ -1,0 +1,15 @@
+@import '../theme/colors-theme.scss';
+
+.curveAfter {
+  position: absolute;
+  left: 0;
+  top: 450px;
+  width: 100vw;
+  background-color: $im-secondary;
+  min-height: calc(100vh - 450px);
+  z-index: -1;
+}
+
+:export {
+  color-secondary: $im-secondary
+}

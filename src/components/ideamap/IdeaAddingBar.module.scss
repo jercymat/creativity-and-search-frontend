@@ -1,0 +1,66 @@
+@import '../../styles/effect-style.scss';
+@import '../../theme/colors-theme.scss';
+
+.bar_wrap {
+  @extend .block-shadow;
+  display: inline-block;
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translate(-50%);
+  padding: .75rem 2.5rem .5rem 2.5rem;
+  border-radius: 100vh;
+  background-color: $im-background;
+
+  p {
+    margin-bottom: .25rem;
+    text-align: center;
+  }
+}
+
+.type_wrap {
+  text-align: center;
+  width: 60px;
+  margin: 0 .25rem;
+  padding: .25rem;
+  border-radius: .5rem;
+  transition: background-color .1s ease-in-out;
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+
+  h2 {
+    margin-bottom: .25rem;
+    transition: color .1s ease-in-out;
+  }
+
+  h3 {
+    margin-bottom: 0;
+    color: $im-unaccent;
+    transition: color .1s ease-in-out;
+  }
+
+  &:hover {
+    background-color: $im-shadow;
+
+    h2 {
+      color: $im-secondary;
+    }
+
+    h3 {
+      color: $im-dark;
+    }
+  }
+
+  &:active {
+    background-color: $im-light;
+
+    h2 {
+      color: $im-secondary;
+    }
+    
+    h3 {
+      color: $im-dark;
+    }
+  }
+}

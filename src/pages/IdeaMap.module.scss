@@ -1,0 +1,22 @@
+@import '../styles/color-style.scss';
+
+.wrap {
+  padding: 0 12px;
+
+  .saved {
+    display: inline-block;
+    height: calc(100vh - 96px);
+    vertical-align: top;
+    overflow: scroll;
+    padding: 0 1.5rem 3rem 0;
+  }
+
+  .canvas {
+    display: inline-block;
+    vertical-align: top;
+    position: absolute;
+    top: -96px;
+    height: 100vh;
+    background-color: $im-light;
+  }
+}

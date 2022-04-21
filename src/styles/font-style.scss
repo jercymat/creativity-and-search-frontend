@@ -1,0 +1,62 @@
+@import '../theme/fonts-theme.scss';
+@import '../theme/colors-theme.scss';
+
+h1 {
+  @extend .font-size-header;
+}
+
+h2 {
+  @extend .font-size-title;
+}
+
+h3 {
+  @extend .font-size-subtitle;
+}
+
+h4 {
+  @extend .font-size-content;
+}
+
+p {
+  @extend .font-size-content;
+}
+
+.font-weight-bold {
+  font-weight: 700;
+}
+
+.font-weight-semibold {
+  font-weight: 600;
+}
+
+.font-weight-medium {
+  font-weight: 500;
+}
+
+.font-weight-regular {
+  font-weight: 400;
+}
+
+.font-logo-main {
+  @extend .font-weight-bold;
+  @extend .font-size-title;
+}
+
+.font-logo-densed {
+  @extend .font-weight-bold;
+  @extend .font-size-content;
+}
+
+.font-footlink {
+  @extend .font-weight-bold;
+  @extend .font-size-footnote;
+}
+
+.font-footnote {
+  @extend .font-size-footnote;
+}
+
+.font-accent-footnote {
+  @extend .font-weight-bold;
+  @extend .font-size-footnote;
+}
