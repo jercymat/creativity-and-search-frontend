@@ -1,3 +1,4 @@
+import config from '../../../config';
 import { PropTypes } from 'prop-types';
 
 function LogoLarge(props) {
@@ -15,7 +16,7 @@ function LogoLarge(props) {
         className='mb-2 mx-auto'
         style={{ borderRadius: '50%' }}
         alt='Idea Map logo' />
-      <span className="font-logo-main d-block">Idea Mapper</span>
+      <span className="font-logo-main d-block">{config.PRODUCT_NAME}</span>
     </div>
   );
 }

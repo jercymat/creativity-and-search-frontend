@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import config from '../../../config';
 import StandardButton from '../button/StandardButton';
 import { Container, Navbar } from 'react-bootstrap';
 import AccountBadge from '../../account/AccountBadge';
@@ -14,10 +15,10 @@ function NavigationBar(props) {
     <Navbar id={ id } style={{padding: '1.5rem 0 1.5rem 0', zIndex: '999'}}>
       <Container style={{height: '48px'}} fluid>
         <div className='d-flex'>
-          <LogoNavbar densed={location.pathname !== '/'} />
+          <LogoNavbar densed={location.pathname === '/search'} />
         </div>
         <div className='d-flex align-items-center h-100'>
-          <LinkContainer to='/test' className='d-none'>
+          <LinkContainer to='/test' className={config.ENABLE_TEST_PAGE ? null : 'd-none'}>
             <StandardButton
               variant='light'
               btnText='Test' />

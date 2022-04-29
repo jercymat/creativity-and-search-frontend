@@ -44,7 +44,7 @@ p {
 
 .font-logo-densed {
   @extend .font-weight-bold;
-  @extend .font-size-content;
+  @extend .font-size-subtitle;
 }
 
 .font-footlink {
@@ -59,4 +59,9 @@ p {
 .font-accent-footnote {
   @extend .font-weight-bold;
   @extend .font-size-footnote;
+}
+
+.font-im-ideas {
+  @extend .font-weight-semibold;
+  @extend .font-size-title2;
 }

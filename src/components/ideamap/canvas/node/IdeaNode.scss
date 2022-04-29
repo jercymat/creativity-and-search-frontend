@@ -1,0 +1,71 @@
+@import '../../../../styles/color-style.scss';
+
+.im-text-idea-node {
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  background-color: $im-background;
+
+  .selected & {
+    outline: 2px solid $im-secondary;
+  }
+
+  .im-text-idea__label-wrap {
+    display: -webkit-box;
+    max-width: 200px;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1;
+  }
+}
+
+.im-link-idea-node {
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  background-color: $im-background;
+  
+  .selected & {
+    outline: 2px solid $im-secondary;
+  }
+
+  .im-link-idea__link-wrap {
+    line-height: 1;
+
+    .im-link-idea__url {
+      display: inline-block;
+      max-width: 250px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .im-link-idea__icon {
+      display: inline-block;
+      margin-left: .75rem;
+      vertical-align: top;
+    }
+  }
+}
+
+.im-image-idea-node {
+  padding: .5rem;
+  border-radius: .5rem;
+  background-color: $im-background;
+
+  .selected & {
+    outline: 2px solid $im-secondary;
+  }
+
+  .im-image-idea__image-wrap {
+    max-width: 150px;
+
+    img {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+// .react-flow__handle {
+//   opacity: 0;
+// }

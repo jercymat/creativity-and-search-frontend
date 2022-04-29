@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 
 function StandardButton(props) {
-  const { className, variant, onClick, btnText, padding, type } = props;
+  const { className, variant, onClick, btnText, padding, type, form } = props;
 
   return (
     <Button
@@ -11,6 +11,7 @@ function StandardButton(props) {
       variant={variant}
       onClick={onClick}
       type={type}
+      form={form}
     >{btnText}</Button>
   )
 }
@@ -21,7 +22,8 @@ StandardButton.propTypes = {
   btnText: PropTypes.string.isRequired,
   padding: PropTypes.number,
   onClick: PropTypes.func,
-  type: PropTypes.string
+  type: PropTypes.string,
+  form: PropTypes.string
 }
 
 export default StandardButton;

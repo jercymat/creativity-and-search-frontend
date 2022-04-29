@@ -1,3 +1,4 @@
+import config from '../config';
 import { useContext } from 'react';
 import AppContext from '../store/AppContext';
 import styles from './IdeaMap.module.scss';
@@ -16,7 +17,7 @@ function IdeaMapPage(props) {
         style={{width: `calc(${context.savedAreaWidth}px)`}}>
         <div className="mb-3">
           <LinkContainer to='/search'>
-            <LeftIconButton variant='primary' btnText='Search Result' fsIcon={['fas', 'chevron-left']} />
+            <LeftIconButton variant='primary' btnText={config.IDEA_SAVER_NAME} fsIcon={['fas', 'chevron-left']} />
           </LinkContainer>
         </div>
         <SavedResultList saves={context.savedResults} />

@@ -1,3 +1,4 @@
+import config from '../config';
 import SearchResultList from '../components/search/SearchResultList';
 import SearchField from '../components/search/SearchField';
 import RightIconButton from '../components/general/button/RightIconButton';
@@ -34,7 +35,7 @@ function SERPPage() {
       <div ref={savedArea} className={styles.saved}>
         <div className="d-flex justify-content-end mb-3">
           <LinkContainer to='/map'>
-            <RightIconButton variant='primary' btnText='Idea Map' fsIcon={['fas', 'chevron-right']} />
+            <RightIconButton variant='primary' btnText={config.IDEA_CANVAS_NAME} fsIcon={['fas', 'chevron-right']} />
           </LinkContainer>
         </div>
         <SavedResultSortableList />

@@ -1,0 +1,12 @@
+@import '../../../../styles/color-style.scss';
+
+.im-idea-connection-wrap {
+  path {
+    stroke: $im-unaccent;
+  }
+
+  circle {
+    fill: $im-background;
+    stroke: $im-dark;
+  }
+}
