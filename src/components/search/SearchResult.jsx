@@ -7,7 +7,7 @@ function SearchResult(props) {
   return (
     <div className={styles.wrap}>
       <div className={styles['head-wrap']}>
-        <a href='https://youtu.be/dQw4w9WgXcQ' target='_blank' rel="noreferrer">
+        <a href={url} target='_blank' rel="noreferrer">
           <h2 className={styles.title}>{title}</h2>
         </a>
         <h4 className={styles.url}>{url}</h4>
@@ -19,6 +19,7 @@ function SearchResult(props) {
 
 SearchResult.propTypes = {
   result: PropTypes.exact({
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,

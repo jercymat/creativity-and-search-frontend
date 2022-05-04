@@ -12,10 +12,10 @@ function NavigationBar(props) {
   const { id } = props;
 
   return (
-    <Navbar id={ id } style={{padding: '1.5rem 0 1.5rem 0', zIndex: '999'}}>
+    <Navbar id={ id } style={{padding: '1.5rem 0 1.5rem 0', zIndex: '5'}}>
       <Container style={{height: '48px'}} fluid>
         <div className='d-flex'>
-          <LogoNavbar densed={location.pathname === '/search'} />
+          {location.pathname !== '/' && <LogoNavbar densed={location.pathname === '/search'} /> }
         </div>
         <div className='d-flex align-items-center h-100'>
           <LinkContainer to='/test' className={config.ENABLE_TEST_PAGE ? null : 'd-none'}>
@@ -23,13 +23,13 @@ function NavigationBar(props) {
               variant='light'
               btnText='Test' />
           </LinkContainer>
-          <LinkContainer to='/login'>
+          {/* <LinkContainer to='/login'>
             <StandardButton
               variant='primary'
               btnText='Login' />
-          </LinkContainer>
+          </LinkContainer> */}
           <AccountBadge
-            userName='C. F. Frost'
+            userName='Tester'
             userImage='https://via.placeholder.com/150.jpg' />
         </div>
       </Container>

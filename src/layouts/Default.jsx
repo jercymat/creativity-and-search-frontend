@@ -4,6 +4,7 @@ import NavigationBar from '../components/general/navigation/NavigationBar';
 import LandingPage from '../pages/Landing';
 import SERPPage from '../pages/SERP';
 import IdeaMapPage from '../pages/IdeaMap';
+import { SearchResultContextProvider } from "../store";
 
 function DefaultLayout(props) {
   return (
@@ -15,11 +16,13 @@ function DefaultLayout(props) {
           position: 'relative',
           minHeight: 'calc(100vh - 96px)',
         }}>
-        <Routes>
-          <Route path='/' element={<LandingPage />} />
-          <Route path='/search' element={<SERPPage />} />
-          <Route path='/map' element={<IdeaMapPage />} />
-        </Routes>
+        <SearchResultContextProvider>
+          <Routes>
+            <Route path='/' element={<LandingPage />} />
+            <Route path='/search' element={<SERPPage />} />
+            <Route path='/map' element={<IdeaMapPage />} />
+          </Routes>
+        </SearchResultContextProvider>
       </div>
     </Fragment>
   )

@@ -7,7 +7,7 @@ function SearchResultList(props) {
   return (
     <div id="im-search-results" className={styles.wrap}>
       {props.results.map(result => (
-        <SearchResult result={result} />
+        <SearchResult key={result.id} result={result} />
       ))}
     </div>
   )
@@ -15,6 +15,7 @@ function SearchResultList(props) {
 
 SearchResultList.propTypes = {
   results: PropTypes.arrayOf(PropTypes.exact({
+    id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
