@@ -10,8 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 import { GlobalContext, SearchResultContext } from '../store';
 import { RingSpinner } from 'react-spinners-kit';
-import { Pagination } from 'react-bootstrap';
-import { range } from '../utils';
+import SearchResultPaginator from '../components/search/SearchResultPaginator';
 
 function SERPPage() {
   // hooks
@@ -34,19 +33,6 @@ function SERPPage() {
   const totalPage = resultCtx.bufferedSearch.totalCount !== 0
     ? Math.ceil(resultCtx.bufferedSearch.totalCount/20)
     : 1;
-
-  // generate array for pagination list
-  const getPaginationIndex = () => {
-    if (totalPage <= 5) return range(1, totalPage + 1)
-
-    var bottom = Math.max(curPage - 2, 1);
-    var top = Math.min(curPage + 2, totalPage);
-
-    if (top === totalPage) bottom -= (curPage + 2) - totalPage;
-    if (bottom === 1) top += 1 - (curPage - 2);
-
-    return range(bottom, top + 1)
-  }
 
   document.title =
     `${searchParams.get('q').replace('+', ' ')} - ${config.PRODUCT_NAME}`;
@@ -99,23 +85,11 @@ function SERPPage() {
             <RingSpinner size={60} color='#1B6B8C'/>
           </div> }
         <SearchResultList results={resultCtx.bufferedSearch.results} />
-        <Pagination className={styles.page}>
-          <Pagination.Prev
-            href={`/search?q=${searchParams.get('q')}&page=${curPage - 1}`}
-            disabled={curPage === 1} />
-          {getPaginationIndex().map(
-            i =>
-              <Pagination.Item
-                key={i}
-                active={curPage === i}
-                href={`/search?q=${searchParams.get('q')}&page=${i}`}>
-                  {i}
-              </Pagination.Item>
-          ) }
-          <Pagination.Next
-            href={`/search?q=${searchParams.get('q')}&page=${curPage + 1}`}
-            disabled={curPage === totalPage} />
-        </Pagination>
+        <SearchResultPaginator 
+          baseUrl={`/search?q=${searchParams.get('q')}`}
+          current={curPage}
+          total={totalPage}
+          className={styles.page}/>
       </div>
       <div ref={savedArea} className={styles.saved}>
         <div className="d-flex justify-content-end mb-3">
