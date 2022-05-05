@@ -12,6 +12,8 @@ function IdeaMapPage(props) {
   const resultCtx = useContext(SearchResultContext);
   const navigate = useNavigate();
 
+  document.title = `${config.PRODUCT_NAME} ${config.IDEA_CANVAS_NAME}`;
+
   return (
     <div id="im-map-wrap" className={styles.wrap}>
       <div

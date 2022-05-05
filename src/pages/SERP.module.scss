@@ -1,6 +1,6 @@
 .wrap {
   max-width: 1320px;
-  padding: 0 0.75rem 3rem 132px;
+  padding: 0 0.75rem 0 132px;
 
   .result {
     position: relative;
@@ -12,7 +12,7 @@
     z-index: 6;
 
     .searchfield {
-      padding-bottom: 24px;
+      padding-bottom: 1.5rem;
     }
 
     .loading {
@@ -20,6 +20,11 @@
       justify-content: center;
       align-items: center;
       min-height: calc(100vh - 96px);
+    }
+
+    .page {
+      justify-content: center;
+      margin-top: 3rem;
     }
   }
 
