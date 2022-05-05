@@ -9,6 +9,7 @@ import {
   faTrashCan,
   faFont,
   faLink,
+  faPlus,
   faImage
 }  from '@fortawesome/free-solid-svg-icons'
 import { Container } from 'react-bootstrap';
@@ -19,7 +20,7 @@ import { GlobalContextProvider } from './store';
 import config from './config';
 
 // import fontawesome icons for global use
-library.add(faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan, faFont, faLink, faImage);
+library.add(faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan, faFont, faLink, faPlus, faImage);
 
 // initial website title
 document.title = config.PRODUCT_NAME;

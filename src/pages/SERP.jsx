@@ -11,6 +11,7 @@ import axios from 'axios';
 import { GlobalContext, SearchResultContext } from '../store';
 import { RingSpinner } from 'react-spinners-kit';
 import SearchResultPaginator from '../components/search/SearchResultPaginator';
+import SavedResultPlaceHolder from '../components/search/SavedResultPlaceHolder';
 
 function SERPPage() {
   // hooks
@@ -95,11 +96,13 @@ function SERPPage() {
         <div className="d-flex justify-content-end mb-3">
           <LinkContainer to='/map'>
             <RightIconButton
+              disabled={resultCtx.savedResults.length === 0}
               variant='primary'
               btnText={config.IDEA_CANVAS_NAME}
               fsIcon={['fas', 'chevron-right']} />
           </LinkContainer>
         </div>
+        {resultCtx.savedResults.length === 0 && <SavedResultPlaceHolder /> }
         <SavedResultSortableList />
       </div>
     </div>

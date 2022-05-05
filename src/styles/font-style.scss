@@ -1,5 +1,4 @@
 @import '../theme/fonts-theme.scss';
-@import '../theme/colors-theme.scss';
 
 h1 {
   @extend .font-size-header;
@@ -64,4 +63,9 @@ p {
 .font-im-ideas {
   @extend .font-weight-semibold;
   @extend .font-size-title2;
+}
+
+.font-placeholder {
+  @extend .font-weight-medium;
+  @extend .font-size-subtitle;
 }

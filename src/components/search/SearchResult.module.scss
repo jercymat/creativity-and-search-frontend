@@ -1,27 +1,47 @@
 @import '../../theme/colors-theme.scss';
 @import '../../styles/font-style.scss';
 
+
 .wrap {
-  // background-color: red;
+  position: relative;
+  left: calc(-36px - 1rem);
+  width: calc(100% + 36px + 1rem);
 }
 
-.head-wrap {
-  margin-bottom: .25rem;
+.add {
+  display: inline-block;
+  width: 36px;
+  margin-right: 1rem;
+  visibility: hidden;
+
+  .wrap:hover & {
+    visibility: visible;
+  }
 }
 
-.title {
-  @extend .font-weight-medium;
-  color: $im-link;
-  margin-bottom: 0
-}
+.content {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(100% - 36px - 1rem);
 
-.url {
-  @extend .font-weight-medium;
-  color: $im-caption;
-  margin-bottom: 0;
-}
+  .head_wrap {
+    margin-bottom: .25rem;
 
-.desc {
-  @extend .font-weight-regular;
-  margin-bottom: 0;
+    .title {
+      @extend .font-weight-medium;
+      color: $im-link;
+      margin-bottom: 0
+    }
+    
+    .url {
+      @extend .font-weight-medium;
+      color: $im-caption;
+      margin-bottom: 0;
+    }
+  }
+  
+  .desc {
+    @extend .font-weight-regular;
+    margin-bottom: 0;
+  }
 }

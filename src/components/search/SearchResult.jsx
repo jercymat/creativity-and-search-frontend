@@ -1,18 +1,46 @@
 import PropTypes from 'prop-types';
+import { useContext, useRef } from 'react';
+import { SearchResultContext } from '../../store';
+import CircleIconButton from '../general/button/CircleIconButton';
 import styles from './SearchResult.module.scss';
 
 function SearchResult(props) {
   const { title, url, desc } = props.result;
 
+  const resultCtx = useContext(SearchResultContext);
+  const titleRef = useRef(null);
+  const urlRef = useRef(null);
+  const descRef = useRef(null);
+
+  const handleAddResult = () => {
+    const result = {
+      id: Date.now().toString(),
+      title: titleRef.current.innerText,
+      url: urlRef.current.innerText,
+      desc: descRef.current.innerText
+    };
+
+    const newResults = [ ...resultCtx.savedResults ];
+    newResults.push(result);
+    resultCtx.updateSavedResults(newResults);
+  };
+
   return (
     <div className={styles.wrap}>
-      <div className={styles['head-wrap']}>
-        <a href={url} target='_blank' rel="noreferrer">
-          <h2 className={styles.title}>{title}</h2>
-        </a>
-        <h4 className={styles.url}>{url}</h4>
+      <CircleIconButton
+        onClick={handleAddResult}
+        className={styles.add}
+        variant='primary'
+        fsIcon={['fas', 'plus']} />
+      <div className={styles.content}>
+        <div className={styles.head_wrap}>
+          <a href={url} target='_blank' rel="noreferrer">
+            <h2 className={styles.title} ref={titleRef}>{title}</h2>
+          </a>
+          <h4 className={styles.url} ref={urlRef}>{url}</h4>
+        </div>
+        <p className={styles.desc} ref={descRef}>{desc}</p>
       </div>
-      <p className={styles.desc}>{desc}</p>
     </div>
   )
 }

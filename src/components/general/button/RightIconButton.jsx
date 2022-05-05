@@ -4,10 +4,11 @@ import PropTypes from 'prop-types';
 
 
 function RightIconButton(props) {
-  const { className, variant, onClick, btnText, fsIcon } = props;
+  const { className, variant, onClick, btnText, fsIcon, disabled } = props;
 
   return (
     <Button
+      disabled={disabled}
       className={`px-3${ className !== undefined ? ' ' + className : ''}`}
       variant={variant}
       onClick={onClick}
@@ -19,10 +20,11 @@ function RightIconButton(props) {
 }
 
 RightIconButton.propTypes = {
-  className: PropTypes.string,
   variant: PropTypes.string.isRequired,
   btnText: PropTypes.string.isRequired,
   fsIcon: PropTypes.arrayOf(PropTypes.string).isRequired,
+  className: PropTypes.string,
+  disabled: PropTypes.bool,
   onClick: PropTypes.func
 }
 

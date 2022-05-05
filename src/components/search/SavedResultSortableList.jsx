@@ -1,28 +1,23 @@
 import { DndContext } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { SearchResultContext } from '../../store';
 import styles from './SavedResultList.module.scss';
 import SavedResultSortable from './SavedResultSortable';
 
 function SavedResultSortableList() {
-  const context = useContext(SearchResultContext);
-  const [saves, setSaves] = useState(context.savedResults);
+  const resultCtx = useContext(SearchResultContext);
 
   function handleDragEnd(event) {
     const { active, over } = event;
     
     if (active.id !== over.id) {
-      setSaves((saves) => {
-        const oldIndex = saves.findIndex(item => item.id === active.id);
-        const newIndex = saves.findIndex(item => item.id === over.id);
-        const newSaves = arrayMove(saves, oldIndex, newIndex);
+      const oldIndex = resultCtx.savedResults.findIndex(item => item.id === active.id);
+      const newIndex = resultCtx.savedResults.findIndex(item => item.id === over.id);
+      const newSaves = arrayMove(resultCtx.savedResults, oldIndex, newIndex);
 
-        context.updateSavedResults(newSaves);
-
-        return newSaves;
-      });
+      resultCtx.updateSavedResults(newSaves);
     }
   }
 
@@ -32,9 +27,9 @@ function SavedResultSortableList() {
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}>
         <SortableContext
-          items={saves}
+          items={resultCtx.savedResults}
           strategy={verticalListSortingStrategy}>
-            {saves.map(save => <SavedResultSortable key={save.id} id={save.id} save={save} />)}
+            {resultCtx.savedResults.map(save => <SavedResultSortable key={save.id} id={save.id} save={save} />)}
           </SortableContext>
       </DndContext>
     </div>

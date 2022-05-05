@@ -29,6 +29,8 @@
   @extend .font-weight-medium;
   color: $im-secondary;
   margin-bottom: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .desc {
