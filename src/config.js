@@ -6,7 +6,7 @@ const config = {
   IDEA_CANVAS_NAME: 'Idea Mapper',
   ENABLE_TEST_PAGE: false,
   api: {
-    HOST: 'http://127.0.0.1:8000/api'
+    HOST: 'http://localhost:8000/api'
   }
 };
 

@@ -25,24 +25,24 @@ function SavedResultSortableList() {
     }
   }
 
-  // useEffect(() => {
-  //   if (!isFetching) {
-  //     setFetching(true);
+  useEffect(() => {
+    if (!isFetching) {
+      setFetching(true);
 
-  //     axios.post(config.api.HOST + '/searchresults', {
-  //       action: 'list_searchresult'
-  //     })
-  //       .then(response => response.data.relist)
-  //       .then(list => {
-  //         resultCtx.updateSavedResults(list.map(saved => ({
-  //           id: saved.id,
-  //           title: saved.name,
-  //           url: saved.url,
-  //           desc: saved.snippet
-  //         })));
-  //       });
-  //   }
-  // }, [isFetching, resultCtx]);
+      axios.post(config.api.HOST + '/searchresults', {
+        action: 'list_searchresult'
+      })
+        .then(response => response.data.relist)
+        .then(list => {
+          resultCtx.updateSavedResults(list.map(saved => ({
+            id: saved.id,
+            title: saved.name,
+            url: saved.url,
+            desc: saved.snippet
+          })));
+        });
+    }
+  }, [isFetching, resultCtx]);
 
   return (
     <div id="im-saved-results" className={styles.wrap}>

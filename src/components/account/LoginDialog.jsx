@@ -48,7 +48,7 @@ function LoginDialog(props) {
           <Form.Control.Feedback type='invalid'>Please enter your password.</Form.Control.Feedback>
         </Form.Group>
         <Link to='/' className='d-inline-block font-footlink mb-4'>Forgot password?</Link>
-        <StandardButton type='submit' className='w-100 mb-3' btnText='Login'/>
+        <StandardButton variant='primary' type='submit' className='w-100 mb-3' btnText='Login'/>
         <span className='d-block text-center font-footnote'>
           New to Idea Mapper?{' '}
           <Link to='/' className='d-inline-block font-footlink'>

@@ -13,7 +13,7 @@ function SavedResultSortable(props) {
     transition,
   } = useSortable({ id: props.save.id });
   const style = {
-    transform: CSS.Transform.toString(transform),
+    transform: CSS.Translate.toString(transform),
     transition,
     cursor: isDragging ? 'grabbing' : 'grab',
     zIndex: isDragging ? '10' : undefined
