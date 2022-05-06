@@ -1,28 +1,24 @@
 import PropTypes from 'prop-types';
-import { useContext, useRef } from 'react';
-import { SearchResultContext } from '../../store';
+import { useRef } from 'react';
 import CircleIconButton from '../general/button/CircleIconButton';
 import styles from './SearchResult.module.scss';
 
 function SearchResult(props) {
   const { title, url, desc } = props.result;
+  const { onAddSave } = props;
 
-  const resultCtx = useContext(SearchResultContext);
   const titleRef = useRef(null);
   const urlRef = useRef(null);
   const descRef = useRef(null);
 
   const handleAddResult = () => {
     const result = {
-      id: Date.now().toString(),
       title: titleRef.current.innerText,
       url: urlRef.current.innerText,
       desc: descRef.current.innerText
     };
 
-    const newResults = [ ...resultCtx.savedResults ];
-    newResults.push(result);
-    resultCtx.updateSavedResults(newResults);
+    onAddSave(result);
   };
 
   return (
@@ -52,7 +48,8 @@ SearchResult.propTypes = {
     url: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onAddSave: PropTypes.func.isRequired,
 }
 
 export default SearchResult;

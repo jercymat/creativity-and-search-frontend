@@ -37,7 +37,6 @@ function SERPField(props) {
       })
         .then(response => response.data.searchlist.webPages)
         .then(webPages => {
-          console.log(webPages.value);
           const newResults = webPages.value.map(v => ({
             id: v.id,
             title: v.name,

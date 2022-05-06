@@ -1,6 +1,8 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
+import CircleIconButton from '../general/button/CircleIconButton';
 import styles from './SavedResult.module.scss';
 
 function SavedResultSortable(props) {
@@ -15,22 +17,35 @@ function SavedResultSortable(props) {
   const style = {
     transform: CSS.Translate.toString(transform),
     transition,
-    cursor: isDragging ? 'grabbing' : 'grab',
+    cursor: isDragging ? 'grabbing' : undefined,
     zIndex: isDragging ? '10' : undefined
   };
+
+  const handleDelete = () => props.onDeleteSave(props.save.id);
 
   return (
     <div
       ref={setNodeRef}
       style={style}
       className={styles.wrap}
-      key={props.save.id}
-      {...attributes} {...listeners}>
+      key={props.save.id} >
       <div className={styles.head}>
         <h2 className={styles.title}>{props.save.title}</h2>
         <h4 className={styles.url}>{props.save.url}</h4>
       </div>
       <p className={styles.desc}>{props.save.desc}</p>
+      <div className={styles.actions}>
+        <CircleIconButton
+          onClick={handleDelete}
+          variant='danger'
+          fsIcon={['fas', 'trash-can']} />
+        <div
+          style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
+          className={styles.handle}
+          {...attributes} {...listeners}>
+          <FontAwesomeIcon icon={['fas', 'bars']} />
+        </div>
+      </div>
     </div>
   )
 }
@@ -42,7 +57,8 @@ SavedResultSortable.propTypes = {
     url: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  onDeleteSave: PropTypes.func.isRequired
 };
 
 export default SavedResultSortable;

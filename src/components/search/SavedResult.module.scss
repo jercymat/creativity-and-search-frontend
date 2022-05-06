@@ -37,3 +37,37 @@
   @extend .font-weight-regular;
   margin-bottom: 0;
 }
+
+.actions {
+  position: absolute;
+  top: .75rem;
+  right: 1rem;
+  visibility: hidden;
+
+  .handle {
+    vertical-align: middle;
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    line-height: 2.3;
+    text-align: center;
+    color: $im-secondary;
+    transition:
+      background-color .15s ease-in-out,
+      box-shadow .15s ease-in-out;
+
+    &:hover {
+      @extend .button-shadow;
+      background-color: $im-shadow;
+    }
+  }
+
+  .wrap:hover & {
+    visibility: visible;
+  }
+
+  button:not(:last-child) {
+    margin-right: .5rem;
+  }
+}

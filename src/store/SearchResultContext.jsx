@@ -21,13 +21,7 @@ export function SearchResultContextProvider(props) {
     totalCount: 0
   });
   const [sr, setSr] = useState([]);
-  // const [sr, setSr] = useState(Array.from({ length: 10 }, (_, k) => ({
-  //   id: `${k + 1}`,
-  //   title: `Test Title ${k + 1}`,
-  //   url: 'https://test.com',
-  //   desc: 'Test description test description, Test description test description. Test description test description, Test description test description. Test description test description, Test description test description. Test description test description, Test description test description. Test description test description.'
-  // })));
-
+  
   const setBufferedSearch = newResult => setSearch(newResult);
   const setSavedResults = newResults => setSr(newResults);
 

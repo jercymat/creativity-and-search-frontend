@@ -10,7 +10,8 @@ import {
   faFont,
   faLink,
   faPlus,
-  faImage
+  faImage,
+  faBars,
 }  from '@fortawesome/free-solid-svg-icons'
 import { Container } from 'react-bootstrap';
 import DefaultLayout from './layouts/Default';
@@ -23,7 +24,10 @@ import axios from 'axios';
 // import Cookies from 'universal-cookie';
 
 // import fontawesome icons for global use
-library.add(faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan, faFont, faLink, faPlus, faImage);
+library.add(
+  faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan,
+  faFont, faLink, faPlus, faImage, faBars
+);
 
 // initial website title
 document.title = config.PRODUCT_NAME;
