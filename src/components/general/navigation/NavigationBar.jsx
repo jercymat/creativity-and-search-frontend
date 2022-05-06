@@ -29,7 +29,7 @@ function NavigationBar(props) {
           { globalCtx.isLoggedin
             ? <AccountBadge
               userName={globalCtx.userName}
-              userImage='https://via.placeholder.com/150.jpg' />
+              userImage={`${process.env.PUBLIC_URL}/image/person_placeholder.png`} />
             : <LinkContainer to='/login'>
               <StandardButton
                 variant='primary'
