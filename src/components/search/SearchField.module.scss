@@ -1,4 +1,5 @@
 @import '../../styles/effect-style.scss';
+@import '../../styles/color-style.scss';
 
 .search-form {
   @extend .block-search-shadow;
@@ -24,5 +25,10 @@
     text-align: center;
     line-height: 48px;
     padding: 0 19px 0 0;
+  }
+
+  .disabled {
+    pointer-events: none;
+    color: $im-unaccent;
   }
 }

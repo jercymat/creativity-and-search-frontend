@@ -6,8 +6,11 @@ import AccountBadge from '../../account/AccountBadge';
 import LogoNavbar from '../logo/LogoNavbar';
 import { useLocation } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useContext } from 'react';
+import { GlobalContext } from '../../../store';
 
 function NavigationBar(props) {
+  const globalCtx = useContext(GlobalContext);
   const location = useLocation();
   const { id } = props;
 
@@ -23,14 +26,15 @@ function NavigationBar(props) {
               variant='light'
               btnText='Test' />
           </LinkContainer>
-          {/* <LinkContainer to='/login'>
-            <StandardButton
-              variant='primary'
-              btnText='Login' />
-          </LinkContainer> */}
-          <AccountBadge
-            userName='Tester'
-            userImage='https://via.placeholder.com/150.jpg' />
+          { globalCtx.isLoggedin
+            ? <AccountBadge
+              userName={globalCtx.userName}
+              userImage='https://via.placeholder.com/150.jpg' />
+            : <LinkContainer to='/login'>
+              <StandardButton
+                variant='primary'
+                btnText='Login' />
+            </LinkContainer> }
         </div>
       </Container>
     </Navbar>

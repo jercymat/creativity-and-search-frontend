@@ -1,29 +1,28 @@
 @import '../../theme/colors-theme.scss';
 @import '../../styles/effect-style.scss';
+@import '../../index.scss';
 
-.account-badge-wrap {
+.wrap {
   display: inline-block;
+  border-radius: 24px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 
-  .account-badge {
-    border-radius: 24px;
-    height: 48px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  &:hover {
+    @extend .block-shadow;
+    background-color: $im-background;
+  }
 
-    &:hover {
-      @extend .block-shadow;
-      background-color: $im-background;
-    }
+  .name {
+    @extend .noselect;
+    color: $im-unaccent;
+    margin-left: 1rem;
+    margin-right: .75rem;
+  }
 
-    .account-name {
-      color: $im-unaccent;
-      margin-left: 1rem;
-      margin-right: .75rem;
-    }
-  
-    img {
-      border-radius: 50%;
-    }
+  img {
+    border-radius: 50%;
   }
 }

@@ -1,12 +1,14 @@
-import { Fragment } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Fragment, useContext } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import NavigationBar from '../components/general/navigation/NavigationBar';
 import LandingPage from '../pages/Landing';
 import SERPPage from '../pages/SERP';
 import IdeaMapPage from '../pages/IdeaMap';
-import { SearchResultContextProvider } from "../store";
+import { GlobalContext, SearchResultContextProvider } from "../store";
 
 function DefaultLayout(props) {
+  const globalCtx = useContext(GlobalContext);
+
   return (
     <Fragment>
       <NavigationBar id='im-header' />
@@ -19,8 +21,8 @@ function DefaultLayout(props) {
         <SearchResultContextProvider>
           <Routes>
             <Route path='/' element={<LandingPage />} />
-            <Route path='/search' element={<SERPPage />} />
-            <Route path='/map' element={<IdeaMapPage />} />
+            <Route path='/search' element={ globalCtx.isLoggedin ? <SERPPage /> : <Navigate replace to='/login' />} />
+            <Route path='/map' element={globalCtx.isLoggedin ? <IdeaMapPage /> : <Navigate replace to='/login' />} />
           </Routes>
         </SearchResultContextProvider>
       </div>

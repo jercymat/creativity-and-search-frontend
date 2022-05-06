@@ -18,6 +18,7 @@ import LoginLayout from './layouts/Login';
 import TestLayout from './layouts/Test';
 import { GlobalContextProvider } from './store';
 import config from './config';
+import { ReactSession } from 'react-client-session';
 
 // import fontawesome icons for global use
 library.add(faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan, faFont, faLink, faPlus, faImage);
@@ -26,6 +27,9 @@ library.add(faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan, faFont
 document.title = config.PRODUCT_NAME;
 
 function App(props) {
+  // set react-client-session storage type
+  ReactSession.setStoreType('localStorage');
+
   return (
     <GlobalContextProvider>
       <Container id='im-root-wrap' fluid>

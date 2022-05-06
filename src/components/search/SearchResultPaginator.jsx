@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Pagination } from "react-bootstrap";
+import { LinkContainer } from 'react-router-bootstrap';
 import { range } from "../../utils";
 
 function SearchResultPaginator(props) {
@@ -18,23 +19,32 @@ function SearchResultPaginator(props) {
     return range(bottom, top + 1)
   }
 
+  const handleScrollTop = () => window.scrollTo(0, 0);
+
   return (
     <Pagination className={className}>
-      <Pagination.Prev
-        href={`${baseUrl}&page=${current - 1}`}
-        disabled={current === 1} />
+      <LinkContainer to={`${baseUrl}&page=${current - 1}`}>
+        <Pagination.Prev
+          onClick={handleScrollTop}
+          disabled={current === 1} />
+      </LinkContainer>
       {getPaginationIndex().map(
         i =>
-          <Pagination.Item
-            key={i}
-            active={current === i}
-            href={`${baseUrl}&page=${i}`}>
-            {i}
-          </Pagination.Item>
+          <LinkContainer
+            to={`${baseUrl}&page=${i}`}
+            key={i}>
+            <Pagination.Item
+              onClick={handleScrollTop}
+              active={current === i}>
+              {i}
+            </Pagination.Item>
+          </LinkContainer>
       )}
-      <Pagination.Next
-        href={`${baseUrl}&page=${current + 1}`}
-        disabled={current === total} />
+      <LinkContainer to={`${baseUrl}&page=${current + 1}`}>
+        <Pagination.Next
+          onClick={handleScrollTop}
+          disabled={current === total} />
+      </LinkContainer>
     </Pagination>
   )
 }

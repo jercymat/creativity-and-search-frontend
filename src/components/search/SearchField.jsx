@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
 import styles from './SearchField.module.scss';
 import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function SearchField(props) {
   const { id, placeholder, className, style, defaultQuery } = props;
@@ -29,11 +30,12 @@ function SearchField(props) {
           onChange={(evt) => setQuery(evt.target.value)}
           onKeyDown={handleKeyDown}></input>
         <div className={styles['search-button']}>
-          <a 
-            href={ query !== '' ? `/search?q=${query.replace(' ', '+')}` : null}
+          <Link
+            className={query === '' ? styles.disabled : null}
+            to={query !== '' ? `/search?q=${query.replace(' ', '+')}` : '#'}
             ref={searchRef}>
             <FontAwesomeIcon icon={['fas', 'magnifying-glass']} />
-          </a>
+          </Link>
         </div>
       </div>
     </div>
