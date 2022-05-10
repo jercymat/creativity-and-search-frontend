@@ -1,5 +1,5 @@
+import { LogoLarge } from '../components/general/logo';
 import SearchField from '../components/search/SearchField';
-import LogoLarge from '../components/general/logo/LogoLarge';
 
 function LandingPage() {
   return (

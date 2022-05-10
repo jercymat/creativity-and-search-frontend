@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
-import CircleIconButton from '../general/button/CircleIconButton';
+import { CircleIconButton } from '../general/button';
 import styles from './SearchResult.module.scss';
 
 function SearchResult(props) {

@@ -1,6 +1,5 @@
 import { Form, Modal } from 'react-bootstrap';
-import IconButton from '../general/button/IconButton';
-import StandardButton from '../general/button/StandardButton';
+import { IconButton, StandardButton } from '../general/button';
 import PropTypes from 'prop-types';
 import styles from './IdeaModal.module.scss';
 import { Fragment, useState } from 'react';

@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 
 
 function LeftIconButton(props) {
-  const { variant, onClick, btnText, fsIcon } = props;
+  const { className, variant, btnText, onClick, fsIcon, disabled, padding, type, form } = props;
 
   return (
     <Button
-      className='px-3'
+      className={`px-${padding !== undefined ? padding : 3}${className !== undefined ? ' ' + className : ''}`}
       variant={variant}
       onClick={onClick}
+      disabled={disabled}
+      type={type}
+      form={form}
     >
       <FontAwesomeIcon icon={fsIcon} />
       <span className='ms-2'>{btnText}</span>
@@ -19,10 +22,15 @@ function LeftIconButton(props) {
 }
 
 LeftIconButton.propTypes = {
+  className: PropTypes.string,
   variant: PropTypes.string.isRequired,
   btnText: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
   fsIcon: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onClick: PropTypes.func
+  disabled: PropTypes.bool,
+  padding: PropTypes.number,
+  type: PropTypes.string,
+  form: PropTypes.string
 }
 
 export default LeftIconButton;

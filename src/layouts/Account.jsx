@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Fragment } from 'react';
 import LoginDialog from '../components/account/LoginDialog';
-import LogoNormal from '../components/general/logo/LogoNormal';
+import { LogoNormal } from '../components/general/logo';
 import variables from './Login.module.scss';
 import styles from './Login.module.scss';
 

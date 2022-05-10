@@ -1,11 +1,11 @@
 import config from '../config';
 import { useContext } from 'react';
 import styles from './IdeaMap.module.scss';
-import LeftIconButton from '../components/general/button/LeftIconButton'
 import SavedResultList from '../components/search/SavedResultList';
 import IdeaMapCanvas from '../components/ideamap/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext, SearchResultContext } from '../store';
+import { LeftIconButton } from '../components/general/button';
 
 function IdeaMapPage(props) {
   const globalCtx = useContext(GlobalContext);

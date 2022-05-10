@@ -1,5 +1,5 @@
 import config from '../config';
-import RightIconButton from '../components/general/button/RightIconButton';
+import { RightIconButton } from '../components/general/button';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext, useEffect, useRef } from 'react';
 import SavedResultSortableList from '../components/search/SavedResultSortableList';

@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import PropTypes from 'prop-types';
-import CircleIconButton from '../general/button/CircleIconButton';
+import { CircleIconButton } from '../general/button';
 import styles from './SavedResult.module.scss';
 
 function SavedResultSortable(props) {

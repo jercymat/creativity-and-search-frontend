@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import config from '../../../config';
-import StandardButton from '../button/StandardButton';
+import { StandardButton } from '../button';
 import { Container, Navbar } from 'react-bootstrap';
 import AccountBadge from '../../account/AccountBadge';
-import LogoNavbar from '../logo/LogoNavbar';
 import { useLocation } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext } from 'react';
 import { GlobalContext } from '../../../store';
+import { LogoNavbar } from '../logo';
 
 function NavigationBar(props) {
   const globalCtx = useContext(GlobalContext);

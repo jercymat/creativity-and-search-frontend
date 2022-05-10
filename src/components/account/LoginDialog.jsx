@@ -4,9 +4,9 @@ import { useContext, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
-import StandardButton from '../general/button/StandardButton';
 import styles from './LoginDialog.module.scss';
 import { GlobalContext } from '../../store';
+import { StandardButton } from '../general/button';
 
 function LoginDialog(props) {
   const [validated, setValidated] = useState(false);
