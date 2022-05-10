@@ -45,4 +45,4 @@ NavigationBar.propTypes = {
   id: PropTypes.string
 }
 
-export default NavigationBar
+export default NavigationBar;

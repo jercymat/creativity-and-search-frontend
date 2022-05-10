@@ -1,5 +1,3 @@
-// import logo from './logo.svg';
-import './App.scss';
 import { Route, Routes } from "react-router-dom";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { 
@@ -14,14 +12,12 @@ import {
   faBars,
 }  from '@fortawesome/free-solid-svg-icons'
 import { Container } from 'react-bootstrap';
-import DefaultLayout from './layouts/Default';
-import TestLayout from './layouts/Test';
 import { GlobalContextProvider } from './store';
-import config from './config';
 import { ReactSession } from 'react-client-session';
 import axios from 'axios';
-import AccountLayout from './layouts/Account';
-// import Cookies from 'universal-cookie';
+import './App.scss';
+import config from './config';
+import { AccountLayout, DefaultLayout, TestLayout } from './layouts';
 
 // import fontawesome icons for global use
 library.add(
@@ -34,15 +30,6 @@ document.title = config.PRODUCT_NAME;
 
 // set axios default to bring session cookie
 axios.defaults.withCredentials = true;
-
-// // set cookie
-// const cookies = new Cookies();
-
-// cookies.set('sessionid', 'test2ie92ie9', {
-//   path: '/',
-//   httpOnly: true,
-//   secure: false
-// });
 
 function App(props) {
   // set react-client-session storage type

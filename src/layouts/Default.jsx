@@ -1,9 +1,7 @@
 import { Fragment, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import NavigationBar from '../components/general/navigation/NavigationBar';
-import LandingPage from '../pages/Landing';
-import SERPPage from '../pages/SERP';
-import IdeaMapPage from '../pages/IdeaMap';
+import { NavigationBar } from '../components/general/navigation';
+import { IdeaMapPage, LandingPage, SERPPage } from "../pages";
 import { GlobalContext, SearchResultContextProvider } from "../store";
 
 function DefaultLayout(props) {
