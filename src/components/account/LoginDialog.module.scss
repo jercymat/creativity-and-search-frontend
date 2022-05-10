@@ -1,5 +1,6 @@
 @import '../../styles/color-style.scss';
 @import '../../styles/effect-style.scss';
+@import '../../styles/font-style.scss';
 
 .wrap {
   @extend .block-shadow;
@@ -13,6 +14,18 @@
 
     &:last-of-type {
       margin-bottom: .5rem;
+    }
+  }
+
+  .linkbtn {
+    @extend .font-footlink;
+    border: none;
+    box-shadow: none;
+    text-decoration: none;
+    padding: 0 .25rem;
+
+    &:hover {
+      text-decoration: underline;
     }
   }
 }

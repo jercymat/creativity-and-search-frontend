@@ -1,10 +1,16 @@
+import PropTypes from 'prop-types';
 import { Fragment } from 'react';
 import LoginDialog from '../components/account/LoginDialog';
 import LogoNormal from '../components/general/logo/LogoNormal';
 import variables from './Login.module.scss';
 import styles from './Login.module.scss';
 
-function LoginLayout(props) {
+function AccountLayout(props) {
+  const { mode } = props;
+  const title = {
+    login: 'Login to start your journey.',
+    register: 'Register to access the wonderful search experience.'
+  }
 
   return (
     <Fragment>
@@ -16,8 +22,8 @@ function LoginLayout(props) {
           <LogoNormal />
         <h1
           className='font-weight-bold mt-3'
-          style={{marginBottom: '5rem'}}>Login to start your journey.</h1>
-        <LoginDialog />
+          style={{marginBottom: '5rem'}}>{title[mode]}</h1>
+        <LoginDialog mode={mode} />
       </div>
       <svg
         style={{
@@ -37,4 +43,8 @@ function LoginLayout(props) {
   )
 }
 
-export default LoginLayout;
+AccountLayout.propTypes = {
+  mode: PropTypes.string.isRequired
+};
+
+export default AccountLayout;

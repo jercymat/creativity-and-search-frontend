@@ -15,12 +15,12 @@ import {
 }  from '@fortawesome/free-solid-svg-icons'
 import { Container } from 'react-bootstrap';
 import DefaultLayout from './layouts/Default';
-import LoginLayout from './layouts/Login';
 import TestLayout from './layouts/Test';
 import { GlobalContextProvider } from './store';
 import config from './config';
 import { ReactSession } from 'react-client-session';
 import axios from 'axios';
+import AccountLayout from './layouts/Account';
 // import Cookies from 'universal-cookie';
 
 // import fontawesome icons for global use
@@ -53,7 +53,8 @@ function App(props) {
       <Container id='im-root-wrap' fluid>
         <Routes>
           <Route path='/test' element={<TestLayout />} />
-          <Route path='/login' element={<LoginLayout />}/>
+          <Route path='/login' element={<AccountLayout mode='login' />}/>
+          <Route path='/register' element={<AccountLayout mode='register' />} />
           <Route path='/*' element={<DefaultLayout />}/>
         </Routes>
       </Container>
