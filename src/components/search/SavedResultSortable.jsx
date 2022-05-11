@@ -27,7 +27,7 @@ function SavedResultSortable(props) {
     <div
       ref={setNodeRef}
       style={style}
-      className={styles.wrap}
+      className={`${styles.wrap} noselect`}
       key={props.save.id} >
       <div className={styles.head}>
         <h2 className={styles.title}>{props.save.title}</h2>
