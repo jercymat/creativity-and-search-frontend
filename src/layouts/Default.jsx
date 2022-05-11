@@ -2,7 +2,7 @@ import { Fragment, useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NavigationBar } from '../components/general/navigation';
 import { IdeaMapPage, LandingPage, SERPPage } from "../pages";
-import { GlobalContext, SearchResultContextProvider } from "../store";
+import { GlobalContext, SearchResultContextProvider } from "../context";
 
 function DefaultLayout(props) {
   const globalCtx = useContext(GlobalContext);

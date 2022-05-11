@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import styles from './AccountBadge.module.scss'
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext } from '../../store';
+import { GlobalContext } from '../../context';
 
 const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, ref) => (
   <div

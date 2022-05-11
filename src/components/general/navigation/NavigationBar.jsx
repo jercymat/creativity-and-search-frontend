@@ -6,7 +6,7 @@ import AccountBadge from '../../account/AccountBadge';
 import { useLocation } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext } from 'react';
-import { GlobalContext } from '../../../store';
+import { GlobalContext } from '../../../context';
 import { LogoNavbar } from '../logo';
 
 function NavigationBar(props) {

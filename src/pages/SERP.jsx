@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useContext, useEffect, useRef } from 'react';
 import SavedResultSortableList from '../components/search/SavedResultSortableList';
 import { useSearchParams } from 'react-router-dom';
-import { GlobalContext, SearchResultContext } from '../store';
+import { GlobalContext, SearchResultContext } from '../context';
 import SERPField from '../components/search/SERPField';
 import styles from './SERP.module.scss';
 

@@ -4,7 +4,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import axios from 'axios';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import config from '../../config';
-import { SearchResultContext } from '../../store';
+import { SearchResultContext } from '../../context';
 import styles from './SavedResultList.module.scss';
 import SavedResultPlaceHolder from './SavedResultPlaceHolder';
 import SavedResultSortable from './SavedResultSortable';

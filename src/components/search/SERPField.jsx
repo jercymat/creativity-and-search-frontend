@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { SearchResultContext } from "../../store";
+import { SearchResultContext } from "../../context";
 import SearchField from "./SearchField";
 import { RingSpinner } from 'react-spinners-kit';
 import SearchResultList from "./SearchResultList";

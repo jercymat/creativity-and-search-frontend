@@ -5,7 +5,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import config from '../../config';
 import styles from './LoginDialog.module.scss';
-import { GlobalContext } from '../../store';
+import { GlobalContext } from '../../context';
 import { StandardButton } from '../general/button';
 
 function LoginDialog(props) {

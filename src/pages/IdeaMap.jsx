@@ -4,7 +4,7 @@ import styles from './IdeaMap.module.scss';
 import SavedResultList from '../components/search/SavedResultList';
 import IdeaMapCanvas from '../components/ideamap/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext, SearchResultContext } from '../store';
+import { GlobalContext, SearchResultContext } from '../context';
 import { LeftIconButton } from '../components/general/button';
 
 function IdeaMapPage(props) {

@@ -12,7 +12,7 @@ import {
   faBars,
 }  from '@fortawesome/free-solid-svg-icons'
 import { Container } from 'react-bootstrap';
-import { GlobalContextProvider } from './store';
+import { GlobalContextProvider } from './context';
 import { ReactSession } from 'react-client-session';
 import axios from 'axios';
 import './App.scss';

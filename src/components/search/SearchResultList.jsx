@@ -2,7 +2,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { useCallback, useContext, useState } from 'react';
 import config from '../../config';
-import { SearchResultContext } from '../../store';
+import { SearchResultContext } from '../../context';
 import SearchResult from './SearchResult';
 import styles from './SearchResultList.module.scss';
 
