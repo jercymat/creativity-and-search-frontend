@@ -1,25 +1,41 @@
+import axios from 'axios';
 import PropTypes from 'prop-types';
+import { useContext, useEffect, useState } from 'react';
+import config from '../../config';
+import { SearchResultContext } from '../../context';
 import SavedResult from './SavedResult';
 import styles from './SavedResultList.module.scss';
 
-function SavedResultList(props) {
+function SavedResultList() {
+  const resultCtx = useContext(SearchResultContext);
+  const [fetched, setFetched] = useState(false);
+
+  useEffect(() => {
+    if (!fetched) {
+      setFetched(true);
+
+      axios.post(config.api.HOST + '/searchresults', {
+        action: 'list_searchresult'
+      })
+        .then(response => response.data.relist)
+        .then(list => {
+          resultCtx.updateSavedResults(list.map(saved => ({
+            id: saved.id.toString(),
+            title: saved.name,
+            url: saved.url,
+            desc: saved.snippet
+          })));
+        });
+    }
+  }, [fetched, resultCtx]);
+
   return (
     <div id='im-saved-results' className={styles.wrap}>
-      {props.saves.map(save => (
+      {resultCtx.savedResults.map(save => (
         <SavedResult key={ save.id } save={save} />
       ))}
     </div>
   )
 }
-
-SavedResultList.propTypes = {
-  saves: PropTypes.arrayOf(PropTypes.exact({
-    id: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    desc: PropTypes.string.isRequired,
-    imgUrl: PropTypes.string
-  })).isRequired
-};
 
 export default SavedResultList;

@@ -1,5 +1,27 @@
 @import '../../../../styles/color-style.scss';
 
+.im-idea-node-wrap {
+  &.w {
+      background-color: $im-background;
+    }
+  
+  &.p {
+    background-color: $im-content-purple;
+  }
+
+  &.g {
+    background-color: $im-content-green;
+  }
+
+  &.b {
+    background-color: $im-content-blue;
+  }
+
+  &.r {
+    background-color: $im-content-red;
+  }
+}
+
 .im-text-idea-node {
   padding: .75rem 1rem;
   border-radius: .5rem;

@@ -7,11 +7,16 @@ export function createNodesAndEdges() {
     'https://i.imgur.com/x62B7BA.png'
   ];
 
+  const colors = ['w', 'p', 'g', 'b',  'r'];
+
   for (let i = 0; i < 9; i++) {
     nodes.push({
       id: `node-${i + 1}`,
       type: 'text',
-      data: { label: `Test Idea ${i + 1}` },
+      data: { 
+        label: `Test Idea ${i + 1}`,
+        color: colors[Math.floor(Math.random() * colors.length)]
+       },
       position: { x: 200 * (i % 3), y: 100 * Math.floor(i / 3) }
     })
 
@@ -28,7 +33,10 @@ export function createNodesAndEdges() {
   nodes.push({
     id: `node-link-1`,
     type: 'link',
-    data: { link: 'https://youtu.be/dQw4w9WgXcQ' },
+    data: { 
+      link: 'https://youtu.be/dQw4w9WgXcQ',
+      color: colors[Math.floor(Math.random() * colors.length)]
+    },
     position: { x: 0, y: 300 }
   })
 
@@ -36,7 +44,10 @@ export function createNodesAndEdges() {
     nodes.push({
       id: `node-img-${i + 1}`,
       type: 'image',
-      data: { img_url: imgList[i] },
+      data: { 
+        img_url: imgList[i],
+        color: colors[Math.floor(Math.random() * colors.length)]
+      },
       position: { x: 200 * i, y: 400 }
     })
   }

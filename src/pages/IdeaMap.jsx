@@ -4,12 +4,11 @@ import styles from './IdeaMap.module.scss';
 import SavedResultList from '../components/search/SavedResultList';
 import IdeaMapCanvas from '../components/ideamap/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext, SearchResultContext } from '../context';
+import { GlobalContext } from '../context';
 import { LeftIconButton } from '../components/general/button';
 
 function IdeaMapPage(props) {
   const globalCtx = useContext(GlobalContext);
-  const resultCtx = useContext(SearchResultContext);
   const navigate = useNavigate();
 
   document.title = `${config.PRODUCT_NAME} ${config.IDEA_CANVAS_NAME}`;
@@ -26,7 +25,7 @@ function IdeaMapPage(props) {
             fsIcon={['fas', 'chevron-left']}
             onClick={() => navigate(-1)} />
         </div>
-        <SavedResultList saves={resultCtx.savedResults} />
+        <SavedResultList />
       </div>
       <div
         className={styles.canvas}

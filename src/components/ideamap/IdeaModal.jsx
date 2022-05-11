@@ -2,11 +2,20 @@ import { Form, Modal } from 'react-bootstrap';
 import { IconButton, StandardButton } from '../general/button';
 import PropTypes from 'prop-types';
 import styles from './IdeaModal.module.scss';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+
+const colors = ['w', 'p', 'g', 'b', 'r'];
 
 function IdeaModal(props) {
   const { show, mode, type, onCloseModal, onAddIdea, onUpdateIdea, onDeleteIdea, node } = props
   const [validated, setValidated] = useState(false);
+  const [color, setColor] = useState(colors[0]);
+
+  useEffect(() => {
+    if (mode === 'edit') {
+      setColor(node.data.color)
+    }
+  }, [mode, node])
 
   // helper function
   const firstLetterUpper = (word) => word.charAt(0).toUpperCase() + word.slice(1);
@@ -21,35 +30,38 @@ function IdeaModal(props) {
     if (form.checkValidity() === true) {
       if (mode === 'add') {
         if (type === 'text') {
-          onAddIdea(type, { label: event.target.text.value }, 'w');
+          onAddIdea(type, { label: event.target.text.value, color: color });
         } else if (type === 'link') {
-          onAddIdea(type, { link: event.target.link_url.value }, 'w');
+          onAddIdea(type, { link: event.target.link_url.value, color: color });
         } else if (type === 'image') {
-          onAddIdea(type, { img_url: event.target.image_url.value }, 'w');
+          onAddIdea(type, { img_url: event.target.image_url.value, color: color });
         }
       } else if (mode === 'edit') {
         if (type === 'text') {
-          onUpdateIdea({ label: event.target.text.value }, 'w');
+          onUpdateIdea({ label: event.target.text.value, color: color });
         } else if (type === 'link') {
-          onUpdateIdea({ link: event.target.link_url.value }, 'w');
+          onUpdateIdea({ link: event.target.link_url.value, color: color });
         } else if (type === 'image') {
-          onUpdateIdea({ img_url: event.target.image_url.value }, 'w');
+          onUpdateIdea({ img_url: event.target.image_url.value, color: color });
         }
       }
       setValidated(false);
     }
   }
 
+  const handleColorPick = c => () => setColor(c);
+  
   return (
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
         <Modal.Title>{firstLetterUpper(mode)} {firstLetterUpper(type)} Idea</Modal.Title>
         <div className='d-flex align-items-center'>
-          <div className={`${styles.picker} ${styles.white}`}></div>
-          <div className={`${styles.picker} ${styles.purple}`}></div>
-          <div className={`${styles.picker} ${styles.green}`}></div>
-          <div className={`${styles.picker} ${styles.blue}`}></div>
-          <div className={`${styles.picker} ${styles.red}`}></div>
+          { colors.map(c => 
+            <div
+              key={c}
+              className={`${styles.picker} ${styles[c]} ${color === c ? styles.active : ''}`}
+              onClick={handleColorPick(c)}></div>
+            ) }
         </div>
       </Modal.Header>
       <Modal.Body>

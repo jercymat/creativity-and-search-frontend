@@ -8,27 +8,40 @@
   height: 24px;
   border-radius: 50%;
 
-  &.white {
+  &.w {
     background-color: $im-background;
   }
 
-  &.purple {
+  &.p {
     background-color: $im-content-purple;
   }
 
-  &.green {
+  &.g {
     background-color: $im-content-green;
   }
 
-  &.blue {
+  &.b {
     background-color: $im-content-blue;
   }
 
-  &.red {
+  &.r {
     background-color: $im-content-red;
   }
 
   &:not(:last-of-type) {
     margin-right: .5rem;
+  }
+
+  &:hover {
+    // outline: 2px $im-danger solid;
+    box-shadow: 0 0 0 2px $im-secondary-alpha;
+  }
+
+  &:active {
+    box-shadow: 0 0 0 2px $im-secondary;
+  }
+
+  &.active {
+    box-shadow: 0 0 0 2px $im-secondary;
   }
 }
