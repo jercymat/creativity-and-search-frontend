@@ -4,6 +4,8 @@ import { Dropdown } from 'react-bootstrap';
 import styles from './AccountBadge.module.scss'
 import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../../context';
+import axios from 'axios';
+import config from '../../config';
 
 const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, ref) => (
   <div
@@ -27,8 +29,16 @@ function AccountBadge(props) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    globalCtx.updateLoggedIn(false);
-    navigate('/');
+    axios.post(config.api.HOST + '/users', {
+      action: 'sign_out'
+    })
+      .then(response => response.data.ret)
+      .then(ret => {
+        if (ret === 0) {
+          globalCtx.updateLoggedIn(false);
+          navigate('/');
+        }
+      });
   };
 
   return (
