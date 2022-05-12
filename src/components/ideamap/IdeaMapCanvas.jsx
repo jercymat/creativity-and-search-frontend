@@ -36,11 +36,14 @@ function IdeaMapCanvas(props) {
   // idea mapper canvas
   const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
+  const [lastGraph, setLastGraph] = useState("");
 
   // load and save graph
   const saveGraph = useDebouncedCallback(() => {
     const stringGraph = JSON.stringify(resultCtx.graph)
-    window.localStorage.clear('graph');
+
+    // compare to last graph, if different then save to server
+    if (lastGraph === stringGraph) return;
 
     axios.post(config.api.HOST + '/graphs', {
       action: "modify_graph",
@@ -54,6 +57,7 @@ function IdeaMapCanvas(props) {
       .then(ret => {
         if (ret === 0) {
           console.log(`Graph successfully saved to server - ${getCurrentTime()}`);
+          setLastGraph(stringGraph);
         }
       })
   }, 2000);
@@ -64,11 +68,11 @@ function IdeaMapCanvas(props) {
     });
     var stringGraph = response.data.relist[0].xml;
     console.log(`Graph successfully retrieved from server - ${getCurrentTime()}`);
-    return JSON.parse(
-      stringGraph === ''
-        ? '{"nodes":[],"edges":[]}'
-        : stringGraph
-    );
+    stringGraph = stringGraph === ''
+      ? '{"nodes":[],"edges":[]}'
+      : stringGraph;
+    setLastGraph(stringGraph)
+    return JSON.parse(stringGraph);
   }
 
   useEffect(() => {
