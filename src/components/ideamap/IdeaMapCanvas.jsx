@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useContext, useEffect, useState } from 'react';
 import ReactFlow, {
   addEdge,
   applyEdgeChanges,
@@ -15,6 +15,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import axios from 'axios';
 import config from '../../config';
 import { getCurrentTime } from '../../utils';
+import { SearchResultContext } from '../../context';
 
 // idea canvas
 // const initialGraph = '{"nodes":[{"id":"node-1","type":"text","data":{"label":"Test Idea 1","color":"r"},"position":{"x":0,"y":0},"width":129,"height":44},{"id":"node-2","type":"text","data":{"label":"Test Idea 2","color":"p"},"position":{"x":200,"y":0},"width":131,"height":44},{"id":"node-3","type":"text","data":{"label":"Test Idea 3","color":"w"},"position":{"x":400,"y":0},"width":132,"height":44},{"id":"node-4","type":"text","data":{"label":"Test Idea 4","color":"w"},"position":{"x":0,"y":100},"width":132,"height":44},{"id":"node-5","type":"text","data":{"label":"Test Idea 5","color":"r"},"position":{"x":200,"y":100},"width":132,"height":44},{"id":"node-6","type":"text","data":{"label":"Test Idea 6","color":"g"},"position":{"x":400,"y":100},"width":132,"height":44},{"id":"node-7","type":"text","data":{"label":"Test Idea 7","color":"p"},"position":{"x":0,"y":200},"width":131,"height":44},{"id":"node-8","type":"text","data":{"label":"Test Idea 8","color":"r"},"position":{"x":200,"y":200},"width":132,"height":44},{"id":"node-9","type":"text","data":{"label":"Test Idea 9","color":"b"},"position":{"x":400,"y":200},"width":132,"height":44},{"id":"node-link-1","type":"link","data":{"link":"https://youtu.be/dQw4w9WgXcQ","color":"p"},"position":{"x":0,"y":300},"width":319,"height":46},{"id":"node-img-1","type":"image","data":{"img_url":"https://cdn.vox-cdn.com/thumbor/9j-s_MPUfWM4bWdZfPqxBxGkvlw=/1400x1050/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg","color":"g"},"position":{"x":0,"y":400},"width":166,"height":166},{"id":"node-img-2","type":"image","data":{"img_url":"https://i.imgur.com/Jvh1OQm.jpeg","color":"g"},"position":{"x":200,"y":400},"width":166,"height":166},{"id":"node-img-3","type":"image","data":{"img_url":"https://i.imgur.com/x62B7BA.png","color":"r"},"position":{"x":400,"y":400},"width":166,"height":166}],"edges":[{"id":"edge-1","source":"node-1","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-2","source":"node-2","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-3","source":"node-3","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-4","source":"node-4","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-6","source":"node-6","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-7","source":"node-7","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-8","source":"node-8","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-9","source":"node-9","target":"node-5","type":"idea_mapper_edge"}]}';
@@ -33,13 +34,12 @@ function IdeaMapCanvas(props) {
   const [modalType, setModalType] = useState('text');
 
   // idea mapper canvas
-  const [nodes, setNodes] = useState([]);
-  const [edges, setEdges] = useState([]);
+  const resultCtx = useContext(SearchResultContext);
+  const [fetched, setFetched] = useState(false);
 
   // load and save graph
   const saveGraph = useDebouncedCallback(() => {
-    const rawGraph = { nodes: nodes, edges: edges };
-    const stringGraph = JSON.stringify(rawGraph)
+    const stringGraph = JSON.stringify(resultCtx.graph)
     window.localStorage.clear('graph');
 
     axios.post(config.api.HOST + '/graphs', {
@@ -58,26 +58,26 @@ function IdeaMapCanvas(props) {
       })
   }, 2000);
 
-  const loadGraph = () => {
-    return axios.post(config.api.HOST + '/graphs', {
+  const loadGraph = async () => {
+    const response = await axios.post(config.api.HOST + '/graphs', {
       action: 'list_graph'
-    })
-      .then(response => response.data.relist)
-      .then(list => {
-        var stringGraph = list[0].xml;
-        if (stringGraph === '') stringGraph = '{"nodes":[],"edges":[]}';
-        console.log(`Graph successfully retrieved from server - ${getCurrentTime()}`);
-        return JSON.parse(stringGraph);
-      });
+    });
+    var stringGraph = response.data.relist[0].xml;
+    console.log(`Graph successfully retrieved from server - ${getCurrentTime()}`);
+    return JSON.parse(
+      stringGraph === ''
+        ? '{"nodes":[],"edges":[]}'
+        : stringGraph
+    );
   }
 
   useEffect(() => {
-    loadGraph()
-      .then(graph => {
-        setNodes(graph.nodes);
-        setEdges(graph.edges);
-      })
-  }, []);
+    if (!fetched) {
+      setFetched(true);
+      loadGraph()
+        .then(graph => resultCtx.updateGraph(graph));
+    }
+  }, [fetched, resultCtx]);
 
   const handleOpenModal = useCallback(
     (mode, type, node) => () => {
@@ -96,26 +96,35 @@ function IdeaMapCanvas(props) {
 
   const onNodesChange = useCallback(
     (changes) => {
+      resultCtx.updateGraph({
+        nodes: applyNodeChanges(changes, resultCtx.graph.nodes) ,
+        edges: resultCtx.graph.edges
+      });
       saveGraph();
-      setNodes((nds) => applyNodeChanges(changes, nds))
     },
-    [setNodes, saveGraph]
+    [saveGraph, resultCtx]
   );
 
   const onEdgesChange = useCallback(
     (changes) => {
+      resultCtx.updateGraph({
+        nodes: resultCtx.graph.nodes,
+        edges: applyEdgeChanges(changes, resultCtx.graph.edges)
+      });
       saveGraph();
-      setEdges((eds) => applyEdgeChanges(changes, eds))
     },
-    [setEdges, saveGraph]
+    [saveGraph, resultCtx]
   );
 
   const onConnect = useCallback(
     (connection) => {
+      resultCtx.updateGraph({
+        nodes: resultCtx.graph.nodes,
+        edges: addEdge({ ...connection, type: 'idea_mapper_edge' }, resultCtx.graph.edges)
+      });
       saveGraph();
-      setEdges((eds) => addEdge({ ...connection, type: 'idea_mapper_edge' }, eds));
     },
-    [setEdges, saveGraph]
+    [saveGraph, resultCtx]
   );
 
   // open idea editing modal after double click on ideas
@@ -137,40 +146,46 @@ function IdeaMapCanvas(props) {
           y: -100
         },
       };
-      setNodes((nds) => nds.concat(newNode));
+      resultCtx.updateGraph({
+        nodes: resultCtx.graph.nodes.concat(newNode),
+        edges: resultCtx.graph.edges
+      });
 
       setModalShow(false);
-    }, [setModalShow, setNodes]
+    }, [setModalShow, resultCtx]
   )
 
   const handleUpdateIdea = useCallback(
     (data) => {
-      setNodes(nodes =>
-        nodes.map(node => {
+      resultCtx.updateGraph({
+        nodes: resultCtx.graph.nodes.map(node => {
           if (node.id === modalEditNode.id) {
             node.data = { ...data };
           }
           return node;
-        })
-      );
+        }),
+        edges: resultCtx.graph.edges
+      });
       setModalShow(false);
-    }, [modalEditNode, setNodes]
+    }, [modalEditNode, resultCtx]
   )
 
   const handleDeleteIdea = useCallback(
     () => {
-      const edgesToRemove = getConnectedEdges([modalEditNode], edges).map(edge => edge.id);
-      setNodes(nodes => nodes.filter(node => node.id !== modalEditNode.id));
-      setEdges(edges => edges.filter(edge => !edgesToRemove.includes(edge.id)));
+      const edgesToRemove = getConnectedEdges([modalEditNode], resultCtx.graph.edges).map(edge => edge.id);
+      resultCtx.updateGraph({
+        nodes: resultCtx.graph.nodes.filter(node => node.id !== modalEditNode.id),
+        edges: resultCtx.graph.edges.filter(edge => !edgesToRemove.includes(edge.id))
+      });
       setModalShow(false);
-    }, [modalEditNode, edges, setModalShow, setNodes]
+    }, [modalEditNode, setModalShow, resultCtx]
   );
 
   return (
     <Fragment>
       <ReactFlow
-        nodes={nodes}
-        edges={edges}
+        nodes={resultCtx.graph.nodes}
+        edges={resultCtx.graph.edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         connectionLineComponent={IdeaMapperConnection}

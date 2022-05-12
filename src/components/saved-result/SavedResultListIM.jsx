@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
-import { SavedResult } from './cell';
+import { SavedResultIM } from './cell';
 import styles from './SavedResultList.module.scss';
 
 function SavedResultListIM() {
@@ -31,7 +31,7 @@ function SavedResultListIM() {
   return (
     <div id='im-saved-results' className={styles.wrap}>
       {resultCtx.savedResults.map(save => (
-        <SavedResult key={ save.id } save={save} />
+        <SavedResultIM key={ save.id } save={save} />
       ))}
     </div>
   )

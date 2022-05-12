@@ -12,62 +12,94 @@
   &:focus {
     outline: none;
   }
-}
 
-.head {
-  margin-bottom: .25rem;
-}
+  .head {
+    margin-bottom: .25rem;
 
-.title {
-  @extend .font-weight-medium;
-  font-size: $font-size-title2;
-  color: $im-primary;
-  margin-bottom: 0;
-}
+    .title {
+      @extend .font-weight-medium;
+      font-size: $font-size-title2;
+      color: $im-primary;
+      margin-bottom: 0;
+    }
 
-.url {
-  @extend .font-weight-medium;
-  color: $im-secondary;
-  margin-bottom: 0;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.desc {
-  @extend .font-weight-regular;
-  margin-bottom: 0;
-}
-
-.actions {
-  position: absolute;
-  top: .75rem;
-  right: 1rem;
-  visibility: hidden;
-
-  .handle {
-    vertical-align: middle;
-    display: inline-block;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    line-height: 2.3;
-    text-align: center;
-    color: $im-secondary;
-    transition:
-      background-color .15s ease-in-out,
-      box-shadow .15s ease-in-out;
-
-    &:hover {
-      @extend .button-shadow;
-      background-color: $im-shadow;
+    .url {
+      @extend .font-weight-medium;
+      color: $im-secondary;
+      margin-bottom: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
     }
   }
 
-  .wrap:hover & {
-    visibility: visible;
+  .desc {
+    @extend .font-weight-regular;
+    margin-bottom: 0;
   }
 
-  button:not(:last-child) {
-    margin-right: .5rem;
+  // exclusive to SERP
+  .actions {
+    position: absolute;
+    top: .75rem;
+    right: 1rem;
+    visibility: hidden;
+
+    .handle {
+      vertical-align: middle;
+      display: inline-block;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      line-height: 2.3;
+      text-align: center;
+      color: $im-secondary;
+      transition:
+        background-color .15s ease-in-out,
+        box-shadow .15s ease-in-out;
+
+      &:hover {
+        @extend .button-shadow;
+        background-color: $im-shadow;
+      }
+    }
+
+    button:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
+}
+
+.wrap:hover .actions {
+  visibility: visible;
+}
+
+// exlusive for IM
+.add-idea {
+  transition: all .1s ease-in-out;
+
+  &:hover {
+    cursor: crosshair;
+    background-color: $im-secondary;
+    color: $im-background;
+  }
+
+  &:active {
+    background-color: $im-primary;
+  }
+}
+
+.wrap.im {
+  .head {
+    .title {
+      @extend .add-idea;
+    }
+
+    .url {
+      @extend .add-idea;
+    }
+  }
+
+  .desc {
+    @extend .add-idea;
   }
 }

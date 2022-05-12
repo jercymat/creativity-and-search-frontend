@@ -1,5 +1,5 @@
-import SavedResult from "./SavedResult";
-import SavedResultSortable from './SavedResultSortable'
+import SavedResultIM from "./SavedResultIM";
+import SavedResultSERP from './SavedResultSERP'
 import SavedResultPlaceHolder from './SavedResultPlaceHolder'
 
-export { SavedResult, SavedResultSortable, SavedResultPlaceHolder };
+export { SavedResultIM, SavedResultSERP, SavedResultPlaceHolder };

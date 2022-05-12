@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
-import { SavedResultPlaceHolder, SavedResultSortable } from './cell';
+import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 
 function SavedResultListSERP() {
@@ -73,7 +73,7 @@ function SavedResultListSERP() {
           items={resultCtx.savedResults}
           strategy={verticalListSortingStrategy}>
             {resultCtx.savedResults.map(save => 
-              <SavedResultSortable
+              <SavedResultSERP
                 key={save.id}
                 id={save.id}
                 onDeleteSave={handleRemoveSaved}

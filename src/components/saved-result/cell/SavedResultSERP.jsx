@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CircleIconButton } from '../../general/button';
 import styles from './SavedResult.module.scss';
 
-function SavedResultSortable(props) {
+function SavedResultSERP(props) {
   const {
     attributes,
     isDragging,
@@ -50,7 +50,7 @@ function SavedResultSortable(props) {
   )
 }
 
-SavedResultSortable.propTypes = {
+SavedResultSERP.propTypes = {
   save: PropTypes.exact({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
@@ -61,4 +61,4 @@ SavedResultSortable.propTypes = {
   onDeleteSave: PropTypes.func.isRequired
 };
 
-export default SavedResultSortable;
+export default SavedResultSERP;
