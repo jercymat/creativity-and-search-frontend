@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { SearchResultContext } from "../../context";
 import { RingSpinner } from 'react-spinners-kit';
 import styles from './SERPField.module.scss';
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import SearchField from "./SearchField";
 import axios from "axios";
 import config from "../../config";
@@ -25,37 +25,42 @@ function SERPField(props) {
     ? Math.ceil(resultCtx.bufferedSearch.totalCount / 20)
     : 1;
   
+  // load search results
+  const loadResults = useCallback(async () => {
+    const response = await axios.post(config.api.HOST + '/searchresults', {
+      action: 'get_searchresult',
+      keyword: queryParam,
+      count: '20',
+      offset: (20 * (curPage - 1)).toString()
+    });
+
+    const newResults = response.data.searchlist.webPages.value.map(v => ({
+      id: v.id,
+      title: v.name,
+      url: v.displayUrl,
+      desc: v.snippet
+    }));
+
+    return {
+      results: newResults,
+      q: queryParam,
+      page: curPage,
+      totalCount: response.data.searchlist.webPages.totalEstimatedMatches
+    };
+  }, [curPage, queryParam]);
+  
   useEffect(() => {
-    if (!serFetched && !isFetching) {
-      setFetching(true);
+    if (serFetched) return;
+    if (isFetching) return;
 
-      axios.post(config.api.HOST + '/searchresults', {
-        action: 'get_searchresult',
-        keyword: queryParam,
-        count: '20',
-        offset: (20 * (curPage - 1)).toString()
-      })
-        .then(response => response.data.searchlist.webPages)
-        .then(webPages => {
-          const newResults = webPages.value.map(v => ({
-            id: v.id,
-            title: v.name,
-            url: v.displayUrl,
-            desc: v.snippet
-          }));
-
-          // update search data to context
-          resultCtx.updateBufferedSearch({
-            results: newResults,
-            q: queryParam,
-            page: curPage,
-            totalCount: webPages.totalEstimatedMatches
-          });
-
-          setFetching(false);
-        });
-    }
-  }, [isFetching, serFetched, queryParam, curPage, resultCtx]);
+    setFetching(true);
+    loadResults()
+      .then(search => {
+        // update search data to context
+        resultCtx.updateBufferedSearch(search);
+        setFetching(false);
+      });
+  }, [isFetching, loadResults, resultCtx, serFetched]);
 
   return (
     <div className={className}>

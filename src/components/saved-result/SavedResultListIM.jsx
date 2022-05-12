@@ -8,24 +8,28 @@ import styles from './SavedResultList.module.scss';
 function SavedResultListIM() {
   const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
+  
+  // load result list
+  const loadList = async () => {
+    const response = await axios.post(config.api.HOST + '/searchresults', {
+      action: 'list_searchresult'
+    });
+
+    return response.data.relist.map(saved => ({
+      id: saved.id.toString(),
+      title: saved.name,
+      url: saved.url,
+      desc: saved.snippet
+    }));
+  }
 
   useEffect(() => {
-    if (!fetched) {
-      setFetched(true);
+    if (fetched) return;
+    if (resultCtx.savedResults.length !== 0) return;
 
-      axios.post(config.api.HOST + '/searchresults', {
-        action: 'list_searchresult'
-      })
-        .then(response => response.data.relist)
-        .then(list => {
-          resultCtx.updateSavedResults(list.map(saved => ({
-            id: saved.id.toString(),
-            title: saved.name,
-            url: saved.url,
-            desc: saved.snippet
-          })));
-        });
-    }
+    setFetched(true);
+    loadList()
+      .then(list => resultCtx.updateSavedResults(list));
   }, [fetched, resultCtx]);
 
   return (

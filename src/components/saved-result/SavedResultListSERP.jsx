@@ -3,6 +3,7 @@ import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import axios from 'axios';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
 import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
@@ -13,6 +14,24 @@ function SavedResultListSERP() {
   const [fetched, setFetched] = useState(false);
   const [isRemoving, setRemoving] = useState(false);
 
+  // load and save result list
+  const saveList = useDebouncedCallback(() => {
+    console.log(resultCtx.savedResults.map(ret => parseInt(ret.id)));
+  }, 1000);
+
+  const loadList = async () => {
+    const response = await axios.post(config.api.HOST + '/searchresults', {
+      action: 'list_searchresult'
+    });
+
+    return response.data.relist.map(saved => ({
+      id: saved.id.toString(),
+      title: saved.name,
+      url: saved.url,
+      desc: saved.snippet
+    }));
+  }
+
   const handleDragEnd = (event) => {
     const { active, over } = event;
     
@@ -22,6 +41,7 @@ function SavedResultListSERP() {
       const newSaves = arrayMove(resultCtx.savedResults, oldIndex, newIndex);
 
       resultCtx.updateSavedResults(newSaves);
+      saveList();
     }
   }
 
@@ -45,22 +65,11 @@ function SavedResultListSERP() {
   }, [isRemoving, resultCtx]);
 
   useEffect(() => {
-    if (!fetched) {
-      setFetched(true);
-
-      axios.post(config.api.HOST + '/searchresults', {
-        action: 'list_searchresult'
-      })
-        .then(response => response.data.relist)
-        .then(list => {
-          resultCtx.updateSavedResults(list.map(saved => ({
-            id: saved.id.toString(),
-            title: saved.name,
-            url: saved.url,
-            desc: saved.snippet
-          })));
-        });
-    }
+    if (fetched) return;
+    
+    setFetched(true);
+    loadList()
+      .then(list => resultCtx.updateSavedResults(list));
   }, [fetched, resultCtx]);
 
   return (
