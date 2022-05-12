@@ -2,11 +2,11 @@ import config from '../config';
 import { RightIconButton } from '../components/general/button';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext, useEffect, useRef } from 'react';
-import SavedResultSortableList from '../components/search/SavedResultSortableList';
 import { useSearchParams } from 'react-router-dom';
 import { GlobalContext, SearchResultContext } from '../context';
-import SERPField from '../components/search/SERPField';
+import { SERPField } from '../components/search';
 import styles from './SERP.module.scss';
+import { SavedResultListSERP } from '../components/saved-result';
 
 function SERPPage() {
   // hooks
@@ -42,7 +42,7 @@ function SERPPage() {
               fsIcon={['fas', 'chevron-right']} />
           </LinkContainer>
         </div>
-        <SavedResultSortableList />
+        <SavedResultListSERP />
       </div>
     </div>
   )

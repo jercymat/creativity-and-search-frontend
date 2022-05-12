@@ -1,12 +1,11 @@
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
-import SavedResult from './SavedResult';
+import { SavedResult } from './cell';
 import styles from './SavedResultList.module.scss';
 
-function SavedResultList() {
+function SavedResultListIM() {
   const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
 
@@ -38,4 +37,4 @@ function SavedResultList() {
   )
 }
 
-export default SavedResultList;
+export default SavedResultListIM;

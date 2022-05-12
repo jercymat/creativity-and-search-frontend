@@ -5,11 +5,10 @@ import axios from 'axios';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
+import { SavedResultPlaceHolder, SavedResultSortable } from './cell';
 import styles from './SavedResultList.module.scss';
-import SavedResultPlaceHolder from './SavedResultPlaceHolder';
-import SavedResultSortable from './SavedResultSortable';
 
-function SavedResultSortableList() {
+function SavedResultListSERP() {
   const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
   const [isRemoving, setRemoving] = useState(false);
@@ -85,4 +84,4 @@ function SavedResultSortableList() {
   )
 }
 
-export default SavedResultSortableList;
+export default SavedResultListSERP;

@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { SearchResultContext } from "../../context";
-import SearchField from "./SearchField";
 import { RingSpinner } from 'react-spinners-kit';
-import SearchResultList from "./SearchResultList";
-import SearchResultPaginator from "./SearchResultPaginator";
 import styles from './SERPField.module.scss';
 import { useContext, useEffect, useState } from "react";
+import SearchField from "./SearchField";
 import axios from "axios";
 import config from "../../config";
+import SearchResultList from './SearchResultList';
+import { SearchResultPaginator } from './general';
 
 function SERPField(props) {
   const { className, queryParam, curPage } = props;

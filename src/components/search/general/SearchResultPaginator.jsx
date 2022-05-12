@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Pagination } from "react-bootstrap";
 import { LinkContainer } from 'react-router-bootstrap';
-import { range } from "../../utils";
+import { range } from "../../../utils";
 
 function SearchResultPaginator(props) {
   const { baseUrl, current, total, className } = props;

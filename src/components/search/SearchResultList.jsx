@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useCallback, useContext, useState } from 'react';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
-import SearchResult from './SearchResult';
+import { SearchResult } from './general';
 import styles from './SearchResultList.module.scss';
 
 function SearchResultList(props) {
