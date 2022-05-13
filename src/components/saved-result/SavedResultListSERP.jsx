@@ -6,6 +6,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import config from '../../config';
 import { SearchResultContext } from '../../context';
+import { getCurrentTime } from '../../utils';
 import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 
@@ -16,7 +17,19 @@ function SavedResultListSERP() {
 
   // load and save result list
   const saveList = useDebouncedCallback(() => {
-    console.log(resultCtx.savedResults.map(ret => parseInt(ret.id)));
+    const newOrder = resultCtx.savedResults
+      .map((ret, i) => [parseInt(ret.id), i+1]);
+    
+    axios.post(config.api.HOST + '/searchresults', {
+      action: 'reorder_searchresult',
+      data: newOrder
+    })
+      .then(response => response.data.ret)
+      .then(ret => {
+        if (ret === 0) {
+          console.log(`Graph successfully saved to server - ${getCurrentTime()}`);
+        }
+      });
   }, 1000);
 
   const loadList = async () => {
