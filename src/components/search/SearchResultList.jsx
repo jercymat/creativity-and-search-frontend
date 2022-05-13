@@ -21,7 +21,7 @@ function SearchResultList(props) {
           url: result.url,
           snippet: result.desc
         }
-      })
+      }, { withCredentials: true })
         .then(response => response.data)
         .then(data => {
           if (data.ret === 0) {

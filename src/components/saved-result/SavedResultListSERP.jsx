@@ -23,7 +23,7 @@ function SavedResultListSERP() {
     axios.post(config.api.HOST + '/searchresults', {
       action: 'reorder_searchresult',
       data: newOrder
-    })
+    }, { withCredentials: true })
       .then(response => response.data.ret)
       .then(ret => {
         if (ret === 0) {
@@ -35,7 +35,7 @@ function SavedResultListSERP() {
   const loadList = async () => {
     const response = await axios.post(config.api.HOST + '/searchresults', {
       action: 'list_searchresult'
-    });
+    }, { withCredentials: true });
 
     return response.data.relist.map(saved => ({
       id: saved.id.toString(),
@@ -65,7 +65,7 @@ function SavedResultListSERP() {
       axios.post(config.api.HOST + '/searchresults', {
         action: 'delete_searchresult',
         searchResultId: id
-      })
+      }, { withCredentials: true })
         .then(response => response.data)
         .then(data => {
           if (data.ret === 0) {

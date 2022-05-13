@@ -32,7 +32,7 @@ function SERPField(props) {
       keyword: queryParam,
       count: '20',
       offset: (20 * (curPage - 1)).toString()
-    });
+    }, { withCredentials: true });
 
     const newResults = response.data.searchlist.webPages.value.map(v => ({
       id: v.id,

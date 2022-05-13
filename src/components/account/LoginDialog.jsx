@@ -33,7 +33,7 @@ function LoginDialog() {
         action: 'sign_in',
         name: form.id.value,
         password: form.pwd.value
-      });
+      }, { withCredentials: true });
 
       if (response.data.ret === 0) {
         globalCtx.updateLoggedIn(true, form.id.value);

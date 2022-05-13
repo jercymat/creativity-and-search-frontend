@@ -31,7 +31,7 @@ function AccountBadge(props) {
   const handleLogout = () => {
     axios.post(config.api.HOST + '/users', {
       action: 'sign_out'
-    })
+    }, { withCredentials: true })
       .then(response => response.data.ret)
       .then(ret => {
         if (ret === 0) {

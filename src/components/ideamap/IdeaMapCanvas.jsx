@@ -52,7 +52,7 @@ function IdeaMapCanvas(props) {
         name: "TestGraph",
         xml: stringGraph
       }
-    })
+    }, { withCredentials: true })
       .then(response => response.data.ret)
       .then(ret => {
         if (ret === 0) {
@@ -65,7 +65,7 @@ function IdeaMapCanvas(props) {
   const loadGraph = async () => {
     const response = await axios.post(config.api.HOST + '/graphs', {
       action: 'list_graph'
-    });
+    }, { withCredentials: true });
     var stringGraph = response.data.relist[0].xml;
     console.log(`Graph successfully retrieved from server - ${getCurrentTime()}`);
     stringGraph = stringGraph === ''

@@ -13,7 +13,7 @@ function SavedResultListIM() {
   const loadList = async () => {
     const response = await axios.post(config.api.HOST + '/searchresults', {
       action: 'list_searchresult'
-    });
+    }, { withCredentials: true });
 
     return response.data.relist.map(saved => ({
       id: saved.id.toString(),
