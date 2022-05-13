@@ -40,8 +40,7 @@ function App(props) {
       <Container id='im-root-wrap' fluid>
         <Routes>
           <Route path='/test' element={<TestLayout />} />
-          <Route path='/login' element={<AccountLayout mode='login' />}/>
-          <Route path='/register' element={<AccountLayout mode='register' />} />
+          <Route path='/login' element={<AccountLayout />}/>
           <Route path='/*' element={<DefaultLayout />}/>
         </Routes>
       </Container>
