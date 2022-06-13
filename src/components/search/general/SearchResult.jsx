@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
+import { useTracking } from 'react-tracking';
 import { CircleIconButton } from '../../general/button';
 import styles from './SearchResult.module.scss';
 
 function SearchResult(props) {
   const { title, url, desc } = props.result;
   const { onAddSave } = props;
+  const { trackEvent } = useTracking();
 
   const titleRef = useRef(null);
   const urlRef = useRef(null);
@@ -30,7 +32,9 @@ function SearchResult(props) {
         fsIcon={['fas', 'plus']} />
       <div className={styles.content}>
         <div className={styles.head_wrap}>
-          <a href={url} target='_blank' rel="noreferrer">
+          <a 
+            href={url} target='_blank' rel="noreferrer"
+            onClick={() => trackEvent({ event: 'docClicked', timestamp: Date.now() })}>
             <h2 className={styles.title} ref={titleRef}>{title}</h2>
           </a>
           <h4 className={styles.url} ref={urlRef}>{url}</h4>

@@ -3,6 +3,7 @@ import { IconButton, StandardButton } from '../general/button';
 import PropTypes from 'prop-types';
 import styles from './IdeaModal.module.scss';
 import { Fragment, useEffect, useState } from 'react';
+import { useTracking } from 'react-tracking';
 
 const colors = ['w', 'p', 'g', 'b', 'r'];
 
@@ -10,6 +11,7 @@ function IdeaModal(props) {
   const { show, mode, type, onCloseModal, onAddIdea, onUpdateIdea, onDeleteIdea, node } = props
   const [validated, setValidated] = useState(false);
   const [color, setColor] = useState(colors[0]);
+  const { trackEvent } = useTracking();
 
   useEffect(() => {
     if (mode === 'edit') {
@@ -29,6 +31,8 @@ function IdeaModal(props) {
 
     if (form.checkValidity() === true) {
       if (mode === 'add') {
+        trackEvent({ event: 'ideaAddedFromCustom', timestamp: Date.now() });
+
         if (type === 'text') {
           onAddIdea(type, { label: event.target.text.value, color: color });
         } else if (type === 'link') {
@@ -37,6 +41,8 @@ function IdeaModal(props) {
           onAddIdea(type, { img_url: event.target.image_url.value, color: color });
         }
       } else if (mode === 'edit') {
+        trackEvent({ event: 'ideaEdited', timestamp: Date.now() });
+
         if (type === 'text') {
           onUpdateIdea({ label: event.target.text.value, color: color });
         } else if (type === 'link') {

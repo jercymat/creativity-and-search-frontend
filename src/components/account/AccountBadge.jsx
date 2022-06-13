@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { GlobalContext } from '../../context';
 import axios from 'axios';
 import config from '../../config';
+import { checkoutEvents } from '../../utils/tracker';
 
 const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, ref) => (
   <div
@@ -35,6 +36,7 @@ function AccountBadge(props) {
       .then(response => response.data.ret)
       .then(ret => {
         if (ret === 0) {
+          checkoutEvents();
           globalCtx.updateLoggedIn(false);
           navigate('/');
         }

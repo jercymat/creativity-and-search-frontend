@@ -1,14 +1,24 @@
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NavigationBar } from '../components/general/navigation';
 import { IdeaMapPage, LandingPage, SERPPage } from "../pages";
 import { GlobalContext, SearchResultContextProvider } from "../context";
+import { useTracking } from "react-tracking";
 
 function DefaultLayout(props) {
   const globalCtx = useContext(GlobalContext);
+  const { Track } = useTracking(
+    { layout: 'main' },
+    {
+      dispatch: data => {
+        console.log(data);
+        (window.loggedEvents = window.loggedEvents || []).push(data);
+      }
+    }
+  );
 
   return (
-    <Fragment>
+    <Track>
       <NavigationBar id='im-header' />
       <div
         id='im-body'
@@ -24,7 +34,7 @@ function DefaultLayout(props) {
           </Routes>
         </SearchResultContextProvider>
       </div>
-    </Fragment>
+    </Track>
   )
 }
 

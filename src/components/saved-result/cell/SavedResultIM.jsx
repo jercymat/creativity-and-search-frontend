@@ -1,10 +1,12 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
+import { useTracking } from 'react-tracking';
 import { SearchResultContext } from '../../../context';
 import styles from './SavedResult.module.scss';
 
 function SavedResultIM(props) {
   const resultCtx = useContext(SearchResultContext);
+  const { trackEvent } = useTracking();
 
   const handleAddIdea = (idea, type) => () => {
     const newNode = {
@@ -24,6 +26,8 @@ function SavedResultIM(props) {
         y: -100
       },
     };
+    trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
+
     resultCtx.updateGraph({
       nodes: resultCtx.graph.nodes.concat(newNode),
       edges: resultCtx.graph.edges
