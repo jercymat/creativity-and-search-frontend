@@ -40,9 +40,8 @@ function IdeaMapCanvas(props) {
   const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
   const [lastGraph, setLastGraph] = useState("");
-
-  // load and save graph
-  const saveGraph = useDebouncedCallback(() => {
+  
+  const saveGraphUtil = () => {
     const stringGraph = JSON.stringify(resultCtx.graph)
 
     // compare to last graph, if different then save to server
@@ -63,7 +62,10 @@ function IdeaMapCanvas(props) {
           setLastGraph(stringGraph);
         }
       })
-  }, 2000);
+  }
+  
+  // load and save graph
+  const saveGraph = useDebouncedCallback(saveGraphUtil, 250);
 
   const loadGraph = async () => {
     const response = await axios.post(config.api.HOST + '/graphs', {
@@ -84,7 +86,12 @@ function IdeaMapCanvas(props) {
       loadGraph()
         .then(graph => resultCtx.updateGraph(graph));
     }
-  }, [fetched, resultCtx]);
+
+    return (() => {
+      console.log('111');
+      saveGraph();
+    })
+  }, [fetched, resultCtx, saveGraph]);
 
   const handleOpenModal = useCallback(
     (mode, type, node) => () => {
