@@ -1,15 +1,18 @@
-export const checkoutEvents = () => {
+import axios from "axios";
+import config from "../../config";
+
+export const checkoutEvents = async () => {
   const events = {
     switchSerpMapper: 0,
     avgDocViewTime: 0,
     docsClicked: 0,
     ideaMapperTimeTotal: 0,
-    ideaAddedFromSaved: 0,
+    ideaAddedFromSaved: 0,  // unused
     ideaAddedFromCustom: 0,
     ideaEdited: 0,
-    ideaDeleted: 0,
-    ideaLineDeleted: 0,
-    ideaMoved: 0,
+    ideaDeleted: 0,  // unused
+    ideaLineDeleted: 0,  // unused
+    ideaMoved: 0,  // unused
   }
 
   const docViewTime = [];
@@ -69,8 +72,35 @@ export const checkoutEvents = () => {
 
   console.log(events);
 
-  // TODO: save logging data to server
-
   // clear event bucket
   window.loggedEvents = [];
+
+  const client = axios.create({ withCredentials: true });
+
+  return await axios.all([
+    client.post(config.api.HOST + '/users', {
+      action: 'update_stat',
+      totalTime: 0,
+    }),
+    client.post(config.api.HOST + '/searchresults', {
+      action: 'update_queryStat',
+      queryId: 0,
+      avgTimeViewDocPerQuery: events.avgDocViewTime,
+      timeFromLastQuery: 0,
+      clickedDocNum: events.docsClicked,
+    }),
+    client.post(config.api.HOST + '/graphs', {
+      action: 'update_statOfGraph',
+      wordCount: -1,
+      totalTime: events.ideaMapperTimeTotal,
+      switchSerpMapperTime: events.switchSerpMapper,
+      ideaNum: 0,
+      generateIdeaNum: events.ideaAddedFromCustom,
+      connectLineNum: 0,
+      urlNodeNum: 0,
+      textNodeNum: 0,
+      imageNodeNum: 0,
+      editNum: events.ideaEdited,
+    })
+  ]);
 }

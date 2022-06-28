@@ -30,16 +30,27 @@ function AccountBadge(props) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    axios.post(config.api.HOST + '/users', {
-      action: 'sign_out'
-    }, { withCredentials: true })
-      .then(response => response.data.ret)
-      .then(ret => {
-        if (ret === 0) {
-          checkoutEvents();
-          globalCtx.updateLoggedIn(false);
-          navigate('/');
-        }
+    const logoutReq = () => 
+      axios.post(config.api.HOST + '/users', {
+        action: 'sign_out'
+      }, { withCredentials: true })
+        .then(response => response.data.ret)
+        .then(ret => {
+          if (ret === 0) {
+            globalCtx.updateLoggedIn(false);
+            navigate('/');
+          }
+        });
+
+    checkoutEvents()
+      .then(values => values.map(v => v.status))
+      .then(statuses => {
+        console.log(statuses.toString());
+        logoutReq();
+      })
+      .catch(error => {
+        console.log(error);
+        logoutReq();
       });
   };
 
