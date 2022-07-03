@@ -88,7 +88,6 @@ function IdeaMapCanvas(props) {
     }
 
     return (() => {
-      console.log('111');
       saveGraph();
     })
   }, [fetched, resultCtx, saveGraph]);

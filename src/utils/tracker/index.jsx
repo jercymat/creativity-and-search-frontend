@@ -82,13 +82,13 @@ export const checkoutEvents = async () => {
       action: 'update_stat',
       totalTime: 0,
     }),
-    client.post(config.api.HOST + '/searchresults', {
-      action: 'update_queryStat',
-      queryId: 0,
-      avgTimeViewDocPerQuery: events.avgDocViewTime,
-      timeFromLastQuery: 0,
-      clickedDocNum: events.docsClicked,
-    }),
+    // client.post(config.api.HOST + '/searchresults', {
+    //   action: 'update_queryStat',
+    //   queryId: 0,
+    //   avgTimeViewDocPerQuery: events.avgDocViewTime,
+    //   timeFromLastQuery: 0,
+    //   clickedDocNum: events.docsClicked,
+    // }),
     client.post(config.api.HOST + '/graphs', {
       action: 'update_statOfGraph',
       wordCount: -1,

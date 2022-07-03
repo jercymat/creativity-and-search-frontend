@@ -45,7 +45,7 @@ function AccountBadge(props) {
     checkoutEvents()
       .then(values => values.map(v => v.status))
       .then(statuses => {
-        console.log(statuses.toString());
+        console.log('logging data requests', statuses.toString());
         logoutReq();
       })
       .catch(error => {
