@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { SearchResultContext } from "../../context";
+import { GlobalContext, SearchResultContext } from "../../context";
 import { RingSpinner } from 'react-spinners-kit';
 import styles from './SERPField.module.scss';
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -13,6 +13,7 @@ function SERPField(props) {
   const { className, queryParam, curPage } = props;
 
   const resultCtx = useContext(SearchResultContext);
+  const globalCtx = useContext(GlobalContext);
   const [isFetching, setFetching] = useState(false);
 
   // whether current search result has been buffered in context
@@ -41,12 +42,15 @@ function SERPField(props) {
       desc: v.snippet
     }));
 
-    return {
-      results: newResults,
-      q: queryParam,
-      page: curPage,
-      totalCount: response.data.searchlist.webPages.totalEstimatedMatches
-    };
+    return [
+      {
+        results: newResults,
+        q: queryParam,
+        page: curPage,
+        totalCount: response.data.searchlist.webPages.totalEstimatedMatches
+      },
+      response.data.statOfQueryId
+    ]
   }, [curPage, queryParam]);
   
   useEffect(() => {
@@ -55,12 +59,13 @@ function SERPField(props) {
 
     setFetching(true);
     loadResults()
-      .then(search => {
+      .then(([search, statOfQueryId]) => {
         // update search data to context
         resultCtx.updateBufferedSearch(search);
+        globalCtx.updateStatOfQueryId(statOfQueryId);
         setFetching(false);
       });
-  }, [isFetching, loadResults, resultCtx, serFetched]);
+  }, [isFetching, loadResults, resultCtx, globalCtx, serFetched]);
 
   return (
     <div className={className}>

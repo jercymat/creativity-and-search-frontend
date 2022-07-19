@@ -8,6 +8,8 @@ export const GlobalContext = createContext({
   userName: '',
   savedAreaWidth: 400,
   updateSavedAreaWidth: (newWidth) => {console.log(newWidth)},
+  statOfQueryId: [],
+  updateStatOfQueryId: (id) => console.log(id),
 });
 
 export function GlobalContextProvider(props) {
@@ -18,12 +20,15 @@ export function GlobalContextProvider(props) {
       ? ReactSession.get('username')
       : ''
   );
+  const [soqid, setSoqid] = useState([]);
   const context = {
     isLoggedin: l,
     updateLoggedIn: setLoggedIn,
     userName: n,
     savedAreaWidth: saw,
-    updateSavedAreaWidth: setSavedAreaWidth
+    updateSavedAreaWidth: setSavedAreaWidth,
+    statOfQueryId: soqid,
+    updateStatOfQueryId: setStatOfQueryId,
   };
 
   function setLoggedIn(loggedIn, name) {
@@ -39,6 +44,10 @@ export function GlobalContextProvider(props) {
 
   function setSavedAreaWidth(newWidth) {
     setSaw(newWidth);
+  }
+
+  function setStatOfQueryId(id) {
+    setSoqid(state => state.concat(id));
   }
 
   return (<GlobalContext.Provider value={context}>

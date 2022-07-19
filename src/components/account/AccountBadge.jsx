@@ -42,7 +42,7 @@ function AccountBadge(props) {
           }
         });
 
-    checkoutEvents()
+    checkoutEvents(globalCtx.statOfQueryId)
       .then(values => values.map(v => v.status))
       .then(statuses => {
         console.log('logging data requests', statuses.toString());
