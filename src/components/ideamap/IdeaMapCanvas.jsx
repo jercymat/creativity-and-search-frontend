@@ -209,9 +209,10 @@ function IdeaMapCanvas(props) {
         onNodesDelete={() => trackEvent({ event: 'ideaDeleted', timestamp: Date.now() })}
         onEdgesDelete={() => trackEvent({ event: 'ideaLineDeleted', timestamp: Date.now() })}
         onNodeDragStop={() => trackEvent({ event: 'ideaMoved', timestamp: Date.now() })}
-        minZoom='1'
-        maxZoom='1'
-        fitView>
+        minZoom={0.5}
+        maxZoom={2}
+        fitView
+        fitViewOptions={{ maxZoom: 1 }}>
         <Background />
       </ReactFlow>
       <IdeaModal

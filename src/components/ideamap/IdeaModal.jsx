@@ -36,7 +36,7 @@ function IdeaModal(props) {
         if (type === 'text') {
           onAddIdea(type, { label: event.target.text.value, color: color });
         } else if (type === 'link') {
-          onAddIdea(type, { link: event.target.link_url.value, color: color });
+          onAddIdea(type, { title: '', link: event.target.link_url.value, color: color });
         } else if (type === 'image') {
           onAddIdea(type, { img_url: event.target.image_url.value, color: color });
         }

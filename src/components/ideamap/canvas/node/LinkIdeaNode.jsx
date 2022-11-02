@@ -11,7 +11,7 @@ function LinkIdeaNode({ data }) {
       <Handle type="source" position={Position.Right} />
       <div className="im-link-idea__link-wrap noselect">
         <div className="im-link-idea__url">
-          <span className="font-im-ideas">{data.link}</span>
+          <span className="font-im-ideas">{data.title !== '' ? data.title : data.link}</span>
         </div>
         <div className="im-link-idea__icon">
           <span className="font-im-ideas">

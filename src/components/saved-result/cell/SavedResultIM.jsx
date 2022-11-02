@@ -17,10 +17,16 @@ function SavedResultIM(props) {
           label: idea,
           color: 'w'
         }
-        : {
-          link: idea,
-          color: 'w'
-        },
+        : type === 'link'
+          ? {
+            title: idea[0],
+            link: idea[1],
+            color: 'w'
+          }
+          : {
+            link: idea,
+            color: 'w'
+          },
       position: {
         x: -200,
         y: -100
@@ -46,7 +52,7 @@ function SavedResultIM(props) {
           </h2>
           <h4
             className={styles.url}
-            onClick={handleAddIdea(props.save.url, 'link')}>
+            onClick={handleAddIdea([props.save.title, props.save.url], 'link')}>
               {props.save.url}
           </h4>
         </div>
