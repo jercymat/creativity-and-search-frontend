@@ -30,11 +30,13 @@ function SavedResultSERP(props) {
       className={`${styles.wrap} noselect`}
       key={props.save.id} >
       <div className={styles.head}>
-        <h2 className={styles.title}>{props.save.title}</h2>
+        <a href={props.save.url} target='_blank' rel="noreferrer">
+          <h2 className={styles.title}>{props.save.title}</h2>
+        </a>
         <h4 className={styles.url}>{props.save.url}</h4>
       </div>
       <p className={styles.desc}>{props.save.desc}</p>
-      <div className={styles.actions}>
+      <div className={styles.actions} style={{ 'visibility': isDragging ? 'visible' : null }}>
         <CircleIconButton
           onClick={handleDelete}
           variant='danger'
