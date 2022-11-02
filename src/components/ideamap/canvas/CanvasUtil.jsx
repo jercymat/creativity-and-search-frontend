@@ -53,6 +53,33 @@ export function getNodeIntersection(intersectionNode, targetNode) {
 }
 
 /*
+  returns the position (x, y) of a newly spawned node
+*/
+export function getNodeSpawnPosition(nodes) {
+  if (nodes.length === 0) {
+    return {
+      x: -100,
+      y: -30
+    }
+  } else if (nodes.length === 1) {
+    return {
+      x: nodes[0].position.x,
+      y: nodes[0].position.y + nodes[0].height + 40
+    }
+  }
+
+  const positions = nodes.map(node => node.position);
+  const x1 = Math.min(...positions.map(pos => pos.x));
+  const y1 = Math.min(...positions.map(pos => pos.y));
+  const x2 = Math.max(...positions.map(pos => pos.x));
+  const y2 = Math.max(...positions.map(pos => pos.y));
+  return {
+    x: Math.random() * (x2 - x1) + x1,
+    y: Math.random() * (y2 - y1) + y1
+  }
+}
+
+/*
   returns the position (top,right,bottom or right) passed node compared to the
   intersection point
 */

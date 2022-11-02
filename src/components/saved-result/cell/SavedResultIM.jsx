@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import { useTracking } from 'react-tracking';
 import { SearchResultContext } from '../../../context';
+import { getNodeSpawnPosition } from '../../ideamap/canvas/CanvasUtil';
 import styles from './SavedResult.module.scss';
 
 function SavedResultIM(props) {
@@ -12,6 +13,7 @@ function SavedResultIM(props) {
     const newNode = {
       id: `${Date.now()}`,
       type: type,
+      selected: true,
       data: type === 'text'
         ? {
           label: idea,
@@ -27,15 +29,12 @@ function SavedResultIM(props) {
             link: idea,
             color: 'w'
           },
-      position: {
-        x: -200,
-        y: -100
-      },
+      position: getNodeSpawnPosition(resultCtx.graph.nodes),
     };
     trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
 
     resultCtx.updateGraph({
-      nodes: resultCtx.graph.nodes.concat(newNode),
+      nodes: resultCtx.graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
       edges: resultCtx.graph.edges
     });
   };
