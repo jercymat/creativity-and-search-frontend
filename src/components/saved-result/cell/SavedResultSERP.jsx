@@ -43,7 +43,7 @@ function SavedResultSERP(props) {
           fsIcon={['fas', 'trash-can']} />
         <div
           style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-          className={styles.handle}
+          className={`${styles.handle}${isDragging ? ` ${styles.dragging}` : ''}`}
           {...attributes} {...listeners}>
           <FontAwesomeIcon icon={['fas', 'bars']} />
         </div>

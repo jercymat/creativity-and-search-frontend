@@ -57,7 +57,7 @@
         background-color .15s ease-in-out,
         box-shadow .15s ease-in-out;
 
-      &:hover {
+      &:hover, &.dragging {
         @extend .button-shadow;
         background-color: $im-shadow;
       }
