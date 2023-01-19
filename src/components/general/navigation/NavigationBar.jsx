@@ -5,14 +5,12 @@ import { Container, Navbar } from 'react-bootstrap';
 import AccountBadge from '../../account/AccountBadge';
 import { useLocation } from 'react-router-dom';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useContext } from 'react';
-import { GlobalContext } from '../../../context';
 import { LogoNavbar } from '../logo';
+import { connect } from 'react-redux';
 
 function NavigationBar(props) {
-  const globalCtx = useContext(GlobalContext);
   const location = useLocation();
-  const { id } = props;
+  const { id, userName, isLoggedin } = props;
 
   return (
     <Navbar id={ id } style={{padding: '1.5rem 0 1.5rem 0', zIndex: '5'}}>
@@ -26,9 +24,9 @@ function NavigationBar(props) {
               variant='light'
               btnText='Test' />
           </LinkContainer>
-          { globalCtx.isLoggedin
+          { isLoggedin
             ? <AccountBadge
-              userName={globalCtx.userName}
+              userName={userName}
               userImage={`${process.env.PUBLIC_URL}/image/person_placeholder.png`} />
             : <LinkContainer to='/login'>
               <StandardButton
@@ -42,7 +40,16 @@ function NavigationBar(props) {
 }
 
 NavigationBar.propTypes = {
-  id: PropTypes.string
+  id: PropTypes.string,
+  userName: PropTypes.string.isRequired,
+  isLoggedin: PropTypes.bool.isRequired,
 }
 
-export default NavigationBar;
+const mapStateToProps = (state) => ({
+  userName: state.global.userName,
+  isLoggedin: state.global.isLoggedin,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavigationBar);

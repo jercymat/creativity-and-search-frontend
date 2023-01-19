@@ -1,12 +1,13 @@
-import { useContext } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NavigationBar } from '../components/general/navigation';
 import { IdeaMapPage, LandingPage, SERPPage } from "../pages";
-import { GlobalContext, SearchResultContextProvider } from "../context";
+import { SearchResultContextProvider } from "../context";
+import { connect } from 'react-redux';
 import { useTracking } from "react-tracking";
+import PropTypes from 'prop-types';
 
 function DefaultLayout(props) {
-  const globalCtx = useContext(GlobalContext);
+  const { isLoggedin } = props;
   const { Track } = useTracking(
     { layout: 'main' },
     {
@@ -29,8 +30,8 @@ function DefaultLayout(props) {
         <SearchResultContextProvider>
           <Routes>
             <Route path='/' element={<LandingPage />} />
-            <Route path='/search' element={ globalCtx.isLoggedin ? <SERPPage /> : <Navigate replace to='/login' />} />
-            <Route path='/map' element={globalCtx.isLoggedin ? <IdeaMapPage /> : <Navigate replace to='/login' />} />
+            <Route path='/search' element={ isLoggedin ? <SERPPage /> : <Navigate replace to='/login' />} />
+            <Route path='/map' element={ isLoggedin ? <IdeaMapPage /> : <Navigate replace to='/login' />} />
           </Routes>
         </SearchResultContextProvider>
       </div>
@@ -38,4 +39,14 @@ function DefaultLayout(props) {
   )
 }
 
-export default DefaultLayout;
+DefaultLayout.propTypes = {
+  isLoggedin: PropTypes.bool.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  isLoggedin: state.global.isLoggedin
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DefaultLayout);

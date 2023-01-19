@@ -1,21 +1,19 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import config from '../../config';
 import styles from './LoginDialog.module.scss';
-import { GlobalContext } from '../../context';
 import { StandardButton } from '../general/button';
-import axios from 'axios';
+import { connect } from 'react-redux';
+import { login } from '../../actions/global';
+import PropTypes from 'prop-types';
 
-function LoginDialog() {
+function LoginDialog(props) {
+  const { loading, login } = props;
   const [validated, setValidated] = useState(false);
-  const navigate = useNavigate();
-  const globalCtx = useContext(GlobalContext);
 
-  const handleLoginError = () => {
-    alert('Login Error');
-    setValidated(false);
-  }
+  // const handleLoginError = () => {
+  //   alert('Login Error');
+  //   setValidated(false);
+  // }
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -28,21 +26,28 @@ function LoginDialog() {
 
     if (form.checkValidity() === false) return;
 
-    try {
-      const response = await axios.post(config.api.HOST + '/users', {
-        action: 'sign_in',
-        name: form.id.value,
-        password: form.pwd.value
-      }, { withCredentials: true });
+    login({
+      name: form.id.value,
+      password: form.pwd.value
+    });
 
-      if (response.data.ret === 0) {
-        globalCtx.updateLoggedIn(true, form.id.value);
-        navigate('/');
-      }
+    // to be deleted
+    // try {
+    //   const response = await axios.post(config.api.HOST + '/users', {
+    //     action: 'sign_in',
+    //     name: form.id.value,
+    //     password: form.pwd.value
+    //   }, { withCredentials: true });
 
-    } catch (e) {
-      handleLoginError();
-    }
+    //   if (response.data.ret === 0) {
+    //     globalCtx.updateLoggedIn(true, form.id.value);
+    //     navigate('/');
+    //   }
+
+    // } catch (e) {
+    //   handleLoginError();
+    // }
+    
   };
 
   return (
@@ -60,10 +65,25 @@ function LoginDialog() {
           variant='primary'
           type='submit'
           className='w-100 mt-4'
-          btnText='Login'/>
+          btnText='Login'
+          loading={loading}
+          disabled={loading}/>
       </Form>
     </div>
   )
 }
 
-export default LoginDialog;
+LoginDialog.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  loading: state.global.loading,
+});
+
+const mapDispatchToProps = {
+  login,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginDialog)

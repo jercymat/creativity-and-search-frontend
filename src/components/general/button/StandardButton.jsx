@@ -1,9 +1,9 @@
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 
 
 function StandardButton(props) {
-  const { className, variant, btnText, onClick, disabled, padding, type, form } = props;
+  const { className, variant, btnText, loading, onClick, disabled, padding, type, form } = props;
 
   return (
     <Button
@@ -13,7 +13,19 @@ function StandardButton(props) {
       disabled={disabled}
       type={type}
       form={form}
-    >{btnText}</Button>
+    >
+      {
+        loading
+          ? <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+          />
+          : btnText
+      }
+    </Button>
   )
 }
 
@@ -21,6 +33,7 @@ StandardButton.propTypes = {
   className: PropTypes.string,
   variant: PropTypes.string.isRequired,
   btnText: PropTypes.string.isRequired,
+  loading: PropTypes.bool,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   padding: PropTypes.number,

@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import styles from './AccountBadge.module.scss'
-import { useNavigate } from 'react-router-dom';
-import { GlobalContext } from '../../context';
-import axios from 'axios';
-import config from '../../config';
 import { checkoutEvents } from '../../utils/tracker';
+import { connect } from 'react-redux';
+import { logout } from '../../actions/global';
 
 const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, ref) => (
   <div
@@ -26,31 +24,32 @@ const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, r
 ));
 
 function AccountBadge(props) {
-  const globalCtx = useContext(GlobalContext);
-  const navigate = useNavigate();
+  const { logout, statOfQueryId } = props;
 
   const handleLogout = () => {
-    const logoutReq = () => 
-      axios.post(config.api.HOST + '/users', {
-        action: 'sign_out'
-      }, { withCredentials: true })
-        .then(response => response.data.ret)
-        .then(ret => {
-          if (ret === 0) {
-            globalCtx.updateLoggedIn(false);
-            navigate('/');
-          }
-        });
+    // const logoutReq = () => 
+    //   axios.post(config.api.HOST + '/users', {
+    //     action: 'sign_out'
+    //   }, { withCredentials: true })
+    //     .then(response => response.data.ret)
+    //     .then(ret => {
+    //       if (ret === 0) {
+    //         globalCtx.updateLoggedIn(false);
+    //         navigate('/');
+    //       }
+    //     });
 
-    checkoutEvents(globalCtx.statOfQueryId)
+    checkoutEvents(statOfQueryId)
       .then(values => values.map(v => v.status))
       .then(statuses => {
         console.log('logging data requests', statuses.toString());
-        logoutReq();
+        // logoutReq();
+        logout();
       })
       .catch(error => {
         console.log(error);
-        logoutReq();
+        // logoutReq();
+        logout();
       });
   };
 
@@ -72,4 +71,12 @@ AccountBadge.propTypes = {
   userImage: PropTypes.string.isRequired
 }
 
-export default AccountBadge;
+const mapStateToProps = (state) => ({
+  statOfQueryId: state.global.statOfQueryId,
+});
+
+const mapDispatchToProps = {
+  logout,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountBadge);

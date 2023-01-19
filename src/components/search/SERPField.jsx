@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { GlobalContext, SearchResultContext } from "../../context";
+import { SearchResultContext } from "../../context";
 import { RingSpinner } from 'react-spinners-kit';
 import styles from './SERPField.module.scss';
 import { useCallback, useContext, useEffect, useState } from "react";
@@ -8,12 +8,13 @@ import axios from "axios";
 import config from "../../config";
 import SearchResultList from './SearchResultList';
 import { SearchResultPaginator } from './general';
+import { connect } from 'react-redux';
+import { addQueryID } from '../../actions/global';
 
 function SERPField(props) {
-  const { className, queryParam, curPage } = props;
+  const { className, queryParam, curPage, addQueryID } = props;
 
   const resultCtx = useContext(SearchResultContext);
-  const globalCtx = useContext(GlobalContext);
   const [isFetching, setFetching] = useState(false);
 
   // whether current search result has been buffered in context
@@ -62,10 +63,10 @@ function SERPField(props) {
       .then(([search, statOfQueryId]) => {
         // update search data to context
         resultCtx.updateBufferedSearch(search);
-        globalCtx.updateStatOfQueryId(statOfQueryId);
+        addQueryID(statOfQueryId);
         setFetching(false);
       });
-  }, [isFetching, loadResults, resultCtx, globalCtx, serFetched]);
+  }, [isFetching, loadResults, resultCtx, addQueryID, serFetched]);
 
   return (
     <div className={className}>
@@ -92,7 +93,15 @@ function SERPField(props) {
 SERPField.propTypes = {
   queryParam: PropTypes.string.isRequired,
   curPage: PropTypes.number.isRequired,
-  className: PropTypes.string
+  className: PropTypes.string,
+  addQueryID: PropTypes.func.isRequired,
 }
 
-export default SERPField;
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = {
+  addQueryID,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SERPField);

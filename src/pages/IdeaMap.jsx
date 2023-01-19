@@ -1,15 +1,15 @@
+import PropTypes from 'prop-types';
 import config from '../config';
-import { useContext } from 'react';
 import styles from './IdeaMap.module.scss';
 import IdeaMapCanvas from '../components/ideamap/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
-import { GlobalContext } from '../context';
 import { LeftIconButton } from '../components/general/button';
 import { SavedResultListIM } from '../components/saved-result';
 import { useTracking } from 'react-tracking';
+import { connect } from 'react-redux';
 
 function IdeaMapPage(props) {
-  const globalCtx = useContext(GlobalContext);
+  const { savedAreaWidth } = props;
   const navigate = useNavigate();
   const { Track, trackEvent } = useTracking({ page: 'ideaMapper' });
 
@@ -26,7 +26,7 @@ function IdeaMapPage(props) {
       <div id="im-map-wrap" className={styles.wrap}>
         <div
           className={styles.saved}
-          style={{width: `calc(${globalCtx.savedAreaWidth}px)`}}>
+          style={{width: `calc(${savedAreaWidth}px)`}}>
           <div className="mb-3">
             <LeftIconButton
               variant='primary'
@@ -38,7 +38,7 @@ function IdeaMapPage(props) {
         </div>
         <div
           className={styles.canvas}
-          style={{ width: `calc(100vw - 1.5rem - ${globalCtx.savedAreaWidth}px)` }}>
+          style={{ width: `calc(100vw - 1.5rem - ${savedAreaWidth}px)` }}>
             <IdeaMapCanvas />
         </div>
       </div>
@@ -46,4 +46,14 @@ function IdeaMapPage(props) {
   )
 }
 
-export default IdeaMapPage;
+IdeaMapPage.propTypes = {
+  savedAreaWidth: PropTypes.number.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  savedAreaWidth: state.global.savedAreaWidth,
+});
+
+const mapDispatchToProps = {};
+
+export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapPage);

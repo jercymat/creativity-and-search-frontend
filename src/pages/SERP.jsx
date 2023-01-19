@@ -1,18 +1,22 @@
+import PropTypes from 'prop-types';
 import config from '../config';
 import { RightIconButton } from '../components/general/button';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useContext, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { GlobalContext, SearchResultContext } from '../context';
+import { SearchResultContext } from '../context';
 import { SERPField } from '../components/search';
 import styles from './SERP.module.scss';
 import { SavedResultListSERP } from '../components/saved-result';
 import { useTracking } from 'react-tracking';
+import { connect } from 'react-redux';
+import { syncSMWidth } from '../actions/global';
 
-function SERPPage() {
+function SERPPage(props) {
+  const { syncSMWidth } = props;
+
   // hooks
   const savedArea = useRef(null);
-  const globalCtx = useContext(GlobalContext);
   const resultCtx = useContext(SearchResultContext);
   const [searchParams] = useSearchParams();
   const { Track, trackEvent } = useTracking({ page: 'SERP' });
@@ -25,8 +29,8 @@ function SERPPage() {
     `${searchParams.get('q').replace('+', ' ')} - ${config.PRODUCT_NAME}`;
 
   useEffect(() => {
-    globalCtx.updateSavedAreaWidth(savedArea.current.offsetWidth);
-  }, [globalCtx]);
+    syncSMWidth(savedArea.current.offsetWidth);
+  }, [syncSMWidth]);
 
   return (
     <Track>
@@ -56,4 +60,15 @@ function SERPPage() {
   )
 }
 
-export default SERPPage;
+SERPPage.propTypes = {
+  syncSMWidth: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+});
+
+const mapDispatchToProps = {
+  syncSMWidth,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SERPPage);

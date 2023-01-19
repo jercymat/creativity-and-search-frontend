@@ -1,13 +1,25 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import LoginDialog from '../components/account/LoginDialog';
 import { LogoNormal } from '../components/general/logo';
+import PropTypes from 'prop-types';
 import variables from './Login.module.scss';
 import styles from './Login.module.scss';
+import { AlertToast } from '../components/general/popup';
+import { closeToast } from '../actions/global';
 
-function AccountLayout() {
+function AccountLayout(props) {
+  const { isLoggedin, errorToastShow, error, closeToast } = props;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedin) navigate('/');
+  }, [isLoggedin]);
+  
 
   return (
-    <Fragment>
+    <>
       <div
         className="d-flex flex-column align-items-center"
         style={{
@@ -33,8 +45,31 @@ function AccountLayout() {
             fill={variables['color-secondary']} />
       </svg>
       <div className={styles.curveAfter} />
-    </Fragment>
+      <AlertToast
+        show={errorToastShow}
+        variant='danger'
+        timeout={2000}
+        content={error}
+        onClose={closeToast} />
+    </>
   )
 }
 
-export default AccountLayout;
+AccountLayout.propTypes = {
+  isLoggedin: PropTypes.bool.isRequired,
+  errorToastShow: PropTypes.bool.isRequired,
+  error: PropTypes.string.isRequired,
+  closeToast: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  isLoggedin: state.global.isLoggedin,
+  errorToastShow: state.global.errorToastShow,
+  error: state.global.error,
+});
+
+const mapDispatchToProps = {
+  closeToast,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AccountLayout);
