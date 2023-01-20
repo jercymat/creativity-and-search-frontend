@@ -10,11 +10,6 @@ function LoginDialog(props) {
   const { loading, login } = props;
   const [validated, setValidated] = useState(false);
 
-  // const handleLoginError = () => {
-  //   alert('Login Error');
-  //   setValidated(false);
-  // }
-
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
 
@@ -30,24 +25,6 @@ function LoginDialog(props) {
       name: form.id.value,
       password: form.pwd.value
     });
-
-    // to be deleted
-    // try {
-    //   const response = await axios.post(config.api.HOST + '/users', {
-    //     action: 'sign_in',
-    //     name: form.id.value,
-    //     password: form.pwd.value
-    //   }, { withCredentials: true });
-
-    //   if (response.data.ret === 0) {
-    //     globalCtx.updateLoggedIn(true, form.id.value);
-    //     navigate('/');
-    //   }
-
-    // } catch (e) {
-    //   handleLoginError();
-    // }
-    
   };
 
   return (

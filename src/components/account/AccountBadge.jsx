@@ -27,18 +27,6 @@ function AccountBadge(props) {
   const { logout, statOfQueryId } = props;
 
   const handleLogout = () => {
-    // const logoutReq = () => 
-    //   axios.post(config.api.HOST + '/users', {
-    //     action: 'sign_out'
-    //   }, { withCredentials: true })
-    //     .then(response => response.data.ret)
-    //     .then(ret => {
-    //       if (ret === 0) {
-    //         globalCtx.updateLoggedIn(false);
-    //         navigate('/');
-    //       }
-    //     });
-
     checkoutEvents(statOfQueryId)
       .then(values => values.map(v => v.status))
       .then(statuses => {
