@@ -1,12 +1,15 @@
+import PropTypes from 'prop-types';
 import axios from 'axios';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import config from '../../config';
-import { SearchResultContext } from '../../context';
 import { SavedResultIM } from './cell';
 import styles from './SavedResultList.module.scss';
+import { connect } from 'react-redux';
+import { updateSavedResults } from '../../actions/search';
 
-function SavedResultListIM() {
-  const resultCtx = useContext(SearchResultContext);
+function SavedResultListIM(props) {
+  const { savedResults, updateSavedResults } = props;
+  // const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
   
   // load result list
@@ -25,20 +28,33 @@ function SavedResultListIM() {
 
   useEffect(() => {
     if (fetched) return;
-    if (resultCtx.savedResults.length !== 0) return;
+    if (savedResults.length !== 0) return;
 
     setFetched(true);
     loadList()
-      .then(list => resultCtx.updateSavedResults(list));
-  }, [fetched, resultCtx]);
+      .then(list => updateSavedResults(list));
+  }, [fetched, savedResults, updateSavedResults]);
 
   return (
     <div id='im-saved-results' className={styles.wrap}>
-      {resultCtx.savedResults.map(save => (
+      {savedResults.map(save => (
         <SavedResultIM key={ save.id } save={save} />
       ))}
     </div>
   )
 }
 
-export default SavedResultListIM;
+SavedResultListIM.propTypes = {
+  savedResults: PropTypes.array.isRequired,
+  updateSavedResults: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  savedResults: state.search.savedResults,
+});
+
+const mapDispatchToProps = {
+  updateSavedResults,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SavedResultListIM);

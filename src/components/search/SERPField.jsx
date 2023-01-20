@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
-import { SearchResultContext } from "../../context";
 import { RingSpinner } from 'react-spinners-kit';
 import styles from './SERPField.module.scss';
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SearchField from "./SearchField";
 import axios from "axios";
 import config from "../../config";
@@ -10,21 +9,23 @@ import SearchResultList from './SearchResultList';
 import { SearchResultPaginator } from './general';
 import { connect } from 'react-redux';
 import { addQueryID } from '../../actions/global';
+import { updateBufferedSearch } from '../../actions/search';
 
 function SERPField(props) {
-  const { className, queryParam, curPage, addQueryID } = props;
-
-  const resultCtx = useContext(SearchResultContext);
+  const {
+    className, queryParam, curPage, bufferedSearch,
+    addQueryID, updateBufferedSearch,
+  } = props;
   const [isFetching, setFetching] = useState(false);
 
   // whether current search result has been buffered in context
   const serFetched =
-    queryParam === resultCtx.bufferedSearch.q &&
-    curPage === resultCtx.bufferedSearch.page &&
-    resultCtx.bufferedSearch.results.length !== 0;
+    queryParam === bufferedSearch.q &&
+    curPage === bufferedSearch.page &&
+    bufferedSearch.results.length !== 0;
   
-  const totalPage = resultCtx.bufferedSearch.totalCount !== 0
-    ? Math.ceil(resultCtx.bufferedSearch.totalCount / 20)
+  const totalPage = bufferedSearch.totalCount !== 0
+    ? Math.ceil(bufferedSearch.totalCount / 20)
     : 1;
   
   // load search results
@@ -61,12 +62,11 @@ function SERPField(props) {
     setFetching(true);
     loadResults()
       .then(([search, statOfQueryId]) => {
-        // update search data to context
-        resultCtx.updateBufferedSearch(search);
+        updateBufferedSearch(search);
         addQueryID(statOfQueryId);
         setFetching(false);
       });
-  }, [isFetching, loadResults, resultCtx, addQueryID, serFetched]);
+  }, [isFetching, loadResults, addQueryID, updateBufferedSearch, serFetched]);
 
   return (
     <div className={className}>
@@ -80,7 +80,7 @@ function SERPField(props) {
           <RingSpinner size={60} color='#1B6B8C' />
         </div>}
       {!isFetching &&
-        <SearchResultList results={resultCtx.bufferedSearch.results} />}
+        <SearchResultList results={bufferedSearch.results} />}
       <SearchResultPaginator
         baseUrl={`/search?q=${queryParam}`}
         current={curPage}
@@ -94,14 +94,18 @@ SERPField.propTypes = {
   queryParam: PropTypes.string.isRequired,
   curPage: PropTypes.number.isRequired,
   className: PropTypes.string,
+  bufferedSearch: PropTypes.object.isRequired,
   addQueryID: PropTypes.func.isRequired,
+  updateBufferedSearch: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
+  bufferedSearch: state.search.bufferedSearch,
 });
 
 const mapDispatchToProps = {
   addQueryID,
+  updateBufferedSearch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SERPField);

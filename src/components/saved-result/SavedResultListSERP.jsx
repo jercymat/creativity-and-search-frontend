@@ -1,24 +1,27 @@
+import PropTypes from 'prop-types';
 import { DndContext } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import axios from 'axios';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
 import config from '../../config';
-import { SearchResultContext } from '../../context';
 import { getCurrentTime } from '../../utils';
 import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 import { SMTheme } from './themed';
+import { updateSavedResults } from '../../actions/search';
 
-function SavedResultListSERP() {
-  const resultCtx = useContext(SearchResultContext);
+function SavedResultListSERP(props) {
+  const { savedResults, updateSavedResults } = props;
+  // const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
   const [isRemoving, setRemoving] = useState(false);
 
   // load and save result list
   const saveList = useDebouncedCallback(() => {
-    const newOrder = resultCtx.savedResults
+    const newOrder = savedResults
       .map((ret, i) => [parseInt(ret.id), i+1]);
     
     axios.post(config.api.HOST + '/searchresults', {
@@ -50,11 +53,11 @@ function SavedResultListSERP() {
     const { active, over } = event;
     
     if (active.id !== over.id) {
-      const oldIndex = resultCtx.savedResults.findIndex(item => item.id === active.id);
-      const newIndex = resultCtx.savedResults.findIndex(item => item.id === over.id);
-      const newSaves = arrayMove(resultCtx.savedResults, oldIndex, newIndex);
+      const oldIndex = savedResults.findIndex(item => item.id === active.id);
+      const newIndex = savedResults.findIndex(item => item.id === over.id);
+      const newSaves = arrayMove(savedResults, oldIndex, newIndex);
 
-      resultCtx.updateSavedResults(newSaves);
+      updateSavedResults(newSaves);
       saveList();
     }
   }
@@ -70,25 +73,25 @@ function SavedResultListSERP() {
         .then(response => response.data)
         .then(data => {
           if (data.ret === 0) {
-            const newSaves = resultCtx.savedResults.filter(save => save.id !== id);
-            resultCtx.updateSavedResults(newSaves);
+            const newSaves = savedResults.filter(save => save.id !== id);
+            updateSavedResults(newSaves);
             setRemoving(false);
           }
         })
     }
-  }, [isRemoving, resultCtx]);
+  }, [isRemoving, savedResults, updateSavedResults]);
 
   useEffect(() => {
     if (fetched) return;
     
     setFetched(true);
     loadList()
-      .then(list => resultCtx.updateSavedResults(list));
-  }, [fetched, resultCtx]);
+      .then(list => updateSavedResults(list));
+  }, [fetched, updateSavedResults]);
 
   return (
     <div id="im-saved-results" className={styles.wrap}>
-      {resultCtx.savedResults.length === 0 && <SavedResultPlaceHolder />}
+      {savedResults.length === 0 && <SavedResultPlaceHolder />}
       <SMTheme
         theme={{
           id: '0000',
@@ -113,9 +116,9 @@ function SavedResultListSERP() {
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}>
         <SortableContext
-          items={resultCtx.savedResults}
+          items={savedResults}
           strategy={verticalListSortingStrategy}>
-            {resultCtx.savedResults.map(save => 
+            {savedResults.map(save => 
               <SavedResultSERP
                 key={save.id}
                 id={save.id}
@@ -127,4 +130,17 @@ function SavedResultListSERP() {
   )
 }
 
-export default SavedResultListSERP;
+SavedResultListSERP.propTypes = {
+  savedResults: PropTypes.array.isRequired,
+  updateSavedResults: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = (state) => ({
+  savedResults: state.search.savedResults,
+});
+
+const mapDispatchToProps = {
+  updateSavedResults,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SavedResultListSERP);
