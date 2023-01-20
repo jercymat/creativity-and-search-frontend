@@ -9,7 +9,6 @@ import { updateSavedResults } from '../../actions/search';
 
 function SavedResultListIM(props) {
   const { savedResults, updateSavedResults } = props;
-  // const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
   
   // load result list

@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
+import { connect } from 'react-redux';
 import { useTracking } from 'react-tracking';
-import { SearchResultContext } from '../../../context';
+import { updateGraph } from '../../../actions/idea';
 import { getNodeSpawnPosition } from '../../ideamap/canvas/CanvasUtil';
 import styles from './SavedResult.module.scss';
 
 function SavedResultIM(props) {
-  const resultCtx = useContext(SearchResultContext);
+  const { graph, save, updateGraph } = props;
   const { trackEvent } = useTracking();
 
   const handleAddIdea = (idea, type) => () => {
@@ -29,36 +29,36 @@ function SavedResultIM(props) {
             link: idea,
             color: 'w'
           },
-      position: getNodeSpawnPosition(resultCtx.graph.nodes),
+      position: getNodeSpawnPosition(graph.nodes),
     };
     trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
 
-    resultCtx.updateGraph({
-      nodes: resultCtx.graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
-      edges: resultCtx.graph.edges
+    updateGraph({
+      nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
+      edges: graph.edges
     });
   };
 
   return (
     <div
       className={`${styles.wrap} ${styles.im}`}
-      key={props.save.id}>
+      key={save.id}>
         <div className={styles.head}>
           <h2
             className={styles.title}
-            onClick={handleAddIdea(props.save.title, 'text')}>
-              {props.save.title}
+            onClick={handleAddIdea(save.title, 'text')}>
+              {save.title}
           </h2>
           <h4
             className={styles.url}
-            onClick={handleAddIdea([props.save.title, props.save.url], 'link')}>
-              {props.save.url}
+            onClick={handleAddIdea([save.title, save.url], 'link')}>
+              {save.url}
           </h4>
         </div>
       <p
         className={styles.desc}
-        onClick={handleAddIdea(props.save.desc, 'text')}>
-          {props.save.desc}
+        onClick={handleAddIdea(save.desc, 'text')}>
+          {save.desc}
       </p>
     </div>
   )
@@ -71,7 +71,20 @@ SavedResultIM.propTypes = {
     url: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
-  }).isRequired
+  }).isRequired,
+  graph: PropTypes.shape({
+    nodes: PropTypes.array.isRequired,
+    edges: PropTypes.array.isRequired,
+  }).isRequired,
+  updateGraph: PropTypes.func.isRequired,
 };
 
-export default SavedResultIM;
+const mapStateToProps = (state) => ({
+  graph: state.idea.graph,
+});
+
+const mapDispatchToProps = {
+  updateGraph,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SavedResultIM);

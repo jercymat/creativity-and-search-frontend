@@ -15,7 +15,6 @@ import { updateSavedResults } from '../../actions/search';
 
 function SavedResultListSERP(props) {
   const { savedResults, updateSavedResults } = props;
-  // const resultCtx = useContext(SearchResultContext);
   const [fetched, setFetched] = useState(false);
   const [isRemoving, setRemoving] = useState(false);
 

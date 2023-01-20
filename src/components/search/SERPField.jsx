@@ -18,7 +18,7 @@ function SERPField(props) {
   } = props;
   const [isFetching, setFetching] = useState(false);
 
-  // whether current search result has been buffered in context
+  // whether current search result has been buffered at local
   const serFetched =
     queryParam === bufferedSearch.q &&
     curPage === bufferedSearch.page &&
