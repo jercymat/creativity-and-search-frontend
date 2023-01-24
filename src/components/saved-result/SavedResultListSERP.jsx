@@ -7,46 +7,27 @@ import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
 import config from '../../config';
-import { getCurrentTime } from '../../utils';
 import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 import { SMTheme } from './themed';
-import { updateSavedResults } from '../../actions/search';
+import {
+  loadSavedResults,
+  reorderSavedResults,
+  updateSavedResults,
+} from '../../actions/search';
 
 function SavedResultListSERP(props) {
-  const { savedResults, updateSavedResults } = props;
+  const { savedResults, updateSavedResults, loadSavedResults, reorderSavedResults } = props;
   const [fetched, setFetched] = useState(false);
   const [isRemoving, setRemoving] = useState(false);
 
   // load and save result list
-  const saveList = useDebouncedCallback(() => {
+  const saveReorderedList = useDebouncedCallback(() => {
     const newOrder = savedResults
       .map((ret, i) => [parseInt(ret.id), i+1]);
-    
-    axios.post(config.api.HOST + '/searchresults', {
-      action: 'reorder_searchresult',
-      data: newOrder
-    }, { withCredentials: true })
-      .then(response => response.data.ret)
-      .then(ret => {
-        if (ret === 0) {
-          console.log(`Graph successfully saved to server - ${getCurrentTime()}`);
-        }
-      });
+
+    reorderSavedResults(newOrder);
   }, 1000);
-
-  const loadList = async () => {
-    const response = await axios.post(config.api.HOST + '/searchresults', {
-      action: 'list_searchresult'
-    }, { withCredentials: true });
-
-    return response.data.relist.map(saved => ({
-      id: saved.id.toString(),
-      title: saved.name,
-      url: saved.url,
-      desc: saved.snippet
-    }));
-  }
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -57,7 +38,7 @@ function SavedResultListSERP(props) {
       const newSaves = arrayMove(savedResults, oldIndex, newIndex);
 
       updateSavedResults(newSaves);
-      saveList();
+      saveReorderedList();
     }
   }
 
@@ -84,9 +65,8 @@ function SavedResultListSERP(props) {
     if (fetched) return;
     
     setFetched(true);
-    loadList()
-      .then(list => updateSavedResults(list));
-  }, [fetched, updateSavedResults]);
+    loadSavedResults();
+  }, [fetched, loadSavedResults]);
 
   return (
     <div id="im-saved-results" className={styles.wrap}>
@@ -132,6 +112,8 @@ function SavedResultListSERP(props) {
 SavedResultListSERP.propTypes = {
   savedResults: PropTypes.array.isRequired,
   updateSavedResults: PropTypes.func.isRequired,
+  loadSavedResults: PropTypes.func.isRequired,
+  reorderSavedResults: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -140,6 +122,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateSavedResults,
+  loadSavedResults,
+  reorderSavedResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedResultListSERP);

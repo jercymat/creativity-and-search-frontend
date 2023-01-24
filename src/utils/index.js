@@ -15,6 +15,6 @@ const range = (start, end, step = 1) => {
   return output;
 };
 
-const getCurrentTime = () => new Date().toLocaleTimeString();
+const getCurrentTime = () => new Date().toLocaleTimeString('en-US');
 
 export { range, getCurrentTime };
