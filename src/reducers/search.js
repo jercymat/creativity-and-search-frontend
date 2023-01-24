@@ -1,4 +1,7 @@
+import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import {
+  SM_DIALOG_ADD_IDEA_CLOSE,
+  SM_DIALOG_ADD_IDEA_OPEN,
   SM_SET_BUFFERED_SEARCH,
   SM_SR_LOAD,
   SM_SR_LOAD_FAIL,
@@ -11,7 +14,9 @@ import {
 
 const initialState = {
   loading: false,
+  submitting: false,
   bgLoading: false,
+  addIdeaDialogShow: false,
   bufferedSearch: {
     results: [],
     q: '',
@@ -47,6 +52,14 @@ const reducer = (state = initialState, { type, payload }) => {
 
   case SM_SR_REORDER_FAIL:
     return { ...state, bgLoading: false };
+
+  // dialog
+
+  case SM_DIALOG_ADD_IDEA_OPEN:
+    return { ...state, addIdeaDialogShow: true }
+
+  case SM_DIALOG_ADD_IDEA_CLOSE:
+    return { ...state, addIdeaDialogShow: false }
 
   default:
     return state;

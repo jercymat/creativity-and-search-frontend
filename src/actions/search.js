@@ -1,4 +1,6 @@
 import {
+  SM_DIALOG_ADD_IDEA_CLOSE,
+  SM_DIALOG_ADD_IDEA_OPEN,
   SM_SET_BUFFERED_SEARCH,
   SM_SR_LOAD,
   SM_SR_REORDER,
@@ -18,3 +20,7 @@ export const reorderSavedResults = newOrder => ({
   type: SM_SR_REORDER,
   payload: { newOrder }
 });
+
+// dialog
+export const openAddIdeaDialog = () => ({ type: SM_DIALOG_ADD_IDEA_OPEN });
+export const closeAddIdeaDialog = () => ({ type: SM_DIALOG_ADD_IDEA_CLOSE });

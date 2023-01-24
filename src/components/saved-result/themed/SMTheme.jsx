@@ -2,10 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './SMTheme.module.scss'
 import { SMResultGrouped } from './SMResultGrouped'
-import { Button } from 'react-bootstrap';
 
 export function SMTheme(props) {
-  const { theme } = props;
+  const { theme, onAddIdea } = props;
 
   return (
     <div className={styles.wrap}>
@@ -17,7 +16,7 @@ export function SMTheme(props) {
           ))
         }
       </div>
-      <button type='button' className={styles.note}>
+      <button type='button' className={styles.note} onClick={onAddIdea}>
         {
           theme.note !== ''
             ? <span>{theme.note}</span>
@@ -40,5 +39,6 @@ SMTheme.propTypes = {
       imgUrl: PropTypes.string
     }).isRequired).isRequired,
     note: PropTypes.string.isRequired,
-  }).isRequired
+  }).isRequired,
+  onAddIdea: PropTypes.func.isRequired,
 }

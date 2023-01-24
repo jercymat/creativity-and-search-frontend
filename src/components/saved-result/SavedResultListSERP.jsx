@@ -11,13 +11,20 @@ import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 import { SMTheme } from './themed';
 import {
+  closeAddIdeaDialog,
   loadSavedResults,
+  openAddIdeaDialog,
   reorderSavedResults,
   updateSavedResults,
 } from '../../actions/search';
+import { SMIdeaDialog } from './dialogs';
 
 function SavedResultListSERP(props) {
-  const { savedResults, updateSavedResults, loadSavedResults, reorderSavedResults } = props;
+  const {
+    submitting, addIdeaDialogShow, savedResults,
+    updateSavedResults, loadSavedResults, reorderSavedResults,
+    openAddIdeaDialog, closeAddIdeaDialog,
+  } = props;
   const [fetched, setFetched] = useState(false);
   const [isRemoving, setRemoving] = useState(false);
 
@@ -68,6 +75,11 @@ function SavedResultListSERP(props) {
     loadSavedResults();
   }, [fetched, loadSavedResults]);
 
+  const onAddThemeIdea = ({ themeId, idea }) => {
+    console.log(`Add Theme Idea: theme - ${themeId}, idea: ${idea}`);
+    closeAddIdeaDialog();
+  }
+
   return (
     <div id="im-saved-results" className={styles.wrap}>
       {savedResults.length === 0 && <SavedResultPlaceHolder />}
@@ -90,7 +102,8 @@ function SavedResultListSERP(props) {
             }
           ],
           note: '',
-        }} />
+        }}
+        onAddIdea={openAddIdeaDialog} />
       <DndContext
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}>
@@ -105,25 +118,38 @@ function SavedResultListSERP(props) {
                 save={save} />)}
           </SortableContext>
       </DndContext>
+      <SMIdeaDialog
+        show={addIdeaDialogShow}
+        submitting={submitting}
+        onSubmission={onAddThemeIdea}
+        onClose={closeAddIdeaDialog} />
     </div>
   )
 }
 
 SavedResultListSERP.propTypes = {
+  submitting: PropTypes.bool.isRequired,
+  addIdeaDialogShow: PropTypes.bool.isRequired,
   savedResults: PropTypes.array.isRequired,
   updateSavedResults: PropTypes.func.isRequired,
   loadSavedResults: PropTypes.func.isRequired,
   reorderSavedResults: PropTypes.func.isRequired,
+  openAddIdeaDialog: PropTypes.func.isRequired,
+  closeAddIdeaDialog: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
+  submitting: state.search.submitting,
   savedResults: state.search.savedResults,
+  addIdeaDialogShow: state.search.addIdeaDialogShow,
 });
 
 const mapDispatchToProps = {
   updateSavedResults,
   loadSavedResults,
   reorderSavedResults,
+  openAddIdeaDialog,
+  closeAddIdeaDialog,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedResultListSERP);
