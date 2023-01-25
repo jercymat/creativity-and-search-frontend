@@ -15,7 +15,7 @@ function AccountLayout(props) {
 
   useEffect(() => {
     if (isLoggedin) navigate('/');
-  }, [isLoggedin]);
+  }, [isLoggedin, navigate]);
   
 
   return (
