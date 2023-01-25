@@ -2,16 +2,15 @@ import PropTypes from 'prop-types';
 import { DndContext } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import axios from 'axios';
 import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useDebouncedCallback } from 'use-debounce';
-import config from '../../config';
 import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 import { SMTheme } from './themed';
 import {
   closeAddIdeaDialog,
+  deleteSavedResults,
   loadSavedResults,
   openAddIdeaDialog,
   reorderSavedResults,
@@ -21,12 +20,11 @@ import { SMIdeaDialog } from './dialogs';
 
 function SavedResultListSERP(props) {
   const {
-    submitting, addIdeaDialogShow, savedResults,
-    updateSavedResults, loadSavedResults, reorderSavedResults,
+    loading, submitting, addIdeaDialogShow, savedResults,
+    updateSavedResults, loadSavedResults, reorderSavedResults, deleteSavedResults,
     openAddIdeaDialog, closeAddIdeaDialog,
   } = props;
   const [fetched, setFetched] = useState(false);
-  const [isRemoving, setRemoving] = useState(false);
 
   // load and save result list
   const saveReorderedList = useDebouncedCallback(() => {
@@ -50,23 +48,10 @@ function SavedResultListSERP(props) {
   }
 
   const handleRemoveSaved = useCallback((id) => {
-    if (!isRemoving) {
-      setRemoving(true);
-
-      axios.post(config.api.HOST + '/searchresults', {
-        action: 'delete_searchresult',
-        searchResultId: id
-      }, { withCredentials: true })
-        .then(response => response.data)
-        .then(data => {
-          if (data.ret === 0) {
-            const newSaves = savedResults.filter(save => save.id !== id);
-            updateSavedResults(newSaves);
-            setRemoving(false);
-          }
-        })
+    if (!loading) {
+      deleteSavedResults(id);
     }
-  }, [isRemoving, savedResults, updateSavedResults]);
+  }, [loading, deleteSavedResults]);
 
   useEffect(() => {
     if (fetched) return;
@@ -128,17 +113,20 @@ function SavedResultListSERP(props) {
 }
 
 SavedResultListSERP.propTypes = {
+  loading: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   addIdeaDialogShow: PropTypes.bool.isRequired,
   savedResults: PropTypes.array.isRequired,
   updateSavedResults: PropTypes.func.isRequired,
   loadSavedResults: PropTypes.func.isRequired,
   reorderSavedResults: PropTypes.func.isRequired,
+  deleteSavedResults: PropTypes.func.isRequired,
   openAddIdeaDialog: PropTypes.func.isRequired,
   closeAddIdeaDialog: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
+  loading: state.search.loading,
   submitting: state.search.submitting,
   savedResults: state.search.savedResults,
   addIdeaDialogShow: state.search.addIdeaDialogShow,
@@ -148,6 +136,7 @@ const mapDispatchToProps = {
   updateSavedResults,
   loadSavedResults,
   reorderSavedResults,
+  deleteSavedResults,
   openAddIdeaDialog,
   closeAddIdeaDialog,
 };

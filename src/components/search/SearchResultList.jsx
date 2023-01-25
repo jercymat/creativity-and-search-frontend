@@ -1,46 +1,22 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { connect } from 'react-redux';
-import { updateSavedResults } from '../../actions/search';
-import config from '../../config';
+import { addSavedResults } from '../../actions/search';
 import { SearchResult } from './general';
 import styles from './SearchResultList.module.scss';
 
 function SearchResultList(props) {
-  const { savedResults, updateSavedResults } = props;
-  const [isAdding, setAdding] = useState(false);
+  const { loading, results, addSavedResults } = props;
 
   const handleAddResult = useCallback((result) => {
-    if (!isAdding) {
-      setAdding(true);
-
-      axios.post(config.api.HOST + '/searchresults', {
-        action: 'add_searchresult',
-        data: {
-          name: result.title,
-          url: result.url,
-          snippet: result.desc
-        }
-      }, { withCredentials: true })
-        .then(response => response.data)
-        .then(data => {
-          if (data.ret === 0) {
-            const newResults = [...savedResults];
-            newResults.push({
-              id: data.searchResult_id.toString(),
-              ...result
-            });
-            updateSavedResults(newResults);
-            setAdding(false);
-          }
-        });
+    if (!loading) {
+      addSavedResults(result);
     }
-  }, [isAdding, updateSavedResults, savedResults])
+  }, [addSavedResults, loading])
 
   return (
     <div id="im-search-results" className={styles.wrap}>
-      {props.results.map(result => (
+      {results.map(result => (
         <SearchResult
           key={result.id}
           result={result}
@@ -51,6 +27,7 @@ function SearchResultList(props) {
 }
 
 SearchResultList.propTypes = {
+  loading: PropTypes.bool.isRequired,
   results: PropTypes.arrayOf(PropTypes.exact({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
@@ -58,15 +35,15 @@ SearchResultList.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired),
-  savedResults: PropTypes.array.isRequired,
+  addSavedResults: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-  savedResults: state.search.savedResults,
+  loading: state.search.loading,
 });
 
 const mapDispatchToProps = {
-  updateSavedResults,
+  addSavedResults,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultList);
