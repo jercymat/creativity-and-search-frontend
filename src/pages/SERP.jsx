@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { SERPField } from '../components/search';
 import styles from './SERP.module.scss';
-import { SavedResultListSERP } from '../components/saved-result';
+import { SavedResultListSERP } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
 import { syncSMWidth } from '../actions/global';

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import config from '../config';
 import styles from './IdeaMap.module.scss';
-import IdeaMapCanvas from '../components/ideamap/IdeaMapCanvas';
+import IdeaMapCanvas from '../components/idea-mapper/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
 import { LeftIconButton } from '../components/general/button';
-import { SavedResultListIM } from '../components/saved-result';
+import { SavedResultListIM } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
 

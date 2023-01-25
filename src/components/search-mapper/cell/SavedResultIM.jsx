@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { useTracking } from 'react-tracking';
 import { updateGraph } from '../../../actions/idea';
-import { getNodeSpawnPosition } from '../../ideamap/canvas/CanvasUtil';
+import { getNodeSpawnPosition } from '../../idea-mapper/canvas/CanvasUtil';
 import styles from './SavedResult.module.scss';
 
 function SavedResultIM(props) {
