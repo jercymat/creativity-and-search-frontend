@@ -4,11 +4,11 @@ import styles from './SMTheme.module.scss'
 import { SMResultGrouped } from './SMResultGrouped'
 
 export function SMTheme(props) {
-  const { theme, onAddIdea } = props;
+  const { theme, onRenameTheme, onAddIdea } = props;
 
   return (
     <div className={styles.wrap}>
-      <button type='button' className={styles['theme-title']}>{theme.title}</button>
+      <button type='button' className={styles['theme-title']} onClick={onRenameTheme}>{theme.title}</button>
       <div className={styles.results}>
         {
           theme.saves.map(s => (
@@ -40,5 +40,6 @@ SMTheme.propTypes = {
     }).isRequired).isRequired,
     note: PropTypes.string.isRequired,
   }).isRequired,
+  onRenameTheme: PropTypes.func.isRequired,
   onAddIdea: PropTypes.func.isRequired,
 }

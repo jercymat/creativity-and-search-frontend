@@ -1,11 +1,14 @@
 import {
-  SM_DIALOG_ADD_IDEA_CLOSE,
-  SM_DIALOG_ADD_IDEA_OPEN,
+  SM_MSG_DIALOG_CLOSE,
+  SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
   SM_SR_ADD,
   SM_SR_DELETE,
   SM_SR_LOAD,
   SM_SR_REORDER,
+  SM_TXT_DIALOG_ADD_IDEA_OPEN,
+  SM_TXT_DIALOG_CLOSE,
+  SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_SAVED_RESULTS,
 } from "./types/search";
 
@@ -26,5 +29,8 @@ export const reorderSavedResults = newOrder => ({
 export const deleteSavedResults = id => ({ type: SM_SR_DELETE, payload: { id } });
 
 // dialog
-export const openAddIdeaDialog = () => ({ type: SM_DIALOG_ADD_IDEA_OPEN });
-export const closeAddIdeaDialog = () => ({ type: SM_DIALOG_ADD_IDEA_CLOSE });
+export const openFormThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_FORM_THEME_OPEN });
+export const closeMessageDialog = () => ({ type: SM_MSG_DIALOG_CLOSE });
+export const openAddIdeaDialog = () => ({ type: SM_TXT_DIALOG_ADD_IDEA_OPEN });
+export const openRenameThemeDialog = () => ({ type: SM_TXT_DIALOG_RENAME_THEME_OPEN });
+export const closeTextDialog = () => ({ type: SM_TXT_DIALOG_CLOSE });

@@ -3,8 +3,20 @@ import PropTypes from 'prop-types'
 import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { StandardButton } from '../../general/button';
 
+const TITLES = {
+  'add-idea': 'Add Theme Idea',
+  'edit-idea': 'Edit Theme Idea',
+  'rename-theme': 'Rename Theme'
+};
+
+const PLACEHOLDERS = {
+  'add-idea': 'Enter your idea...',
+  'edit-idea': 'Enter your idea...',
+  'rename-theme': 'Enter the theme name...'
+}
+
 export const SMIdeaDialog = props => {
-  const { show, submitting, onSubmission, onClose } = props;
+  const { show, mode, submitting, onSubmission, onClose } = props;
   const [validated, setValidated] = useState(false);
 
   const handleSubmit = (event) => {
@@ -31,7 +43,7 @@ export const SMIdeaDialog = props => {
   return (
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
-        <Modal.Title>Add Theme Idea</Modal.Title>
+        <Modal.Title>{TITLES[mode]}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form id='add-theme-idea' noValidate validated={validated} onSubmit={handleSubmit}>
@@ -40,7 +52,7 @@ export const SMIdeaDialog = props => {
               as='textarea'
               name='theme-idea'
               rows={3}
-              placeholder='Enter your idea...'
+              placeholder={PLACEHOLDERS[mode]}
               required />
           </Form.Group>
         </Form>
@@ -69,6 +81,7 @@ export const SMIdeaDialog = props => {
 
 SMIdeaDialog.propTypes = {
   show: PropTypes.bool.isRequired,
+  mode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme']).isRequired,
   submitting: PropTypes.bool.isRequired,
   onSubmission: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,

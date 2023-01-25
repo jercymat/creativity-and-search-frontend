@@ -9,20 +9,25 @@ import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
 import styles from './SavedResultList.module.scss';
 import { SMTheme } from './themed';
 import {
-  closeAddIdeaDialog,
+  closeTextDialog,
+  closeMessageDialog,
   deleteSavedResults,
   loadSavedResults,
   openAddIdeaDialog,
+  openFormThemeMsgDialog,
   reorderSavedResults,
   updateSavedResults,
+  openRenameThemeDialog,
 } from '../../actions/search';
 import { SMIdeaDialog } from './dialogs';
+import { MessageDialog } from '../general/popup';
 
 function SavedResultListSERP(props) {
   const {
-    loading, submitting, addIdeaDialogShow, savedResults,
+    loading, submitting,
+    messageDialogShow, textDialogShow, savedResults, messageContent, textDialogMode,
     updateSavedResults, loadSavedResults, reorderSavedResults, deleteSavedResults,
-    openAddIdeaDialog, closeAddIdeaDialog,
+    closeMessageDialog, openAddIdeaDialog, openRenameThemeDialog, closeTextDialog,
   } = props;
   const [fetched, setFetched] = useState(false);
 
@@ -62,7 +67,7 @@ function SavedResultListSERP(props) {
 
   const onAddThemeIdea = ({ themeId, idea }) => {
     console.log(`Add Theme Idea: theme - ${themeId}, idea: ${idea}`);
-    closeAddIdeaDialog();
+    closeTextDialog();
   }
 
   return (
@@ -88,6 +93,7 @@ function SavedResultListSERP(props) {
           ],
           note: '',
         }}
+        onRenameTheme={openRenameThemeDialog}
         onAddIdea={openAddIdeaDialog} />
       <DndContext
       onDragEnd={handleDragEnd}
@@ -103,11 +109,17 @@ function SavedResultListSERP(props) {
                 save={save} />)}
           </SortableContext>
       </DndContext>
+      <MessageDialog
+        show={messageDialogShow}
+        onClose={closeMessageDialog}
+        onConfirm={() => {}}
+        {...messageContent} />
       <SMIdeaDialog
-        show={addIdeaDialogShow}
+        show={textDialogShow}
+        mode={textDialogMode}
         submitting={submitting}
         onSubmission={onAddThemeIdea}
-        onClose={closeAddIdeaDialog} />
+        onClose={closeTextDialog} />
     </div>
   )
 }
@@ -115,21 +127,35 @@ function SavedResultListSERP(props) {
 SavedResultListSERP.propTypes = {
   loading: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
-  addIdeaDialogShow: PropTypes.bool.isRequired,
+  messageDialogShow: PropTypes.bool.isRequired,
+  textDialogShow: PropTypes.bool.isRequired,
   savedResults: PropTypes.array.isRequired,
+  messageContent: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+    cancelText: PropTypes.string.isRequired,
+    confirmText: PropTypes.string.isRequired,
+  }).isRequired,
+  textDialogMode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme']).isRequired,
   updateSavedResults: PropTypes.func.isRequired,
   loadSavedResults: PropTypes.func.isRequired,
   reorderSavedResults: PropTypes.func.isRequired,
   deleteSavedResults: PropTypes.func.isRequired,
+  openFormThemeMsgDialog: PropTypes.func.isRequired,
+  closeMessageDialog: PropTypes.func.isRequired,
   openAddIdeaDialog: PropTypes.func.isRequired,
-  closeAddIdeaDialog: PropTypes.func.isRequired,
+  openRenameThemeDialog: PropTypes.func.isRequired,
+  closeTextDialog: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   loading: state.search.loading,
   submitting: state.search.submitting,
+  messageDialogShow: state.search.messageDialogShow,
+  textDialogShow: state.search.textDialogShow,
+  textDialogMode: state.search.textDialogMode,
   savedResults: state.search.savedResults,
-  addIdeaDialogShow: state.search.addIdeaDialogShow,
+  messageContent: state.search.messageContent,
 });
 
 const mapDispatchToProps = {
@@ -137,8 +163,11 @@ const mapDispatchToProps = {
   loadSavedResults,
   reorderSavedResults,
   deleteSavedResults,
+  openFormThemeMsgDialog,
+  closeMessageDialog,
   openAddIdeaDialog,
-  closeAddIdeaDialog,
+  openRenameThemeDialog,
+  closeTextDialog,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedResultListSERP);

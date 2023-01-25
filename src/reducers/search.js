@@ -1,7 +1,6 @@
-import { faGamepad } from "@fortawesome/free-solid-svg-icons";
 import {
-  SM_DIALOG_ADD_IDEA_CLOSE,
-  SM_DIALOG_ADD_IDEA_OPEN,
+  SM_MSG_DIALOG_CLOSE,
+  SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
   SM_SR_ADD,
   SM_SR_ADD_FAIL,
@@ -15,6 +14,9 @@ import {
   SM_SR_REORDER,
   SM_SR_REORDER_FAIL,
   SM_SR_REORDER_SUCCESS,
+  SM_TXT_DIALOG_ADD_IDEA_OPEN,
+  SM_TXT_DIALOG_CLOSE,
+  SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_SAVED_RESULTS,
 } from "../actions/types/search";
 
@@ -22,7 +24,15 @@ const initialState = {
   loading: false,
   submitting: false,
   bgLoading: false,
-  addIdeaDialogShow: false,
+  messageDialogShow: false,
+  messageContent: {
+    title: '',
+    content: '',
+    cancelText: '',
+    confirmText: '',
+  },
+  textDialogShow: false,
+  textDialogMode: 'add-idea',
   bufferedSearch: {
     results: [],
     q: '',
@@ -78,12 +88,37 @@ const reducer = (state = initialState, { type, payload }) => {
     return { ...state, bgLoading: false };
 
   // dialog
+  case SM_MSG_DIALOG_FORM_THEME_OPEN:
+    return {
+      ...state,
+      messageDialogShow: true,
+      messageContent: {
+        title: 'Forming a Theme',
+        content: 'Saved Results can be adding notes after forming a theme.',
+        cancelText: 'Cancel',
+        confirmText: 'Form a Theme',
+      }
+    }
 
-  case SM_DIALOG_ADD_IDEA_OPEN:
-    return { ...state, addIdeaDialogShow: true }
+  case SM_MSG_DIALOG_CLOSE:
+    return { ...state, messageDialogShow: false }
 
-  case SM_DIALOG_ADD_IDEA_CLOSE:
-    return { ...state, addIdeaDialogShow: false }
+  case SM_TXT_DIALOG_ADD_IDEA_OPEN:
+    return {
+      ...state,
+      textDialogShow: true,
+      textDialogMode: 'add-idea',
+    }
+
+  case SM_TXT_DIALOG_RENAME_THEME_OPEN:
+    return {
+      ...state,
+      textDialogShow: true,
+      textDialogMode: 'rename-theme',
+    }
+
+  case SM_TXT_DIALOG_CLOSE:
+    return { ...state, textDialogShow: false }
 
   default:
     return state;
