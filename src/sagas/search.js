@@ -1,5 +1,6 @@
-import { call, put } from "redux-saga/effects";
+import { all, call, put } from "redux-saga/effects";
 import {
+  SM_SR2_LOAD,
   SM_SR2_LOAD_FAIL,
   SM_SR2_LOAD_SUCCESS,
   SM_SR_ADD_FAIL,
@@ -31,7 +32,10 @@ export function* smAddSavedResults(action) {
         id: response.searchResult_id.toString(),
         ...result
       }
-      yield put({ type: SM_SR_ADD_SUCCESS, payload: { newResult } });
+      yield all([
+        put({ type: SM_SR_ADD_SUCCESS, payload: { newResult } }),
+        put({ type: SM_SR2_LOAD }),
+      ]);
     } else {
       yield put({ type: SM_SR_ADD_FAIL, payload: { error: response.error } });
     }
@@ -88,7 +92,10 @@ export function* smDeleteSavedResults(action) {
     const response = yield call(deleteSavedResultAPI, id);
 
     if (response.ret === 0) {
-      yield put({ type: SM_SR_DELETE_SUCCESS, payload: { id } });
+      yield all([
+        put({ type: SM_SR_DELETE_SUCCESS, payload: { id } }),
+        put({ type: SM_SR2_LOAD }),
+      ]);
     } else {
       yield put({ type: SM_SR_DELETE_FAIL, payload: { error: response.error } });
     }
@@ -104,9 +111,7 @@ export function* smLoadSavedResultsV2() {
     const response = yield call(loadSavedResultV2API);
 
     if (response.ret === 0) {
-      const savedResults = response.relist
-        // filter empty theme (will automatically delete empty theme in production)
-        .filter(theme => theme.searchResultList.length !== 0)
+      const sr = response.relist
         .map(theme => ({
           ...theme,
           searchResultList: theme.searchResultList.map(saved => ({
@@ -119,9 +124,13 @@ export function* smLoadSavedResultsV2() {
             ? theme.note[0].title
             : '',
         }));
-
-      console.log(savedResults);
-
+      const savedResults = [ sr[0] ].concat(
+        sr
+          .splice(1)
+          // filter empty theme (will automatically delete empty theme in production)
+          .filter(theme => theme.searchResultList.length !== 0)
+      );
+      
       yield put({ type: SM_SR2_LOAD_SUCCESS, payload: { savedResults } });
     } else {
       yield put({ type: SM_SR2_LOAD_FAIL, payload: { error: response.error } });

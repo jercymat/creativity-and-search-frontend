@@ -27,7 +27,8 @@ export const SMResult = props => {
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton
               variant='danger'
-              unicons={<Unicons.UilTrashAlt />} />
+              unicons={<Unicons.UilTrashAlt />}
+              onClick={() => props.onDeleteSave(props.save.id.toString())} />
           </div>
         </OverlayTrigger>
         <OverlayTrigger
@@ -63,4 +64,5 @@ SMResult.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired,
+  onDeleteSave: PropTypes.func.isRequired,
 }

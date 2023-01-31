@@ -94,7 +94,11 @@ function SavedResultListSERP(props) {
           theme={theme}
           onRenameTheme={openRenameThemeDialog}
           onEditIdea={() => openEditIdeaDialog(theme.id)} />)}
-      {savedResultsV2[0].searchResultList.map(save => <SMResult key={save.id} save={save} />)}
+      {savedResultsV2[0].searchResultList.map(save =>
+        <SMResult
+          key={save.id}
+          save={save}
+          onDeleteSave={handleRemoveSaved} />)}
       <div>
         <Button variant='light' className='w-100' onClick={() => openAddThemeDialog(-1)}>DEMO - Add to Theme Dialog</Button>
       </div>
