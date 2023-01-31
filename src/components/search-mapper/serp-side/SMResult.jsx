@@ -33,16 +33,6 @@ export const SMResult = props => {
         </OverlayTrigger>
         <OverlayTrigger
           placement="bottom"
-          overlay={renderTooltip('Add Note')}
-        >
-          <div className={`d-inline-block ${styles.action}`}>
-            <CircleUniconButton
-              variant='warning'
-              unicons={<Unicons.UilCommentAltLines />} />
-          </div>
-        </OverlayTrigger>
-        <OverlayTrigger
-          placement="bottom"
           overlay={renderTooltip('Add to Theme')}
         >
           <div className={`d-inline-block ${styles.action}`}>
