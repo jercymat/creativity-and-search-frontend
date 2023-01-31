@@ -102,6 +102,10 @@ function SavedResultListSERP(props) {
       <div>
         <Button variant='light' className='w-100' onClick={() => openAddThemeDialog(-1)}>DEMO - Add to Theme Dialog</Button>
       </div>
+      <hr />
+      <div className="text-center">
+        <h2>Original SearchMapper</h2>
+      </div>
       {savedResults.length === 0 && <SavedResultPlaceHolder />}
       <DndContext
       onDragEnd={handleDragEnd}

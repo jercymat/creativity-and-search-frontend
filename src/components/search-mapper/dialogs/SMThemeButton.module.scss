@@ -12,7 +12,7 @@
     border: none;
     background-color: $im-background;
 
-    &:not(:last-of-type) {
+    &:not(:last-of-type):not(:nth-of-type(1)) {
       margin-bottom: .5rem;
     }
 

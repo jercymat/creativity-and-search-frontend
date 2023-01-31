@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, Spinner, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { Button, Modal, Spinner } from 'react-bootstrap';
 import { StandardButton } from '../../general/button';
 import styles from './SMThemeButton.module.scss';
 
@@ -51,6 +51,14 @@ export const SMThemeDialog = props => {
       </Modal.Header>
       <Modal.Body>
         <div className={styles['btn-radios']}>
+          <Button
+            variant='outline-primary'
+            className={-1 === chosenGroupID && styles.active}
+            onClick={() => setChosenGroupID(-1)}>
+            <h2 className={styles.title}>New Theme</h2>
+            <h4 className={styles.sr_count}>Create a new theme for this result</h4>
+          </Button>
+          <hr />
           {
             MOCK_THEMES.map(theme => (
               <Button
