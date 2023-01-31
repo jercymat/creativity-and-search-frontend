@@ -2,6 +2,9 @@ import {
   SM_MSG_DIALOG_CLOSE,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
+  SM_SR2_EDIT_THEME_IDEA,
+  SM_SR2_EDIT_THEME_IDEA_FAIL,
+  SM_SR2_EDIT_THEME_IDEA_SUCCESS,
   SM_SR2_LOAD,
   SM_SR2_LOAD_FAIL,
   SM_SR2_LOAD_SUCCESS,
@@ -80,6 +83,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_DELETE:
   case SM_SR2_LOAD:
   case SM_SR2_RENAME_THEME:
+  case SM_SR2_EDIT_THEME_IDEA:
     return { ...state, loading: true };
 
   case SM_SR_REORDER:
@@ -109,6 +113,7 @@ const reducer = (state = initialState, { type, payload }) => {
     return { ...state, loading: false, savedResultsV2: payload.savedResults };
 
   case SM_SR2_RENAME_THEME_SUCCESS:
+  case SM_SR2_EDIT_THEME_IDEA_SUCCESS:
     return { ...state, loading: false };
 
   case SM_SR_ADD_FAIL:
@@ -116,6 +121,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_DELETE_FAIL:
   case SM_SR2_LOAD_FAIL:
   case SM_SR2_RENAME_THEME_FAIL:
+  case SM_SR2_EDIT_THEME_IDEA_FAIL:
     return { ...state, loading: false };
 
   case SM_SR_REORDER_FAIL:
@@ -149,6 +155,7 @@ const reducer = (state = initialState, { type, payload }) => {
       ...state,
       textDialogShow: true,
       textDialogMode: 'edit-idea',
+      currentFocusTheme: payload.themeID,
     };
 
   case SM_TXT_DIALOG_RENAME_THEME_OPEN:

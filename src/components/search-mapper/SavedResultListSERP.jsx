@@ -24,6 +24,7 @@ import {
   closeThemeDialog,
   loadSavedResultsV2,
   renameTheme,
+  editThemeIdea,
 } from '../../actions/search';
 import { SMIdeaDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
@@ -36,7 +37,7 @@ function SavedResultListSERP(props) {
     savedResults, savedResultsV2, messageContent, textDialogMode, themeDialogMode,
     currentFocusTheme,
     updateSavedResults, loadSavedResults, reorderSavedResults, deleteSavedResults,
-    loadSavedResultsV2, renameTheme,
+    loadSavedResultsV2, renameTheme, editThemeIdea,
     openFormThemeMsgDialog, closeMessageDialog,
     openAddIdeaDialog, openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
@@ -84,8 +85,9 @@ function SavedResultListSERP(props) {
     closeTextDialog();
   };
 
-  const onAddThemeIdea = ({ themeId, idea }) => {
-    console.log(`Add Theme Idea: theme - ${themeId}, idea: ${idea}`);
+  const onAddThemeIdea = ({ themeID, noteID, content }) => {
+    console.log(`Add Theme Idea: theme - ${themeID}, note - ${noteID}, idea: ${content}`);
+    editThemeIdea(themeID, noteID, content);
     closeTextDialog();
   };
 
@@ -100,7 +102,7 @@ function SavedResultListSERP(props) {
         <SMTheme
           key={theme.id}
           theme={theme}
-          onRenameTheme={id => openRenameThemeDialog(id)}
+          onRenameTheme={() => openRenameThemeDialog(theme.id)}
           onEditIdea={() => openEditIdeaDialog(theme.id)} />)}
       {savedResultsV2[0].searchResultList.map(save =>
         <SMResult
@@ -178,6 +180,7 @@ SavedResultListSERP.propTypes = {
   deleteSavedResults: PropTypes.func.isRequired,
   loadSavedResultsV2: PropTypes.func.isRequired,
   renameTheme: PropTypes.func.isRequired,
+  editThemeIdea: PropTypes.func.isRequired,
   openFormThemeMsgDialog: PropTypes.func.isRequired,
   closeMessageDialog: PropTypes.func.isRequired,
   openAddIdeaDialog: PropTypes.func.isRequired,
@@ -210,6 +213,7 @@ const mapDispatchToProps = {
   deleteSavedResults,
   loadSavedResultsV2,
   renameTheme,
+  editThemeIdea,
   openFormThemeMsgDialog,
   closeMessageDialog,
   openAddIdeaDialog,

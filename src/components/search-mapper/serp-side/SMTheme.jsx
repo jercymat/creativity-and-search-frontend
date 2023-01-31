@@ -6,13 +6,9 @@ import { SMResultGrouped } from './SMResultGrouped'
 export function SMTheme(props) {
   const { theme, onRenameTheme, onEditIdea } = props;
 
-  const handleRenameTheme = () => {
-    onRenameTheme(theme.id);
-  };
-
   return (
     <div className={styles.wrap}>
-      <button type='button' className={styles['theme-title']} onClick={handleRenameTheme}>{theme.name}</button>
+      <button type='button' className={styles['theme-title']} onClick={onRenameTheme}>{theme.name}</button>
       <div className={styles.results}>
         {
           theme.searchResultList.map(s => (

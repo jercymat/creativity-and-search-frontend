@@ -1,5 +1,7 @@
 import { all, call, put } from "redux-saga/effects";
 import {
+  SM_SR2_EDIT_THEME_IDEA_FAIL,
+  SM_SR2_EDIT_THEME_IDEA_SUCCESS,
   SM_SR2_LOAD,
   SM_SR2_LOAD_FAIL,
   SM_SR2_LOAD_SUCCESS,
@@ -14,7 +16,7 @@ import {
   SM_SR_REORDER_FAIL,
   SM_SR_REORDER_SUCCESS,
 } from "../actions/types/search";
-import { addSavedResultAPI, deleteSavedResultAPI, loadSavedResultAPI, loadSavedResultV2API, renameThemeAPI, reorderSavedResultAPI } from "../apis/search";
+import { addSavedResultAPI, addThemeIdeaAPI, deleteSavedResultAPI, editThemeIdeaAPI, loadSavedResultAPI, loadSavedResultV2API, renameThemeAPI, reorderSavedResultAPI } from "../apis/search";
 import { getCurrentTime } from "../utils";
 
 export function* smAddSavedResults(action) {
@@ -125,6 +127,9 @@ export function* smLoadSavedResultsV2() {
           note: theme.note.length !== 0
             ? theme.note[0].title
             : '',
+          noteID: theme.note.length !== 0
+            ? theme.note[0].id
+            : -1,
         }));
       const savedResults = [ sr[0] ].concat(
         sr
@@ -159,5 +164,27 @@ export function* smRenameTheme(action) {
     }
   } catch (error) {
     yield put({ type: SM_SR2_RENAME_THEME_FAIL, payload: { error: error.toString() } });
+  }
+}
+
+export function* smEditThemeIdea(action) {
+  const data = action.payload;
+  console.log('edit theme idea saga');
+
+  try {
+    const response = data.noteID !== -1
+      ? yield call(editThemeIdeaAPI, data)
+      : yield call(addThemeIdeaAPI, data);
+
+    if (response.ret === 0) {
+      yield all([
+        put({ type: SM_SR2_EDIT_THEME_IDEA_SUCCESS }),
+        put({ type: SM_SR2_LOAD }),
+      ]);
+    } else {
+      yield put({ type: SM_SR2_EDIT_THEME_IDEA_FAIL, payload: { error: response.error } });
+    }
+  } catch (error) {
+    yield put({ type: SM_SR2_EDIT_THEME_IDEA_FAIL, payload: { error: error.toString() } });
   }
 }

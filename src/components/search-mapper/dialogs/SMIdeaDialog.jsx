@@ -19,6 +19,8 @@ export const SMIdeaDialog = props => {
   const { show, mode, submitting, themes, currentFocusTheme, onRenameTheme, onEditIdea, onClose } = props;
   const [validated, setValidated] = useState(false);
   const [text, setText] = useState('');
+  const [title, setTitle] = useState('');
+  const [noteID, setNoteID] = useState(-1);
 
   const handleSubmit = (event) => {
     const form = event.currentTarget;
@@ -39,7 +41,8 @@ export const SMIdeaDialog = props => {
     } else if (mode === 'edit-idea') {
       onEditIdea({
         themeID: currentFocusTheme,
-        idea: fd.get('theme-idea'),
+        noteID,
+        content: fd.get('theme-idea'),
       });
     }
     clearForm();
@@ -50,17 +53,24 @@ export const SMIdeaDialog = props => {
   }
 
   useEffect(() => {
+    const currentTheme = themes.find(theme => theme.id === currentFocusTheme);
+    if (currentTheme === undefined) return;
+
     if (mode === 'rename-theme') {
-      const currentTheme = themes.find(theme => theme.id === currentFocusTheme);
-      if (currentTheme !== undefined) setText(currentTheme.name);
+      setText(currentTheme.name);
+    } else if (mode === 'edit-idea') {
+      setText(currentTheme.note);
+      setNoteID(currentTheme.noteID);
     }
+
+    setTitle(currentTheme.name);
   }, [currentFocusTheme, themes, mode]);
   
 
   return (
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
-        <Modal.Title>{`${TITLES[mode]} - ${currentFocusTheme}`}</Modal.Title>
+        <Modal.Title>{`${TITLES[mode]} - ${title}`}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form id='add-theme-idea' noValidate validated={validated} onSubmit={handleSubmit}>
