@@ -2,6 +2,7 @@ import axios from "axios";
 import config from "../config";
 
 const BASE_URL = config.api.HOST + '/searchresults';
+const SR2_URL = config.api.HOST + '/groups';
 
 export const addSavedResultAPI = data =>
   axios.post(BASE_URL, {
@@ -39,6 +40,16 @@ export const deleteSavedResultAPI = id =>
   axios.post(BASE_URL, {
     action: 'delete_searchresult',
     searchResultId: id
+  }, { withCredentials: true })
+    .then(response => response.data)
+    .catch(e => ({
+      status: false,
+      error: e.message
+    }));
+
+export const loadSavedResultV2API = () =>
+  axios.post(SR2_URL, {
+    action: "list_group",
   }, { withCredentials: true })
     .then(response => response.data)
     .catch(e => ({

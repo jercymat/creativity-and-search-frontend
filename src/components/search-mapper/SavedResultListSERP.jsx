@@ -22,6 +22,7 @@ import {
   openAddThemeDialog,
   openMoveThemeDialog,
   closeThemeDialog,
+  loadSavedResultsV2,
 } from '../../actions/search';
 import { SMIdeaDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
@@ -31,8 +32,9 @@ function SavedResultListSERP(props) {
   const {
     loading, submitting,
     messageDialogShow, textDialogShow, themeDialogShow,
-    savedResults, messageContent, textDialogMode, themeDialogMode,
+    savedResults, savedResultsV2, messageContent, textDialogMode, themeDialogMode,
     updateSavedResults, loadSavedResults, reorderSavedResults, deleteSavedResults,
+    loadSavedResultsV2,
     openFormThemeMsgDialog, closeMessageDialog,
     openAddIdeaDialog, openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
@@ -71,7 +73,8 @@ function SavedResultListSERP(props) {
     
     setFetched(true);
     loadSavedResults();
-  }, [fetched, loadSavedResults]);
+    loadSavedResultsV2();
+  }, [fetched, loadSavedResults, loadSavedResultsV2]);
 
   const onAddThemeIdea = ({ themeId, idea }) => {
     console.log(`Add Theme Idea: theme - ${themeId}, idea: ${idea}`);
@@ -85,38 +88,17 @@ function SavedResultListSERP(props) {
 
   return (
     <div id="im-saved-results" className={styles.wrap}>
-      {savedResults.length === 0 && <SavedResultPlaceHolder />}
-      <SMTheme
-        theme={{
-          id: '0000',
-          title: 'Test Theme 1',
-          saves: [
-            {
-              id: '0001',
-              title: 'Test Grouped Result 1',
-              url: 'https://github.com/jercymat',
-              desc: 'We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses depth-wise separable convolutions to build light weight deep neural networks. We introduce two simple global hyper-parameters that efficiently trade off between latency and accuracy.'
-            },
-            {
-              id: '0002',
-              title: 'Test Grouped Result 2',
-              url: 'https://github.com/jercymat',
-              desc: 'We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses depth-wise separable convolutions to build light weight deep neural networks. We introduce two simple global hyper-parameters that efficiently trade off between latency and accuracy.'
-            }
-          ],
-          note: '',
-        }}
-        onRenameTheme={openRenameThemeDialog}
-        onEditIdea={() => openEditIdeaDialog(-1)} />
+      {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
+        <SMTheme
+          key={theme.id}
+          theme={theme}
+          onRenameTheme={openRenameThemeDialog}
+          onEditIdea={() => openEditIdeaDialog(theme.id)} />)}
+      {savedResultsV2[0].searchResultList.map(save => <SMResult key={save.id} save={save} />)}
       <div>
         <Button variant='light' className='w-100' onClick={() => openAddThemeDialog(-1)}>DEMO - Add to Theme Dialog</Button>
       </div>
-      <SMResult save={{
-        id: '0002',
-        title: 'Test Ungrouped Result 1',
-        url: 'https://github.com/jercymat',
-        desc: 'We present a class of efficient models called MobileNets for mobile and embedded vision applications. MobileNets are based on a streamlined architecture that uses depth-wise separable convolutions to build light weight deep neural networks. We introduce two simple global hyper-parameters that efficiently trade off between latency and accuracy.'
-      }} />
+      {savedResults.length === 0 && <SavedResultPlaceHolder />}
       <DndContext
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}>
@@ -159,6 +141,7 @@ SavedResultListSERP.propTypes = {
   textDialogShow: PropTypes.bool.isRequired,
   themeDialogShow: PropTypes.bool.isRequired,
   savedResults: PropTypes.array.isRequired,
+  savedResultsV2: PropTypes.array.isRequired,
   messageContent: PropTypes.shape({
     title: PropTypes.string.isRequired,
     content: PropTypes.string.isRequired,
@@ -173,6 +156,7 @@ SavedResultListSERP.propTypes = {
   loadSavedResults: PropTypes.func.isRequired,
   reorderSavedResults: PropTypes.func.isRequired,
   deleteSavedResults: PropTypes.func.isRequired,
+  loadSavedResultsV2: PropTypes.func.isRequired,
   openFormThemeMsgDialog: PropTypes.func.isRequired,
   closeMessageDialog: PropTypes.func.isRequired,
   openAddIdeaDialog: PropTypes.func.isRequired,
@@ -193,6 +177,7 @@ const mapStateToProps = (state) => ({
   themeDialogShow: state.search.themeDialogShow,
   themeDialogMode: state.search.themeDialogMode,
   savedResults: state.search.savedResults,
+  savedResultsV2: state.search.savedResultsV2,
   messageContent: state.search.messageContent,
 });
 
@@ -201,6 +186,7 @@ const mapDispatchToProps = {
   loadSavedResults,
   reorderSavedResults,
   deleteSavedResults,
+  loadSavedResultsV2,
   openFormThemeMsgDialog,
   closeMessageDialog,
   openAddIdeaDialog,

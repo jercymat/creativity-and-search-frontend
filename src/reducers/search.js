@@ -2,6 +2,9 @@ import {
   SM_MSG_DIALOG_CLOSE,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
+  SM_SR2_LOAD,
+  SM_SR2_LOAD_FAIL,
+  SM_SR2_LOAD_SUCCESS,
   SM_SR_ADD,
   SM_SR_ADD_FAIL,
   SM_SR_ADD_SUCCESS,
@@ -53,7 +56,11 @@ const initialState = {
     page: 1,
     totalCount: 0
   },
-  savedResults: [],  
+  savedResults: [],
+  savedResultsV2: [{
+    id: -1,
+    searchResultList: [],
+  }],
 }
 
 const reducer = (state = initialState, { type, payload }) => {
@@ -68,6 +75,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_ADD:
   case SM_SR_LOAD:
   case SM_SR_DELETE:
+  case SM_SR2_LOAD:
     return { ...state, loading: true };
 
   case SM_SR_REORDER:
@@ -78,17 +86,20 @@ const reducer = (state = initialState, { type, payload }) => {
       ...state,
       loading: false,
       savedResults: [...state.savedResults, payload.newResult]
-    }
+    };
 
   case SM_SR_LOAD_SUCCESS:
     return { ...state, loading: false, savedResults: payload.savedResults };
+
+  case SM_SR2_LOAD_SUCCESS:
+    return { ...state, loading: false, savedResultsV2: payload.savedResults };
 
   case SM_SR_DELETE_SUCCESS:
     return {
       ...state,
       loading: false,
       savedResults: state.savedResults.filter(save => save.id !== payload.id)
-    }
+    };
 
   case SM_SR_REORDER_SUCCESS:
     return { ...state, bgLoading: false };
@@ -96,6 +107,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_ADD_FAIL:
   case SM_SR_LOAD_FAIL:
   case SM_SR_DELETE_FAIL:
+  case SM_SR2_LOAD_FAIL:
     return { ...state, loading: false };
 
   case SM_SR_REORDER_FAIL:
@@ -112,34 +124,34 @@ const reducer = (state = initialState, { type, payload }) => {
         cancelText: 'Cancel',
         confirmText: 'Form a Theme',
       }
-    }
+    };
 
   case SM_MSG_DIALOG_CLOSE:
-    return { ...state, messageDialogShow: false }
+    return { ...state, messageDialogShow: false };
 
   case SM_TXT_DIALOG_ADD_IDEA_OPEN:
     return {
       ...state,
       textDialogShow: true,
       textDialogMode: 'add-idea',
-    }
+    };
 
   case SM_TXT_DIALOG_EDIT_IDEA_OPEN:
     return {
       ...state,
       textDialogShow: true,
       textDialogMode: 'edit-idea',
-    }
+    };
 
   case SM_TXT_DIALOG_RENAME_THEME_OPEN:
     return {
       ...state,
       textDialogShow: true,
       textDialogMode: 'rename-theme',
-    }
+    };
 
   case SM_TXT_DIALOG_CLOSE:
-    return { ...state, textDialogShow: false }
+    return { ...state, textDialogShow: false };
 
   case SM_THEME_DIALOG_ADD_OPEN:
     return {
@@ -147,7 +159,7 @@ const reducer = (state = initialState, { type, payload }) => {
       themeDialogShow: true,
       themeDialogMode: 'add',
       currentFocusResult: payload.resultID,
-    }
+    };
 
   case SM_THEME_DIALOG_MOVE_OPEN:
     return {
@@ -155,10 +167,10 @@ const reducer = (state = initialState, { type, payload }) => {
       themeDialogShow: true,
       themeDialogMode: 'move',
       currentFocusResult: payload.resultID,
-    }
+    };
 
   case SM_THEME_DIALOG_CLOSE:
-    return { ...state, themeDialogShow: false }
+    return { ...state, themeDialogShow: false };
 
   default:
     return state;

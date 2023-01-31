@@ -2,6 +2,7 @@ import {
   SM_MSG_DIALOG_CLOSE,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
+  SM_SR2_LOAD,
   SM_SR_ADD,
   SM_SR_DELETE,
   SM_SR_LOAD,
@@ -31,6 +32,9 @@ export const reorderSavedResults = newOrder => ({
   payload: { newOrder }
 });
 export const deleteSavedResults = id => ({ type: SM_SR_DELETE, payload: { id } });
+
+// new search mapper
+export const loadSavedResultsV2 = () => ({ type: SM_SR2_LOAD });
 
 // dialog
 export const openFormThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_FORM_THEME_OPEN });

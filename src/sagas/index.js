@@ -1,6 +1,7 @@
 import { all, takeEvery } from 'redux-saga/effects';
 import { GLOBAL_LOGIN, GLOBAL_LOGOUT } from '../actions/types/global';
 import {
+  SM_SR2_LOAD,
   SM_SR_ADD,
   SM_SR_DELETE,
   SM_SR_LOAD,
@@ -11,6 +12,7 @@ import {
   smAddSavedResults,
   smDeleteSavedResults,
   smLoadSavedResults,
+  smLoadSavedResultsV2,
   smReorderSavedResults,
 } from './search';
 
@@ -25,5 +27,6 @@ export default function* rootSaga() {
     takeEvery(SM_SR_LOAD, smLoadSavedResults),
     takeEvery(SM_SR_REORDER, smReorderSavedResults),
     takeEvery(SM_SR_DELETE, smDeleteSavedResults),
+    takeEvery(SM_SR2_LOAD, smLoadSavedResultsV2),
   ]);
 }

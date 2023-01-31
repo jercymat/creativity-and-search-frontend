@@ -57,7 +57,7 @@ export const SMResultGrouped = props => {
 
 SMResultGrouped.propTypes = {
   save: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     url: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,

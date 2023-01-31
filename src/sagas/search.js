@@ -1,5 +1,7 @@
 import { call, put } from "redux-saga/effects";
 import {
+  SM_SR2_LOAD_FAIL,
+  SM_SR2_LOAD_SUCCESS,
   SM_SR_ADD_FAIL,
   SM_SR_ADD_SUCCESS,
   SM_SR_DELETE_FAIL,
@@ -9,7 +11,7 @@ import {
   SM_SR_REORDER_FAIL,
   SM_SR_REORDER_SUCCESS,
 } from "../actions/types/search";
-import { addSavedResultAPI, deleteSavedResultAPI, loadSavedResultAPI, reorderSavedResultAPI } from "../apis/search";
+import { addSavedResultAPI, deleteSavedResultAPI, loadSavedResultAPI, loadSavedResultV2API, reorderSavedResultAPI } from "../apis/search";
 import { getCurrentTime } from "../utils";
 
 export function* smAddSavedResults(action) {
@@ -92,5 +94,39 @@ export function* smDeleteSavedResults(action) {
     }
   } catch (error) {
     yield put({ type: SM_SR_DELETE_FAIL, payload: { error: error.toString() } });
+  }
+}
+
+export function* smLoadSavedResultsV2() {
+  console.log('load saved reuslts v2 saga2');
+
+  try {
+    const response = yield call(loadSavedResultV2API);
+
+    if (response.ret === 0) {
+      const savedResults = response.relist
+        // filter empty theme (will automatically delete empty theme in production)
+        .filter(theme => theme.searchResultList.length !== 0)
+        .map(theme => ({
+          ...theme,
+          searchResultList: theme.searchResultList.map(saved => ({
+            id: saved.id,
+            title: saved.name,
+            url: saved.url,
+            desc: saved.snippet
+          })),
+          note: theme.note.length !== 0
+            ? theme.note[0].title
+            : '',
+        }));
+
+      console.log(savedResults);
+
+      yield put({ type: SM_SR2_LOAD_SUCCESS, payload: { savedResults } });
+    } else {
+      yield put({ type: SM_SR2_LOAD_FAIL, payload: { error: response.error } });
+    }
+  } catch (error) {
+    yield put({ type: SM_SR2_LOAD_FAIL, payload: { error: error.toString() } });
   }
 }
