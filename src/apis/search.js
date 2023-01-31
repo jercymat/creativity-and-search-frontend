@@ -1,11 +1,11 @@
 import axios from "axios";
 import config from "../config";
 
-const BASE_URL = config.api.HOST + '/searchresults';
-const SR2_URL = config.api.HOST + '/groups';
+const SEARCH_URL = config.api.HOST + '/searchresults';
+const THEME_URL = config.api.HOST + '/groups';
 
 export const addSavedResultAPI = data =>
-  axios.post(BASE_URL, {
+  axios.post(SEARCH_URL, {
     action: 'add_searchresult',
     data
   }, { withCredentials: true })
@@ -16,7 +16,7 @@ export const addSavedResultAPI = data =>
     }));
 
 export const loadSavedResultAPI = () =>
-  axios.post(BASE_URL, {
+  axios.post(SEARCH_URL, {
     action: 'list_searchresult'
   }, { withCredentials: true })
     .then(response => response.data)
@@ -26,7 +26,7 @@ export const loadSavedResultAPI = () =>
     }));
 
 export const reorderSavedResultAPI = newOrder =>
-  axios.post(BASE_URL, {
+  axios.post(SEARCH_URL, {
     action: 'reorder_searchresult',
     data: newOrder
   }, { withCredentials: true })
@@ -37,7 +37,7 @@ export const reorderSavedResultAPI = newOrder =>
     }));
 
 export const deleteSavedResultAPI = id =>
-  axios.post(BASE_URL, {
+  axios.post(SEARCH_URL, {
     action: 'delete_searchresult',
     searchResultId: id
   }, { withCredentials: true })
@@ -48,8 +48,20 @@ export const deleteSavedResultAPI = id =>
     }));
 
 export const loadSavedResultV2API = () =>
-  axios.post(SR2_URL, {
+  axios.post(THEME_URL, {
     action: "list_group",
+  }, { withCredentials: true })
+    .then(response => response.data)
+    .catch(e => ({
+      status: false,
+      error: e.message
+    }));
+
+export const renameThemeAPI = data =>
+  axios.post(THEME_URL, {
+    action: "modify_group",
+    groupId: data.themeID,
+    name: data.name,
   }, { withCredentials: true })
     .then(response => response.data)
     .catch(e => ({

@@ -5,6 +5,9 @@ import {
   SM_SR2_LOAD,
   SM_SR2_LOAD_FAIL,
   SM_SR2_LOAD_SUCCESS,
+  SM_SR2_RENAME_THEME,
+  SM_SR2_RENAME_THEME_FAIL,
+  SM_SR2_RENAME_THEME_SUCCESS,
   SM_SR_ADD,
   SM_SR_ADD_FAIL,
   SM_SR_ADD_SUCCESS,
@@ -76,6 +79,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_LOAD:
   case SM_SR_DELETE:
   case SM_SR2_LOAD:
+  case SM_SR2_RENAME_THEME:
     return { ...state, loading: true };
 
   case SM_SR_REORDER:
@@ -91,9 +95,6 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_LOAD_SUCCESS:
     return { ...state, loading: false, savedResults: payload.savedResults };
 
-  case SM_SR2_LOAD_SUCCESS:
-    return { ...state, loading: false, savedResultsV2: payload.savedResults };
-
   case SM_SR_DELETE_SUCCESS:
     return {
       ...state,
@@ -104,10 +105,17 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_REORDER_SUCCESS:
     return { ...state, bgLoading: false };
 
+  case SM_SR2_LOAD_SUCCESS:
+    return { ...state, loading: false, savedResultsV2: payload.savedResults };
+
+  case SM_SR2_RENAME_THEME_SUCCESS:
+    return { ...state, loading: false };
+
   case SM_SR_ADD_FAIL:
   case SM_SR_LOAD_FAIL:
   case SM_SR_DELETE_FAIL:
   case SM_SR2_LOAD_FAIL:
+  case SM_SR2_RENAME_THEME_FAIL:
     return { ...state, loading: false };
 
   case SM_SR_REORDER_FAIL:
@@ -148,6 +156,7 @@ const reducer = (state = initialState, { type, payload }) => {
       ...state,
       textDialogShow: true,
       textDialogMode: 'rename-theme',
+      currentFocusTheme: payload.themeID,
     };
 
   case SM_TXT_DIALOG_CLOSE:

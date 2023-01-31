@@ -3,6 +3,8 @@ import {
   SM_SR2_LOAD,
   SM_SR2_LOAD_FAIL,
   SM_SR2_LOAD_SUCCESS,
+  SM_SR2_RENAME_THEME_FAIL,
+  SM_SR2_RENAME_THEME_SUCCESS,
   SM_SR_ADD_FAIL,
   SM_SR_ADD_SUCCESS,
   SM_SR_DELETE_FAIL,
@@ -12,7 +14,7 @@ import {
   SM_SR_REORDER_FAIL,
   SM_SR_REORDER_SUCCESS,
 } from "../actions/types/search";
-import { addSavedResultAPI, deleteSavedResultAPI, loadSavedResultAPI, loadSavedResultV2API, reorderSavedResultAPI } from "../apis/search";
+import { addSavedResultAPI, deleteSavedResultAPI, loadSavedResultAPI, loadSavedResultV2API, renameThemeAPI, reorderSavedResultAPI } from "../apis/search";
 import { getCurrentTime } from "../utils";
 
 export function* smAddSavedResults(action) {
@@ -105,7 +107,7 @@ export function* smDeleteSavedResults(action) {
 }
 
 export function* smLoadSavedResultsV2() {
-  console.log('load saved reuslts v2 saga2');
+  console.log('load saved reuslts v2 saga');
 
   try {
     const response = yield call(loadSavedResultV2API);
@@ -137,5 +139,25 @@ export function* smLoadSavedResultsV2() {
     }
   } catch (error) {
     yield put({ type: SM_SR2_LOAD_FAIL, payload: { error: error.toString() } });
+  }
+}
+
+export function* smRenameTheme(action) {
+  const data = action.payload;
+  console.log('rename theme saga');
+
+  try {
+    const response = yield call(renameThemeAPI, data);
+
+    if (response.ret === 0) {
+      yield all([
+        put({ type: SM_SR2_RENAME_THEME_SUCCESS }),
+        put({ type: SM_SR2_LOAD }),
+      ]);
+    } else {
+      yield put({ type: SM_SR2_RENAME_THEME_FAIL, payload: { error: response.error } });
+    }
+  } catch (error) {
+    yield put({ type: SM_SR2_RENAME_THEME_FAIL, payload: { error: error.toString() } });
   }
 }
