@@ -22,6 +22,7 @@ export const SMResultGrouped = props => {
       <div className={styles.actions}>
         <OverlayTrigger
           placement="bottom"
+          delay={{ show: 250 }}
           overlay={renderTooltip('Delete Result')}
         >
           <div className={`d-inline-block ${styles.action}`}>
@@ -32,6 +33,7 @@ export const SMResultGrouped = props => {
         </OverlayTrigger>
         <OverlayTrigger
           placement="bottom"
+          delay={{ show: 250 }}
           overlay={renderTooltip('Remove from Theme')}
         >
           <div className={`d-inline-block ${styles.action}`}>
@@ -42,6 +44,7 @@ export const SMResultGrouped = props => {
         </OverlayTrigger>
         <OverlayTrigger
           placement="bottom"
+          delay={{ show: 250 }}
           overlay={renderTooltip('Move to Other Theme')}
         >
           <div className={`d-inline-block ${styles.action}`}>

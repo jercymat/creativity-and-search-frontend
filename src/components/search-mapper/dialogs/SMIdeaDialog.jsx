@@ -19,7 +19,6 @@ export const SMIdeaDialog = props => {
   const { show, mode, submitting, themes, currentFocusTheme, onRenameTheme, onEditIdea, onClose } = props;
   const [validated, setValidated] = useState(false);
   const [text, setText] = useState('');
-  const [title, setTitle] = useState('');
   const [noteID, setNoteID] = useState(-1);
 
   const handleSubmit = (event) => {
@@ -62,15 +61,13 @@ export const SMIdeaDialog = props => {
       setText(currentTheme.note);
       setNoteID(currentTheme.noteID);
     }
-
-    setTitle(currentTheme.name);
   }, [currentFocusTheme, themes, mode]);
   
 
   return (
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
-        <Modal.Title>{`${TITLES[mode]} - ${title}`}</Modal.Title>
+        <Modal.Title>{TITLES[mode]}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form id='add-theme-idea' noValidate validated={validated} onSubmit={handleSubmit}>

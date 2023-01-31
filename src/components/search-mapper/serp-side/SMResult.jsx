@@ -22,6 +22,7 @@ export const SMResult = props => {
       <div className={styles.actions}>
         <OverlayTrigger
           placement="bottom"
+          delay={{ show: 250 }}
           overlay={renderTooltip('Delete Result')}
         >
           <div className={`d-inline-block ${styles.action}`}>
@@ -33,6 +34,7 @@ export const SMResult = props => {
         </OverlayTrigger>
         <OverlayTrigger
           placement="bottom"
+          delay={{ show: 250 }}
           overlay={renderTooltip('Add to Theme')}
         >
           <div className={`d-inline-block ${styles.action}`}>
