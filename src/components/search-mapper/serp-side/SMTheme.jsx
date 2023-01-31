@@ -4,7 +4,7 @@ import styles from './SMTheme.module.scss'
 import { SMResultGrouped } from './SMResultGrouped'
 
 export function SMTheme(props) {
-  const { theme, onRenameTheme, onAddIdea } = props;
+  const { theme, onRenameTheme, onEditIdea } = props;
 
   return (
     <div className={styles.wrap}>
@@ -16,7 +16,7 @@ export function SMTheme(props) {
           ))
         }
       </div>
-      <button type='button' className={styles.note} onClick={onAddIdea}>
+      <button type='button' className={styles.note} onClick={onEditIdea}>
         {
           theme.note !== ''
             ? <span>{theme.note}</span>
@@ -41,5 +41,5 @@ SMTheme.propTypes = {
     note: PropTypes.string.isRequired,
   }).isRequired,
   onRenameTheme: PropTypes.func.isRequired,
-  onAddIdea: PropTypes.func.isRequired,
+  onEditIdea: PropTypes.func.isRequired,
 }

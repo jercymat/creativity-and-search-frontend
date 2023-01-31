@@ -1,0 +1,54 @@
+@import '../../../theme/colors-theme.scss';
+@import '../../../styles/font-style.scss';
+@import '../../../styles/effect-style.scss';
+
+.btn-radios {
+  button {
+    @extend .block-corner;
+
+    width: 100%;
+    text-align: start;
+    padding: .75rem 1rem;
+    border: none;
+    background-color: $im-background;
+
+    &:not(:last-of-type) {
+      margin-bottom: .5rem;
+    }
+
+    &.active {
+      background-color: $im-secondary;
+
+      .title {
+        color: white;
+      }
+
+      .sr_count {
+        color: white;
+      }
+    }
+
+    &:hover {
+      .title {
+        color: white;
+      }
+
+      .sr_count {
+        color: white;
+      }
+    }
+
+    .title {
+      @extend .font-weight-medium;
+      font-size: $font-size-title2;
+      color: $im-dark;
+      margin-bottom: 0;
+    }
+
+    .sr_count {
+      @extend .font-weight-medium;
+      color: $im-unaccent;
+      margin-bottom: 0;
+    }
+  }
+}

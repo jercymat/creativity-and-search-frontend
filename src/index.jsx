@@ -17,7 +17,7 @@ import {
   faShareFromSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { AccountLayout, DefaultLayout, TestLayout } from './layouts';
-import './theme/bootstrap-theme.scss'
+import './theme/bootstrap-theme.scss';
 import './index.scss';
 import axios from 'axios';
 import reportWebVitals from './reportWebVitals';

@@ -14,8 +14,12 @@ import {
   SM_SR_REORDER,
   SM_SR_REORDER_FAIL,
   SM_SR_REORDER_SUCCESS,
+  SM_THEME_DIALOG_ADD_OPEN,
+  SM_THEME_DIALOG_CLOSE,
+  SM_THEME_DIALOG_MOVE_OPEN,
   SM_TXT_DIALOG_ADD_IDEA_OPEN,
   SM_TXT_DIALOG_CLOSE,
+  SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_SAVED_RESULTS,
 } from "../actions/types/search";
@@ -24,6 +28,12 @@ const initialState = {
   loading: false,
   submitting: false,
   bgLoading: false,
+
+  // focus
+  currentFocusTheme: -1,
+  currentFocusResult: -1,
+
+  // dialogs
   messageDialogShow: false,
   messageContent: {
     title: '',
@@ -33,6 +43,10 @@ const initialState = {
   },
   textDialogShow: false,
   textDialogMode: 'add-idea',
+  themeDialogShow: false,
+  themeDialogMode: 'add',
+
+  // other data
   bufferedSearch: {
     results: [],
     q: '',
@@ -110,6 +124,13 @@ const reducer = (state = initialState, { type, payload }) => {
       textDialogMode: 'add-idea',
     }
 
+  case SM_TXT_DIALOG_EDIT_IDEA_OPEN:
+    return {
+      ...state,
+      textDialogShow: true,
+      textDialogMode: 'edit-idea',
+    }
+
   case SM_TXT_DIALOG_RENAME_THEME_OPEN:
     return {
       ...state,
@@ -119,6 +140,25 @@ const reducer = (state = initialState, { type, payload }) => {
 
   case SM_TXT_DIALOG_CLOSE:
     return { ...state, textDialogShow: false }
+
+  case SM_THEME_DIALOG_ADD_OPEN:
+    return {
+      ...state,
+      themeDialogShow: true,
+      themeDialogMode: 'add',
+      currentFocusResult: payload.resultID,
+    }
+
+  case SM_THEME_DIALOG_MOVE_OPEN:
+    return {
+      ...state,
+      themeDialogShow: true,
+      themeDialogMode: 'move',
+      currentFocusResult: payload.resultID,
+    }
+
+  case SM_THEME_DIALOG_CLOSE:
+    return { ...state, themeDialogShow: false }
 
   default:
     return state;
