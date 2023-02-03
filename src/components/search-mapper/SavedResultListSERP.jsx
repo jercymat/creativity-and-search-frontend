@@ -101,7 +101,7 @@ function SavedResultListSERP(props) {
   const onRemoveFromTheme = resultID => {
     console.log(`Ungroup result ${resultID}`);
     changeTheme(savedResultsV2[0].id, resultID);
-  }
+  };
 
   return (
     <div id="im-saved-results" className={styles.wrap}>
@@ -111,6 +111,7 @@ function SavedResultListSERP(props) {
           theme={theme}
           onRenameTheme={() => openRenameThemeDialog(theme.id)}
           onEditIdea={() => openEditIdeaDialog(theme.id)}
+          onMoveToTheme={({ resultID, fromThemeID }) => openMoveThemeDialog(fromThemeID, resultID)}
           onRemoveFromTheme={onRemoveFromTheme} />)}
       {savedResultsV2[0].searchResultList.map(save =>
         <SMResult
@@ -159,6 +160,7 @@ function SavedResultListSERP(props) {
         mode={themeDialogMode}
         submitting={submitting}
         themes={savedResultsV2}
+        currentFocusTheme={currentFocusTheme}
         currentFocusResult={currentFocusResult}
         onSubmission={onAddToTheme}
         onClose={closeThemeDialog} />

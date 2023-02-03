@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Modal, Spinner } from 'react-bootstrap';
 import { StandardButton } from '../../general/button';
@@ -10,7 +10,7 @@ const TITLES = {
 };
 
 export const SMThemeDialog = props => {
-  const { show, mode, submitting, themes, currentFocusResult, onSubmission, onClose } = props;
+  const { show, mode, submitting, themes, currentFocusTheme, currentFocusResult, onSubmission, onClose } = props;
   const [chosenGroupID, setChosenGroupID] = useState(null);
 
   const handleSubmit = () => {
@@ -31,6 +31,13 @@ export const SMThemeDialog = props => {
   const clearForm = () => {
     setChosenGroupID(null);
   }
+
+  useEffect(() => {
+    if (mode === 'move') {
+      setChosenGroupID(currentFocusTheme);
+    }
+  }, [mode, currentFocusTheme]);
+  
 
   return (
     <Modal show={show} centered>
@@ -92,6 +99,7 @@ SMThemeDialog.propTypes = {
   mode: PropTypes.oneOf(['add', 'move']).isRequired,
   submitting: PropTypes.bool.isRequired,
   themes: PropTypes.array.isRequired,
+  currentFocusTheme: PropTypes.number.isRequired,
   currentFocusResult: PropTypes.number.isRequired,
   onSubmission: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,

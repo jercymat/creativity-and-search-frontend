@@ -51,7 +51,8 @@ export const SMResultGrouped = props => {
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton
               variant='primary'
-              unicons={<Unicons.UilArrowUpRight />} />
+              unicons={<Unicons.UilArrowUpRight />}
+              onClick={() => props.onMoveToTheme(props.save.id)} />
           </div>
         </OverlayTrigger>
       </div>
@@ -67,5 +68,6 @@ SMResultGrouped.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired,
+  onMoveToTheme: PropTypes.func.isRequired,
   onRemoveFromTheme: PropTypes.func.isRequired,
 }

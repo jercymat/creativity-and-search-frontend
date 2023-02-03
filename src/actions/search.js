@@ -50,5 +50,5 @@ export const openEditIdeaDialog = themeID => ({ type: SM_TXT_DIALOG_EDIT_IDEA_OP
 export const openRenameThemeDialog = themeID => ({ type: SM_TXT_DIALOG_RENAME_THEME_OPEN, payload: { themeID } });
 export const closeTextDialog = () => ({ type: SM_TXT_DIALOG_CLOSE });
 export const openAddThemeDialog = resultID => ({ type: SM_THEME_DIALOG_ADD_OPEN, payload: { resultID } });
-export const openMoveThemeDialog = resultID => ({ type: SM_THEME_DIALOG_MOVE_OPEN, payload: { resultID } });
+export const openMoveThemeDialog = (fromThemeID, resultID) => ({ type: SM_THEME_DIALOG_MOVE_OPEN, payload: { resultID, fromThemeID } });
 export const closeThemeDialog = () => ({ type: SM_THEME_DIALOG_CLOSE });

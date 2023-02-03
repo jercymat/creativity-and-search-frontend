@@ -183,6 +183,7 @@ const reducer = (state = initialState, { type, payload }) => {
       themeDialogShow: true,
       themeDialogMode: 'move',
       currentFocusResult: payload.resultID,
+      currentFocusTheme: payload.fromThemeID,
     };
 
   case SM_THEME_DIALOG_CLOSE:
