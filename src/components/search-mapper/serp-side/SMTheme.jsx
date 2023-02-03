@@ -4,7 +4,7 @@ import styles from './SMTheme.module.scss'
 import { SMResultGrouped } from './SMResultGrouped'
 
 export function SMTheme(props) {
-  const { theme, onRenameTheme, onEditIdea, onRemoveFromTheme, onMoveToTheme } = props;
+  const { theme, onRenameTheme, onEditIdea, onRemoveFromTheme, onMoveToTheme, onDeleteSaved } = props;
 
   return (
     <div className={styles.wrap}>
@@ -15,6 +15,7 @@ export function SMTheme(props) {
             <SMResultGrouped
               key={s.id}
               save={s}
+              onDeleteSaved={onDeleteSaved}
               onRemoveFromTheme={onRemoveFromTheme}
               onMoveToTheme={resultID => onMoveToTheme({ resultID, fromThemeID: theme.id })} />
           ))
@@ -48,4 +49,5 @@ SMTheme.propTypes = {
   onEditIdea: PropTypes.func.isRequired,
   onRemoveFromTheme: PropTypes.func.isRequired,
   onMoveToTheme: PropTypes.func.isRequired,
+  onDeleteSaved: PropTypes.func.isRequired,
 }

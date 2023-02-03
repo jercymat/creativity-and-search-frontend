@@ -28,7 +28,8 @@ export const SMResultGrouped = props => {
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton
               variant='danger'
-              unicons={<Unicons.UilTrashAlt />} />
+              unicons={<Unicons.UilTrashAlt />}
+              onClick={() => props.onDeleteSaved(props.save.id.toString())} />
           </div>
         </OverlayTrigger>
         <OverlayTrigger
@@ -68,6 +69,7 @@ SMResultGrouped.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired,
+  onDeleteSaved: PropTypes.func.isRequired,
   onMoveToTheme: PropTypes.func.isRequired,
   onRemoveFromTheme: PropTypes.func.isRequired,
 }

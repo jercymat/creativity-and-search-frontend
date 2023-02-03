@@ -111,6 +111,7 @@ function SavedResultListSERP(props) {
           theme={theme}
           onRenameTheme={() => openRenameThemeDialog(theme.id)}
           onEditIdea={() => openEditIdeaDialog(theme.id)}
+          onDeleteSaved={handleRemoveSaved}
           onMoveToTheme={({ resultID, fromThemeID }) => openMoveThemeDialog(fromThemeID, resultID)}
           onRemoveFromTheme={onRemoveFromTheme} />)}
       {savedResultsV2[0].searchResultList.map(save =>
