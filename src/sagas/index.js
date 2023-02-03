@@ -1,7 +1,7 @@
 import { all, takeEvery } from 'redux-saga/effects';
 import { GLOBAL_LOGIN, GLOBAL_LOGOUT } from '../actions/types/global';
 import {
-  SM_SR2_ADD_TO_THEME,
+  SM_SR2_CHANGE_THEME,
   SM_SR2_EDIT_THEME_IDEA,
   SM_SR2_LOAD,
   SM_SR2_RENAME_THEME,
@@ -13,7 +13,7 @@ import {
 import { globalLogin, globalLogout } from './global';
 import {
   smAddSavedResults,
-  smAddToTheme,
+  smChangeTheme,
   smDeleteSavedResults,
   smEditThemeIdea,
   smLoadSavedResults,
@@ -36,6 +36,6 @@ export default function* rootSaga() {
     takeEvery(SM_SR2_LOAD, smLoadSavedResultsV2),
     takeEvery(SM_SR2_RENAME_THEME, smRenameTheme),
     takeEvery(SM_SR2_EDIT_THEME_IDEA, smEditThemeIdea),
-    takeEvery(SM_SR2_ADD_TO_THEME, smAddToTheme),
+    takeEvery(SM_SR2_CHANGE_THEME, smChangeTheme),
   ]);
 }

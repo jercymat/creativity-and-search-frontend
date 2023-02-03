@@ -39,7 +39,8 @@ export const SMResultGrouped = props => {
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton
               variant='warning'
-              unicons={<Unicons.UilLayerGroupSlash />} />
+              unicons={<Unicons.UilLayerGroupSlash />}
+              onClick={() => props.onRemoveFromTheme(props.save.id)} />
           </div>
         </OverlayTrigger>
         <OverlayTrigger
@@ -66,4 +67,5 @@ SMResultGrouped.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired,
+  onRemoveFromTheme: PropTypes.func.isRequired,
 }

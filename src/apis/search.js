@@ -97,7 +97,7 @@ export const addThemeIdeaAPI = data =>
       error: e.message
     }));
 
-export const addToThemeAPI = data =>
+export const changeThemeAPI = data =>
   axios.post(SEARCH_URL, {
     action: "change_group",
     searchResultId: data.resultID,
