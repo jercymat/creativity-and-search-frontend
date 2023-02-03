@@ -9,27 +9,15 @@ const TITLES = {
   'move': 'Move to Theme',
 };
 
-const MOCK_THEMES = [
-  {
-    id: 1,
-    name: 'Search Mapper Group 1',
-    sr_count: 2
-  },
-  {
-    id: 2,
-    name: 'Search Mapper Group 2',
-    sr_count: 4
-  }
-]
-
 export const SMThemeDialog = props => {
-  const { show, mode, submitting, onSubmission, onClose } = props;
+  const { show, mode, submitting, themes, currentFocusResult, onSubmission, onClose } = props;
   const [chosenGroupID, setChosenGroupID] = useState(null);
 
   const handleSubmit = () => {
     if (chosenGroupID !== null) {
       onSubmission({
-        groupId: chosenGroupID,
+        themeID: chosenGroupID,
+        resultID: currentFocusResult,
       });
       clearForm();
     }
@@ -54,20 +42,21 @@ export const SMThemeDialog = props => {
           <Button
             variant='outline-primary'
             className={-1 === chosenGroupID && styles.active}
-            onClick={() => setChosenGroupID(-1)}>
+            onClick={() => setChosenGroupID(-1)}
+            disabled>
             <h2 className={styles.title}>New Theme</h2>
             <h4 className={styles.sr_count}>Create a new theme for this result</h4>
           </Button>
           <hr />
           {
-            MOCK_THEMES.map(theme => (
+            themes.slice(1).map(theme => (
               <Button
                 key={theme.id}
                 variant='outline-primary'
                 className={theme.id === chosenGroupID && styles.active}
                 onClick={() => setChosenGroupID(theme.id)}>
                 <h2 className={styles.title}>{theme.name}</h2>
-                <h4 className={styles.sr_count}>{theme.sr_count} Saved Results</h4>
+                <h4 className={styles.sr_count}>{theme.searchResultList.length} Saved Result{theme.searchResultList.length > 1 && 's'}</h4>
               </Button>
             ))
           }
@@ -102,6 +91,8 @@ SMThemeDialog.propTypes = {
   show: PropTypes.bool.isRequired,
   mode: PropTypes.oneOf(['add', 'move']).isRequired,
   submitting: PropTypes.bool.isRequired,
+  themes: PropTypes.array.isRequired,
+  currentFocusResult: PropTypes.number.isRequired,
   onSubmission: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
 };

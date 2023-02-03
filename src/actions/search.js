@@ -2,6 +2,7 @@ import {
   SM_MSG_DIALOG_CLOSE,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
+  SM_SR2_ADD_TO_THEME,
   SM_SR2_EDIT_THEME_IDEA,
   SM_SR2_LOAD,
   SM_SR2_RENAME_THEME,
@@ -39,6 +40,7 @@ export const deleteSavedResults = id => ({ type: SM_SR_DELETE, payload: { id } }
 export const loadSavedResultsV2 = () => ({ type: SM_SR2_LOAD });
 export const renameTheme = (themeID, name) => ({ type: SM_SR2_RENAME_THEME, payload: { themeID, name } });
 export const editThemeIdea = (themeID, noteID, content) => ({ type: SM_SR2_EDIT_THEME_IDEA, payload: { themeID, noteID, content } });
+export const addToTheme = (themeID, resultID) => ({ type: SM_SR2_ADD_TO_THEME, payload: { themeID, resultID } });
 
 // dialog
 export const openFormThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_FORM_THEME_OPEN });

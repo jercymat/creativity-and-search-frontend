@@ -96,3 +96,16 @@ export const addThemeIdeaAPI = data =>
       status: false,
       error: e.message
     }));
+
+export const addToThemeAPI = data =>
+  axios.post(SEARCH_URL, {
+    action: "change_group",
+    searchResultId: data.resultID,
+    groupId: data.themeID,
+    content: '',
+  }, { withCredentials: true })
+    .then(response => response.data)
+    .catch(e => ({
+      status: false,
+      error: e.message
+    }));
