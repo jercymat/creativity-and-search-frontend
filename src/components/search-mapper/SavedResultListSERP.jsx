@@ -1,11 +1,7 @@
 import PropTypes from 'prop-types';
-import { DndContext } from '@dnd-kit/core';
-import { restrictToParentElement } from '@dnd-kit/modifiers';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { useDebouncedCallback } from 'use-debounce';
-import { SavedResultPlaceHolder, SavedResultSERP } from './cell';
+import { SavedResultPlaceHolder } from './cell';
 import styles from './SavedResultList.module.scss';
 import { SMResult, SMTheme } from './serp-side';
 import {
@@ -15,8 +11,8 @@ import {
   loadSavedResults,
   openAddIdeaDialog,
   openFormThemeMsgDialog,
-  reorderSavedResults,
-  updateSavedResults,
+  // reorderSavedResults,
+  // updateSavedResults,
   openRenameThemeDialog,
   openEditIdeaDialog,
   openAddThemeDialog,
@@ -29,7 +25,11 @@ import {
 } from '../../actions/search';
 import { SMIdeaDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
-import { Button } from 'react-bootstrap';
+// import { DndContext } from '@dnd-kit/core';
+// import { restrictToParentElement } from '@dnd-kit/modifiers';
+// import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+// import { useDebouncedCallback } from 'use-debounce';
+// import { SavedResultSERP } from './cell';
 
 function SavedResultListSERP(props) {
   const {
@@ -37,7 +37,8 @@ function SavedResultListSERP(props) {
     messageDialogShow, textDialogShow, themeDialogShow,
     savedResults, savedResultsV2, messageContent, textDialogMode, themeDialogMode,
     currentFocusTheme, currentFocusResult,
-    updateSavedResults, loadSavedResults, reorderSavedResults, deleteSavedResults,
+    // updateSavedResults, reorderSavedResults,
+    loadSavedResults, deleteSavedResults,
     loadSavedResultsV2, renameTheme, editThemeIdea, changeTheme,
     openFormThemeMsgDialog, closeMessageDialog,
     openAddIdeaDialog, openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
@@ -46,25 +47,25 @@ function SavedResultListSERP(props) {
   const [fetched, setFetched] = useState(false);
 
   // load and save result list
-  const saveReorderedList = useDebouncedCallback(() => {
-    const newOrder = savedResults
-      .map((ret, i) => [parseInt(ret.id), i+1]);
+  // const saveReorderedList = useDebouncedCallback(() => {
+  //   const newOrder = savedResults
+  //     .map((ret, i) => [parseInt(ret.id), i+1]);
 
-    reorderSavedResults(newOrder);
-  }, 1000);
+  //   reorderSavedResults(newOrder);
+  // }, 1000);
 
-  const handleDragEnd = (event) => {
-    const { active, over } = event;
+  // const handleDragEnd = (event) => {
+  //   const { active, over } = event;
     
-    if (active.id !== over.id) {
-      const oldIndex = savedResults.findIndex(item => item.id === active.id);
-      const newIndex = savedResults.findIndex(item => item.id === over.id);
-      const newSaves = arrayMove(savedResults, oldIndex, newIndex);
+  //   if (active.id !== over.id) {
+  //     const oldIndex = savedResults.findIndex(item => item.id === active.id);
+  //     const newIndex = savedResults.findIndex(item => item.id === over.id);
+  //     const newSaves = arrayMove(savedResults, oldIndex, newIndex);
 
-      updateSavedResults(newSaves);
-      saveReorderedList();
-    }
-  }
+  //     updateSavedResults(newSaves);
+  //     saveReorderedList();
+  //   }
+  // }
 
   const handleRemoveSaved = useCallback((id) => {
     if (!loading) {
@@ -105,6 +106,7 @@ function SavedResultListSERP(props) {
 
   return (
     <div id="im-saved-results" className={styles.wrap}>
+      {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SavedResultPlaceHolder />}
       {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
         <SMTheme
           key={theme.id}
@@ -120,14 +122,10 @@ function SavedResultListSERP(props) {
           save={save}
           onDeleteSave={handleRemoveSaved}
           onAddToGroup={resultID => openAddThemeDialog(resultID)} />)}
-      <div>
-        <Button variant='light' className='w-100' onClick={() => openAddThemeDialog(-1)}>DEMO - Add to Theme Dialog</Button>
-      </div>
-      <hr />
+      {/* <hr />
       <div className="text-center">
         <h2>Original SearchMapper</h2>
       </div>
-      {savedResults.length === 0 && <SavedResultPlaceHolder />}
       <DndContext
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}>
@@ -141,7 +139,7 @@ function SavedResultListSERP(props) {
                 onDeleteSave={handleRemoveSaved}
                 save={save} />)}
           </SortableContext>
-      </DndContext>
+      </DndContext> */}
       <MessageDialog
         show={messageDialogShow}
         onClose={closeMessageDialog}
@@ -189,9 +187,9 @@ SavedResultListSERP.propTypes = {
   currentFocusResult: PropTypes.number.isRequired,
   
   // functions
-  updateSavedResults: PropTypes.func.isRequired,
+  // updateSavedResults: PropTypes.func.isRequired,
+  // reorderSavedResults: PropTypes.func.isRequired,
   loadSavedResults: PropTypes.func.isRequired,
-  reorderSavedResults: PropTypes.func.isRequired,
   deleteSavedResults: PropTypes.func.isRequired,
   loadSavedResultsV2: PropTypes.func.isRequired,
   renameTheme: PropTypes.func.isRequired,
@@ -224,9 +222,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateSavedResults,
+  // updateSavedResults,
+  // reorderSavedResults,
   loadSavedResults,
-  reorderSavedResults,
   deleteSavedResults,
   loadSavedResultsV2,
   renameTheme,
