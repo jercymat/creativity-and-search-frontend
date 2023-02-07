@@ -21,6 +21,7 @@ export function SMTheme(props) {
           ))
         }
       </div>
+      <hr />
       <button type='button' className={styles.note} onClick={onEditIdea}>
         {
           theme.note !== ''

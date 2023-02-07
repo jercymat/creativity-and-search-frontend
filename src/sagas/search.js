@@ -203,8 +203,6 @@ export function* smChangeTheme(action) {
     return;
   }
 
-  console.log('here');
-
   try {
     const response = yield call(changeThemeAPI, data);
     

@@ -34,7 +34,6 @@ export const checkoutEvents = async (statOfQueryId) => {
     switch (ev.event) {
       case 'newSearch':  // open a new search session
         if (!firstSearch) {
-          console.log('here');
           docViewTimePerQuery.push(docViewTime);
           events.docClickedPerQuery.push(docsClicked);
         }
