@@ -20,6 +20,7 @@ import {
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_SAVED_RESULTS,
   SM_SR2_CREATE_THEME,
+  SM_MSG_DIALOG_DELETE_THEME_OPEN,
 } from "./types/search";
 
 export const updateBufferedSearch = (search) => ({
@@ -47,6 +48,7 @@ export const changeTheme = (themeID, resultID) => ({ type: SM_SR2_CHANGE_THEME, 
 
 // dialog
 export const openFormThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_FORM_THEME_OPEN });
+export const openDeleteThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_DELETE_THEME_OPEN });
 export const closeMessageDialog = () => ({ type: SM_MSG_DIALOG_CLOSE });
 export const openAddIdeaDialog = () => ({ type: SM_TXT_DIALOG_ADD_IDEA_OPEN });
 export const openEditIdeaDialog = themeID => ({ type: SM_TXT_DIALOG_EDIT_IDEA_OPEN, payload: { themeID } });

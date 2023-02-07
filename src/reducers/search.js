@@ -1,5 +1,6 @@
 import {
   SM_MSG_DIALOG_CLOSE,
+  SM_MSG_DIALOG_DELETE_THEME_OPEN,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
   SM_SR2_CREATE_THEME,
@@ -146,6 +147,18 @@ const reducer = (state = initialState, { type, payload }) => {
         confirmText: 'Form a Theme',
       }
     };
+
+  case SM_MSG_DIALOG_DELETE_THEME_OPEN:
+    return {
+      ...state,
+      messageDialogShow: true,
+      messageContent: {
+        title: 'Last Result of a Theme',
+        content: 'Remove the last result of a theme will also delete the theme itself, along with the theme idea. Are you sure?',
+        cancelText: 'Cancel',
+        confirmText: 'Delete the Theme',
+      },
+    }
 
   case SM_MSG_DIALOG_CLOSE:
     return { ...state, messageDialogShow: false };

@@ -120,3 +120,14 @@ export const createThemeAPI = data =>
       status: false,
       error: e.message
     }));
+
+export const deleteThemeAPI = data =>
+  axios.post(THEME_URL, {
+    action: "delete_group",
+    groupId: data.themeID,
+  }, { withCredentials: true })
+    .then(response => response.data)
+    .catch(e => ({
+      status: false,
+      error: e.message
+    }));

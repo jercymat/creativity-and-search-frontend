@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { SavedResultPlaceHolder } from './cell';
 import styles from './SavedResultList.module.scss';
@@ -68,12 +68,6 @@ function SavedResultListSERP(props) {
   //   }
   // }
 
-  const handleRemoveSaved = useCallback((id) => {
-    if (!loading) {
-      deleteSavedResults(id);
-    }
-  }, [loading, deleteSavedResults]);
-
   useEffect(() => {
     if (fetched) return;
     
@@ -81,6 +75,11 @@ function SavedResultListSERP(props) {
     loadSavedResults();
     loadSavedResultsV2();
   }, [fetched, loadSavedResults, loadSavedResultsV2]);
+
+  const onDeleteSaved = resultID => {
+    console.log(`delete result ${resultID}`);
+    deleteSavedResults(resultID);
+  };
 
   const onCreateTheme = ({ name, resultID }) => {
     console.log(`new theme: ${name} - result ${resultID}`);
@@ -120,14 +119,14 @@ function SavedResultListSERP(props) {
           theme={theme}
           onRenameTheme={() => openRenameThemeDialog(theme.id)}
           onEditIdea={() => openEditIdeaDialog(theme.id)}
-          onDeleteSaved={handleRemoveSaved}
+          onDeleteSaved={onDeleteSaved}
           onMoveToTheme={({ resultID, fromThemeID }) => openMoveThemeDialog(fromThemeID, resultID)}
           onRemoveFromTheme={onRemoveFromTheme} />)}
       {savedResultsV2[0].searchResultList.map(save =>
         <SMResult
           key={save.id}
           save={save}
-          onDeleteSave={handleRemoveSaved}
+          onDeleteSave={onDeleteSaved}
           onAddToGroup={resultID => openAddThemeDialog(resultID)} />)}
       {/* <hr />
       <div className="text-center">
