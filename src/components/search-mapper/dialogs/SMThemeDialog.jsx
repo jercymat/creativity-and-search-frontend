@@ -49,8 +49,7 @@ export const SMThemeDialog = props => {
           <Button
             variant='outline-primary'
             className={-1 === chosenGroupID && styles.active}
-            onClick={() => setChosenGroupID(-1)}
-            disabled>
+            onClick={() => setChosenGroupID(-1)}>
             <h2 className={styles.title}>New Theme</h2>
             <h4 className={styles.sr_count}>Create a new theme for this result</h4>
           </Button>

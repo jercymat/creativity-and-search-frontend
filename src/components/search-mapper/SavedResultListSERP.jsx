@@ -22,8 +22,9 @@ import {
   renameTheme,
   editThemeIdea,
   changeTheme,
+  createTheme,
 } from '../../actions/search';
-import { SMIdeaDialog, SMThemeDialog } from './dialogs';
+import { SMTextDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
 // import { DndContext } from '@dnd-kit/core';
 // import { restrictToParentElement } from '@dnd-kit/modifiers';
@@ -39,7 +40,7 @@ function SavedResultListSERP(props) {
     currentFocusTheme, currentFocusResult,
     // updateSavedResults, reorderSavedResults,
     loadSavedResults, deleteSavedResults,
-    loadSavedResultsV2, renameTheme, editThemeIdea, changeTheme,
+    loadSavedResultsV2, createTheme, renameTheme, editThemeIdea, changeTheme,
     openFormThemeMsgDialog, closeMessageDialog,
     openAddIdeaDialog, openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
@@ -80,6 +81,12 @@ function SavedResultListSERP(props) {
     loadSavedResults();
     loadSavedResultsV2();
   }, [fetched, loadSavedResults, loadSavedResultsV2]);
+
+  const onCreateTheme = ({ name, resultID }) => {
+    console.log(`new theme: ${name} - result ${resultID}`);
+    createTheme(name, resultID)
+    closeTextDialog();
+  };
 
   const onRenameTheme = ({ themeID, name }) => {
     console.log(`Rename Theme ${themeID} - ${name}`);
@@ -145,13 +152,15 @@ function SavedResultListSERP(props) {
         onClose={closeMessageDialog}
         onConfirm={() => {}}
         {...messageContent} />
-      <SMIdeaDialog
+      <SMTextDialog
         show={textDialogShow}
         mode={textDialogMode}
         submitting={submitting}
         themes={savedResultsV2}
         currentFocusTheme={currentFocusTheme}
+        currentFocusResult={currentFocusResult}
         onEditIdea={onAddThemeIdea}
+        onCreateTheme={onCreateTheme}
         onRenameTheme={onRenameTheme}
         onClose={closeTextDialog} />
       <SMThemeDialog
@@ -181,7 +190,7 @@ SavedResultListSERP.propTypes = {
     cancelText: PropTypes.string.isRequired,
     confirmText: PropTypes.string.isRequired,
   }).isRequired,
-  textDialogMode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme']).isRequired,
+  textDialogMode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme', 'create-theme']).isRequired,
   themeDialogMode: PropTypes.oneOf(['add', 'move']).isRequired,
   currentFocusTheme: PropTypes.number.isRequired,
   currentFocusResult: PropTypes.number.isRequired,
@@ -192,6 +201,7 @@ SavedResultListSERP.propTypes = {
   loadSavedResults: PropTypes.func.isRequired,
   deleteSavedResults: PropTypes.func.isRequired,
   loadSavedResultsV2: PropTypes.func.isRequired,
+  createTheme: PropTypes.func.isRequired,
   renameTheme: PropTypes.func.isRequired,
   editThemeIdea: PropTypes.func.isRequired,
   changeTheme: PropTypes.func.isRequired,
@@ -229,6 +239,7 @@ const mapDispatchToProps = {
   loadSavedResultsV2,
   renameTheme,
   editThemeIdea,
+  createTheme,
   changeTheme,
   openFormThemeMsgDialog,
   closeMessageDialog,

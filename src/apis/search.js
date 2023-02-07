@@ -109,3 +109,14 @@ export const changeThemeAPI = data =>
       status: false,
       error: e.message
     }));
+
+export const createThemeAPI = data =>
+  axios.post(THEME_URL, {
+    action: "add_group",
+    name: data.name,
+  }, { withCredentials: true })
+    .then(response => response.data)
+    .catch(e => ({
+      status: false,
+      error: e.message
+    }));

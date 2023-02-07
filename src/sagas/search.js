@@ -1,7 +1,9 @@
 import { all, call, put } from "redux-saga/effects";
 import {
+  SM_SR2_CHANGE_THEME,
   SM_SR2_CHANGE_THEME_FAIL,
   SM_SR2_CHANGE_THEME_SUCCESS,
+  SM_SR2_CREATE_THEME_FAIL,
   SM_SR2_EDIT_THEME_IDEA_FAIL,
   SM_SR2_EDIT_THEME_IDEA_SUCCESS,
   SM_SR2_LOAD,
@@ -17,8 +19,9 @@ import {
   SM_SR_LOAD_SUCCESS,
   SM_SR_REORDER_FAIL,
   SM_SR_REORDER_SUCCESS,
+  SM_TXT_DIALOG_CREATE_THEME_OPEN,
 } from "../actions/types/search";
-import { addSavedResultAPI, addThemeIdeaAPI, changeThemeAPI, deleteSavedResultAPI, editThemeIdeaAPI, loadSavedResultAPI, loadSavedResultV2API, renameThemeAPI, reorderSavedResultAPI } from "../apis/search";
+import { addSavedResultAPI, addThemeIdeaAPI, changeThemeAPI, createThemeAPI, deleteSavedResultAPI, editThemeIdeaAPI, loadSavedResultAPI, loadSavedResultV2API, renameThemeAPI, reorderSavedResultAPI } from "../apis/search";
 import { getCurrentTime } from "../utils";
 
 export function* smAddSavedResults(action) {
@@ -195,6 +198,13 @@ export function* smChangeTheme(action) {
   const data = action.payload;
   console.log('add to theme saga');
 
+  if (data.themeID === -1) {
+    yield put({ type: SM_TXT_DIALOG_CREATE_THEME_OPEN });
+    return;
+  }
+
+  console.log('here');
+
   try {
     const response = yield call(changeThemeAPI, data);
     
@@ -208,5 +218,28 @@ export function* smChangeTheme(action) {
     }
   } catch (error) {
     yield put({ type: SM_SR2_CHANGE_THEME_FAIL, payload: { error: error.toString() } });
+  }
+}
+
+export function* smCreateTheme(action) {
+  const { name, resultID } = action.payload;
+
+  try {
+    const response = yield call(createThemeAPI, { name });
+
+    if (response.ret === 0) {
+      yield all([
+        put({
+          type: SM_SR2_CHANGE_THEME, payload: {
+            themeID: response.id,
+            resultID,
+          }
+        }),
+      ]);
+    } else {
+      yield put({ type: SM_SR2_CREATE_THEME_FAIL, payload: { error: response.error } });
+    }
+  } catch (error) {
+    yield put({ type: SM_SR2_CREATE_THEME_FAIL, payload: { error: error.toString() } });
   }
 }

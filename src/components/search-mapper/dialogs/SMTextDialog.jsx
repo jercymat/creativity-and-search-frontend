@@ -6,17 +6,22 @@ import { StandardButton } from '../../general/button';
 const TITLES = {
   'add-idea': 'Add Theme Idea',
   'edit-idea': 'Edit Theme Idea',
-  'rename-theme': 'Rename Theme'
+  'create-theme': 'Create a New Theme',
+  'rename-theme': 'Rename Theme',
 };
 
 const PLACEHOLDERS = {
   'add-idea': 'Enter your idea...',
   'edit-idea': 'Enter your idea...',
-  'rename-theme': 'Enter the theme name...'
+  'create-theme': 'Enter the theme name...',
+  'rename-theme': 'Enter the theme name...',
 }
 
-export const SMIdeaDialog = props => {
-  const { show, mode, submitting, themes, currentFocusTheme, onRenameTheme, onEditIdea, onClose } = props;
+export const SMTextDialog = props => {
+  const {
+    show, mode, submitting, themes, currentFocusTheme, currentFocusResult,
+    onCreateTheme, onRenameTheme, onEditIdea, onClose
+  } = props;
   const [validated, setValidated] = useState(false);
   const [text, setText] = useState('');
   const [noteID, setNoteID] = useState(-1);
@@ -36,6 +41,11 @@ export const SMIdeaDialog = props => {
       onRenameTheme({
         themeID: currentFocusTheme,
         name: fd.get('theme-idea'),
+      });
+    } else if (mode === 'create-theme') {
+      onCreateTheme({
+        name: fd.get('theme-idea'),
+        resultID: currentFocusResult,
       });
     } else if (mode === 'edit-idea') {
       onEditIdea({
@@ -60,6 +70,8 @@ export const SMIdeaDialog = props => {
     } else if (mode === 'edit-idea') {
       setText(currentTheme.note);
       setNoteID(currentTheme.noteID);
+    } else if (mode === 'create-theme') {
+      setText('');
     }
   }, [currentFocusTheme, themes, mode]);
   
@@ -74,7 +86,7 @@ export const SMIdeaDialog = props => {
           <Form.Group controlId='text-idea-text'>
             <Form.Control
               key={text}
-              as='textarea'
+              as={['rename-theme', 'create-theme'].includes(mode) ? 'input' : 'textarea'}
               name='theme-idea'
               defaultValue={text}
               rows={3}
@@ -105,12 +117,14 @@ export const SMIdeaDialog = props => {
   )
 }
 
-SMIdeaDialog.propTypes = {
+SMTextDialog.propTypes = {
   show: PropTypes.bool.isRequired,
-  mode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme']).isRequired,
+  mode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme', 'create-theme']).isRequired,
   submitting: PropTypes.bool.isRequired,
   themes: PropTypes.array.isRequired,
   currentFocusTheme: PropTypes.number.isRequired,
+  currentFocusResult: PropTypes.number.isRequired,
+  onCreateTheme: PropTypes.func.isRequired,
   onRenameTheme: PropTypes.func.isRequired,
   onEditIdea: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,

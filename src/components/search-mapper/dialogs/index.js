@@ -1,2 +1,2 @@
-export { SMIdeaDialog } from './SMIdeaDialog';
+export { SMTextDialog } from './SMTextDialog';
 export { SMThemeDialog } from './SMThemeDialog';

@@ -14,10 +14,12 @@ import {
   SM_THEME_DIALOG_CLOSE,
   SM_THEME_DIALOG_MOVE_OPEN,
   SM_TXT_DIALOG_ADD_IDEA_OPEN,
+  SM_TXT_DIALOG_CREATE_THEME_OPEN,
   SM_TXT_DIALOG_CLOSE,
   SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_SAVED_RESULTS,
+  SM_SR2_CREATE_THEME,
 } from "./types/search";
 
 export const updateBufferedSearch = (search) => ({
@@ -40,6 +42,7 @@ export const deleteSavedResults = id => ({ type: SM_SR_DELETE, payload: { id } }
 export const loadSavedResultsV2 = () => ({ type: SM_SR2_LOAD });
 export const renameTheme = (themeID, name) => ({ type: SM_SR2_RENAME_THEME, payload: { themeID, name } });
 export const editThemeIdea = (themeID, noteID, content) => ({ type: SM_SR2_EDIT_THEME_IDEA, payload: { themeID, noteID, content } });
+export const createTheme = (name, resultID) => ({ type: SM_SR2_CREATE_THEME, payload: { name, resultID } });
 export const changeTheme = (themeID, resultID) => ({ type: SM_SR2_CHANGE_THEME, payload: { themeID, resultID } });
 
 // dialog
@@ -47,6 +50,7 @@ export const openFormThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_FORM_THEME_OP
 export const closeMessageDialog = () => ({ type: SM_MSG_DIALOG_CLOSE });
 export const openAddIdeaDialog = () => ({ type: SM_TXT_DIALOG_ADD_IDEA_OPEN });
 export const openEditIdeaDialog = themeID => ({ type: SM_TXT_DIALOG_EDIT_IDEA_OPEN, payload: { themeID } });
+export const openCreateThemeDialog = () => ({ type: SM_TXT_DIALOG_CREATE_THEME_OPEN });
 export const openRenameThemeDialog = themeID => ({ type: SM_TXT_DIALOG_RENAME_THEME_OPEN, payload: { themeID } });
 export const closeTextDialog = () => ({ type: SM_TXT_DIALOG_CLOSE });
 export const openAddThemeDialog = resultID => ({ type: SM_THEME_DIALOG_ADD_OPEN, payload: { resultID } });

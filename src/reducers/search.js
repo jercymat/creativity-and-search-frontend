@@ -2,6 +2,9 @@ import {
   SM_MSG_DIALOG_CLOSE,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
+  SM_SR2_CREATE_THEME,
+  SM_SR2_CREATE_THEME_FAIL,
+  SM_SR2_CREATE_THEME_SUCCESS,
   SM_SR2_EDIT_THEME_IDEA,
   SM_SR2_EDIT_THEME_IDEA_FAIL,
   SM_SR2_EDIT_THEME_IDEA_SUCCESS,
@@ -28,6 +31,7 @@ import {
   SM_THEME_DIALOG_MOVE_OPEN,
   SM_TXT_DIALOG_ADD_IDEA_OPEN,
   SM_TXT_DIALOG_CLOSE,
+  SM_TXT_DIALOG_CREATE_THEME_OPEN,
   SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_SAVED_RESULTS,
@@ -82,6 +86,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_LOAD:
   case SM_SR_DELETE:
   case SM_SR2_LOAD:
+  case SM_SR2_CREATE_THEME:
   case SM_SR2_RENAME_THEME:
   case SM_SR2_EDIT_THEME_IDEA:
     return { ...state, loading: true };
@@ -112,6 +117,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR2_LOAD_SUCCESS:
     return { ...state, loading: false, savedResultsV2: payload.savedResults };
 
+  case SM_SR2_CREATE_THEME_SUCCESS:
   case SM_SR2_RENAME_THEME_SUCCESS:
   case SM_SR2_EDIT_THEME_IDEA_SUCCESS:
     return { ...state, loading: false };
@@ -120,6 +126,7 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SR_LOAD_FAIL:
   case SM_SR_DELETE_FAIL:
   case SM_SR2_LOAD_FAIL:
+  case SM_SR2_CREATE_THEME_FAIL:
   case SM_SR2_RENAME_THEME_FAIL:
   case SM_SR2_EDIT_THEME_IDEA_FAIL:
     return { ...state, loading: false };
@@ -156,6 +163,13 @@ const reducer = (state = initialState, { type, payload }) => {
       textDialogShow: true,
       textDialogMode: 'edit-idea',
       currentFocusTheme: payload.themeID,
+    };
+
+  case SM_TXT_DIALOG_CREATE_THEME_OPEN:
+    return {
+      ...state,
+      textDialogShow: true,
+      textDialogMode: 'create-theme',
     };
 
   case SM_TXT_DIALOG_RENAME_THEME_OPEN:

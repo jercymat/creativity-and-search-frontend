@@ -43,10 +43,14 @@ export function* globalLogout() {
   try {
     const response = yield call(globalUserAPI, body);
 
+    console.log(response);
+
     if (response.ret === 0) {
+      console.log('success');
       localStorage.removeItem('__im_username__');
       yield put({ type: GLOBAL_LOGOUT_SUCCESS });
     } else {
+      console.log('fail');
       yield put({ type: GLOBAL_LOGOUT_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
