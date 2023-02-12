@@ -3,8 +3,23 @@ import PropTypes from 'prop-types'
 import styles from './SMTheme.module.scss'
 import { SMResultGrouped } from './SMResultGrouped'
 
+const MESSAGES = {
+  LAST_RESULT: 'This is the last saved result in this theme, removing this result from the theme will also delete this theme and its notes.'
+};
+
 export function SMTheme(props) {
   const { theme, onRenameTheme, onEditIdea, onRemoveFromTheme, onMoveToTheme, onDeleteSaved } = props;
+
+  const handleDeleteSaved = resultID => {
+    const isConfirmed = theme.searchResultList.length === 1
+      ? window.confirm(MESSAGES.LAST_RESULT)
+      : true;
+
+    if (isConfirmed) {
+      onDeleteSaved(resultID);
+      // TODO: add delete theme API
+    }
+  };
 
   return (
     <div className={styles.wrap}>
@@ -15,7 +30,7 @@ export function SMTheme(props) {
             <SMResultGrouped
               key={s.id}
               save={s}
-              onDeleteSaved={onDeleteSaved}
+              onDeleteSaved={handleDeleteSaved}
               onRemoveFromTheme={onRemoveFromTheme}
               onMoveToTheme={resultID => onMoveToTheme({ resultID, fromThemeID: theme.id })} />
           ))

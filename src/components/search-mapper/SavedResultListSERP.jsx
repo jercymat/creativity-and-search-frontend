@@ -32,6 +32,10 @@ import { MessageDialog } from '../general/popup';
 // import { useDebouncedCallback } from 'use-debounce';
 // import { SavedResultSERP } from './cell';
 
+const MESSAGE = {
+  MOVE_LAST_RESULT: 'This is the last saved result in this theme, moving this result from the theme will also delete this theme and its notes.'
+}
+
 function SavedResultListSERP(props) {
   const {
     loading, submitting,
@@ -99,9 +103,18 @@ function SavedResultListSERP(props) {
     closeTextDialog();
   };
 
-  const onAddToTheme = ({ themeID, resultID }) => {
-    console.log(`${themeDialogMode} result ${resultID} to theme ${themeID}`);
-    changeTheme(themeID, resultID);
+  const onAddToTheme = ({ fromThemeID, themeID, resultID }) => {
+    const isThemed = ![0, -1].includes(savedResultsV2.map(theme => theme.id).indexOf(fromThemeID));
+    const isConfirmed = isThemed && savedResultsV2.find(el => el.id === fromThemeID).searchResultList.length === 1
+      ? window.confirm(MESSAGE.MOVE_LAST_RESULT)
+      : true;
+
+    if (isConfirmed) {
+      console.log(`${themeDialogMode} result ${resultID} from theme ${fromThemeID} to theme ${themeID}`);
+      changeTheme(themeID, resultID);
+
+      // TODO: add delete theme API
+    }
     closeThemeDialog();
   };
 
@@ -127,7 +140,7 @@ function SavedResultListSERP(props) {
           key={save.id}
           save={save}
           onDeleteSave={onDeleteSaved}
-          onAddToGroup={resultID => openAddThemeDialog(resultID)} />)}
+          onAddToGroup={resultID => openAddThemeDialog(savedResultsV2[0].id, resultID)} />)}
       {/* <hr />
       <div className="text-center">
         <h2>Original SearchMapper</h2>

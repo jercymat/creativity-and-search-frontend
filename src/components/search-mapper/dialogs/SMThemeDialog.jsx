@@ -16,6 +16,7 @@ export const SMThemeDialog = props => {
   const handleSubmit = () => {
     if (chosenGroupID !== null) {
       onSubmission({
+        fromThemeID: currentFocusTheme,
         themeID: chosenGroupID,
         resultID: currentFocusResult,
       });
