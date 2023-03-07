@@ -1,15 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styles from './SMResult.module.scss'
-import { CircleUniconButton } from '../../general/button'
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './SMResult.SERP.module.scss';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { CircleUniconButton } from '../../general/button';
 import * as Unicons from '@iconscout/react-unicons';
 
 const renderTooltip = text => props => (
   <Tooltip {...props}>{text}</Tooltip>
 );
 
-export const SMResultGrouped = props => {
+export const SMResultSERP = props => {
   return (
     <div className={styles.wrap}>
       <div className={styles.head}>
@@ -29,31 +29,19 @@ export const SMResultGrouped = props => {
             <CircleUniconButton
               variant='danger'
               unicons={<Unicons.UilTrashAlt />}
-              onClick={() => props.onDeleteSaved(props.save.id.toString())} />
+              onClick={() => props.onDeleteSave(props.save.id.toString())} />
           </div>
         </OverlayTrigger>
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250 }}
-          overlay={renderTooltip('Remove from Theme')}
-        >
-          <div className={`d-inline-block ${styles.action}`}>
-            <CircleUniconButton
-              variant='warning'
-              unicons={<Unicons.UilLayerGroupSlash />}
-              onClick={() => props.onRemoveFromTheme(props.save.id)} />
-          </div>
-        </OverlayTrigger>
-        <OverlayTrigger
-          placement="bottom"
-          delay={{ show: 250 }}
-          overlay={renderTooltip('Move to Other Theme')}
+          overlay={renderTooltip('Add to Theme')}
         >
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton
               variant='primary'
-              unicons={<Unicons.UilArrowUpRight />}
-              onClick={() => props.onMoveToTheme(props.save.id)} />
+              unicons={<Unicons.UilLayerGroup />}
+              onClick={() => props.onAddToGroup(props.save.id)} />
           </div>
         </OverlayTrigger>
       </div>
@@ -61,7 +49,7 @@ export const SMResultGrouped = props => {
   )
 }
 
-SMResultGrouped.propTypes = {
+SMResultSERP.propTypes = {
   save: PropTypes.shape({
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
@@ -69,7 +57,6 @@ SMResultGrouped.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired,
-  onDeleteSaved: PropTypes.func.isRequired,
-  onMoveToTheme: PropTypes.func.isRequired,
-  onRemoveFromTheme: PropTypes.func.isRequired,
+  onDeleteSave: PropTypes.func.isRequired,
+  onAddToGroup: PropTypes.func.isRequired,
 }

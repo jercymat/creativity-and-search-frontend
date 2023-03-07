@@ -1,0 +1,52 @@
+@import '../../../theme/colors-theme.scss';
+@import '../../../styles/font-style.scss';
+@import '../../../styles/effect-style.scss';
+
+.add-idea {
+  transition: all .1s ease-in-out;
+
+  &:hover {
+    cursor: crosshair;
+    background-color: $im-secondary;
+    color: $im-background;
+  }
+
+  &:active {
+    background-color: $im-primary;
+  }
+}
+
+.wrap {
+  @extend .block-shadow;
+  @extend .block-corner;
+  position: relative;
+  padding: .75rem 1rem .75rem 1rem;
+  background-color: $im-background;
+
+  .head {
+    margin-bottom: .25rem;
+
+    .title {
+      @extend .add-idea;
+      @extend .font-weight-medium;
+      font-size: $font-size-title2;
+      color: $im-primary;
+      margin-bottom: 0;
+    }
+
+    .url {
+      @extend .add-idea;
+      @extend .font-weight-medium;
+      color: $im-secondary;
+      margin-bottom: 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
+  .desc {
+    @extend .add-idea;
+    @extend .font-weight-regular;
+    margin-bottom: 0;
+  }
+}

@@ -1,42 +1,46 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-import { SavedResultIM } from './cell';
 import styles from './SavedResultList.module.scss';
 import { connect } from 'react-redux';
-import { loadSavedResults } from '../../actions/search';
+import { loadSavedResultsV2 } from '../../actions/search';
+import { SMResultIM, SMThemeIM } from './im-side';
 
 function SavedResultListIM(props) {
-  const { savedResults, loadSavedResults } = props;
+  const { savedResultsV2, loadSavedResultsV2 } = props;
   const [fetched, setFetched] = useState(false);
 
   useEffect(() => {
     if (fetched) return;
-    if (savedResults.length !== 0) return;
 
     setFetched(true);
-    loadSavedResults();
-  }, [fetched, loadSavedResults, savedResults]);
+    loadSavedResultsV2();
+  }, [fetched, loadSavedResultsV2]);
 
   return (
     <div id='im-saved-results' className={styles.wrap}>
-      {savedResults.map(save => (
-        <SavedResultIM key={ save.id } save={save} />
-      ))}
+      {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
+        <SMThemeIM
+          key={theme.id}
+          theme={theme} />)}
+      {savedResultsV2[0].searchResultList.map(save =>
+        <SMResultIM
+          key={save.id}
+          save={save} />)}
     </div>
   )
 }
 
 SavedResultListIM.propTypes = {
-  savedResults: PropTypes.array.isRequired,
-  loadSavedResults: PropTypes.func.isRequired,
+  savedResultsV2: PropTypes.array.isRequired,
+  loadSavedResultsV2: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-  savedResults: state.search.savedResults,
+  savedResultsV2: state.search.savedResultsV2,
 });
 
 const mapDispatchToProps = {
-  loadSavedResults,
+  loadSavedResultsV2,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SavedResultListIM);

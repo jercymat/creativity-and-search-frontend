@@ -1,3 +1,3 @@
-export { SMTheme } from './SMTheme';
-export { SMResultGrouped } from './SMResultGrouped';
-export { SMResult } from './SMResult';
+export { SMThemeSERP } from './SMThemeSERP';
+export { SMResultGroupedSERP } from './SMResultGroupedSERP';
+export { SMResultSERP } from './SMResultSERP';

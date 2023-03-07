@@ -3,16 +3,12 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { SavedResultPlaceHolder } from './cell';
 import styles from './SavedResultList.module.scss';
-import { SMResult, SMTheme } from './serp-side';
+import { SMResultSERP, SMThemeSERP } from './serp-side';
 import {
   closeTextDialog,
   closeMessageDialog,
   deleteSavedResults,
   loadSavedResults,
-  openAddIdeaDialog,
-  openFormThemeMsgDialog,
-  // reorderSavedResults,
-  // updateSavedResults,
   openRenameThemeDialog,
   openEditIdeaDialog,
   openAddThemeDialog,
@@ -26,11 +22,6 @@ import {
 } from '../../actions/search';
 import { SMTextDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
-// import { DndContext } from '@dnd-kit/core';
-// import { restrictToParentElement } from '@dnd-kit/modifiers';
-// import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-// import { useDebouncedCallback } from 'use-debounce';
-// import { SavedResultSERP } from './cell';
 
 const MESSAGE = {
   MOVE_LAST_RESULT: 'This is the last saved result in this theme, moving this result from the theme will also delete this theme and its notes.'
@@ -38,39 +29,17 @@ const MESSAGE = {
 
 function SavedResultListSERP(props) {
   const {
-    loading, submitting,
+    submitting,
     messageDialogShow, textDialogShow, themeDialogShow,
-    savedResults, savedResultsV2, messageContent, textDialogMode, themeDialogMode,
+    savedResultsV2, messageContent, textDialogMode, themeDialogMode,
     currentFocusTheme, currentFocusResult,
-    // updateSavedResults, reorderSavedResults,
     loadSavedResults, deleteSavedResults,
     loadSavedResultsV2, createTheme, renameTheme, editThemeIdea, changeTheme,
-    openFormThemeMsgDialog, closeMessageDialog,
-    openAddIdeaDialog, openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
+    closeMessageDialog,
+    openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
   } = props;
   const [fetched, setFetched] = useState(false);
-
-  // load and save result list
-  // const saveReorderedList = useDebouncedCallback(() => {
-  //   const newOrder = savedResults
-  //     .map((ret, i) => [parseInt(ret.id), i+1]);
-
-  //   reorderSavedResults(newOrder);
-  // }, 1000);
-
-  // const handleDragEnd = (event) => {
-  //   const { active, over } = event;
-    
-  //   if (active.id !== over.id) {
-  //     const oldIndex = savedResults.findIndex(item => item.id === active.id);
-  //     const newIndex = savedResults.findIndex(item => item.id === over.id);
-  //     const newSaves = arrayMove(savedResults, oldIndex, newIndex);
-
-  //     updateSavedResults(newSaves);
-  //     saveReorderedList();
-  //   }
-  // }
 
   useEffect(() => {
     if (fetched) return;
@@ -127,7 +96,7 @@ function SavedResultListSERP(props) {
     <div id="im-saved-results" className={styles.wrap}>
       {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SavedResultPlaceHolder />}
       {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
-        <SMTheme
+        <SMThemeSERP
           key={theme.id}
           theme={theme}
           onRenameTheme={() => openRenameThemeDialog(theme.id)}
@@ -136,29 +105,11 @@ function SavedResultListSERP(props) {
           onMoveToTheme={({ resultID, fromThemeID }) => openMoveThemeDialog(fromThemeID, resultID)}
           onRemoveFromTheme={onRemoveFromTheme} />)}
       {savedResultsV2[0].searchResultList.map(save =>
-        <SMResult
+        <SMResultSERP
           key={save.id}
           save={save}
           onDeleteSave={onDeleteSaved}
           onAddToGroup={resultID => openAddThemeDialog(savedResultsV2[0].id, resultID)} />)}
-      {/* <hr />
-      <div className="text-center">
-        <h2>Original SearchMapper</h2>
-      </div>
-      <DndContext
-      onDragEnd={handleDragEnd}
-      modifiers={[restrictToParentElement]}>
-        <SortableContext
-          items={savedResults}
-          strategy={verticalListSortingStrategy}>
-            {savedResults.map(save => 
-              <SavedResultSERP
-                key={save.id}
-                id={save.id}
-                onDeleteSave={handleRemoveSaved}
-                save={save} />)}
-          </SortableContext>
-      </DndContext> */}
       <MessageDialog
         show={messageDialogShow}
         onClose={closeMessageDialog}
@@ -194,7 +145,6 @@ SavedResultListSERP.propTypes = {
   messageDialogShow: PropTypes.bool.isRequired,
   textDialogShow: PropTypes.bool.isRequired,
   themeDialogShow: PropTypes.bool.isRequired,
-  savedResults: PropTypes.array.isRequired,
   savedResultsV2: PropTypes.array.isRequired,
   messageContent: PropTypes.shape({
     title: PropTypes.string.isRequired,
@@ -208,8 +158,6 @@ SavedResultListSERP.propTypes = {
   currentFocusResult: PropTypes.number.isRequired,
   
   // functions
-  // updateSavedResults: PropTypes.func.isRequired,
-  // reorderSavedResults: PropTypes.func.isRequired,
   loadSavedResults: PropTypes.func.isRequired,
   deleteSavedResults: PropTypes.func.isRequired,
   loadSavedResultsV2: PropTypes.func.isRequired,
@@ -229,7 +177,6 @@ SavedResultListSERP.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  loading: state.search.loading,
   submitting: state.search.submitting,
   messageDialogShow: state.search.messageDialogShow,
   textDialogShow: state.search.textDialogShow,
@@ -244,8 +191,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  // updateSavedResults,
-  // reorderSavedResults,
   loadSavedResults,
   deleteSavedResults,
   loadSavedResultsV2,
@@ -253,9 +198,7 @@ const mapDispatchToProps = {
   editThemeIdea,
   createTheme,
   changeTheme,
-  openFormThemeMsgDialog,
   closeMessageDialog,
-  openAddIdeaDialog,
   openEditIdeaDialog,
   openRenameThemeDialog,
   closeTextDialog,

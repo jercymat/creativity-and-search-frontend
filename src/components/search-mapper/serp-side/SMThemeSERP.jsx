@@ -1,13 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styles from './SMTheme.module.scss'
-import { SMResultGrouped } from './SMResultGrouped'
+import styles from './SMTheme.SERP.module.scss'
+import { SMResultGroupedSERP } from './SMResultGroupedSERP'
 
 const MESSAGES = {
   LAST_RESULT: 'This is the last saved result in this theme, removing this result from the theme will also delete this theme and its notes.'
 };
 
-export function SMTheme(props) {
+export function SMThemeSERP(props) {
   const { theme, onRenameTheme, onEditIdea, onRemoveFromTheme, onMoveToTheme, onDeleteSaved } = props;
 
   const handleDeleteSaved = resultID => {
@@ -27,7 +27,7 @@ export function SMTheme(props) {
       <div className={styles.results}>
         {
           theme.searchResultList.map(s => (
-            <SMResultGrouped
+            <SMResultGroupedSERP
               key={s.id}
               save={s}
               onDeleteSaved={handleDeleteSaved}
@@ -48,7 +48,7 @@ export function SMTheme(props) {
   )
 }
 
-SMTheme.propTypes = {
+SMThemeSERP.propTypes = {
   theme: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
