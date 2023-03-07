@@ -48,6 +48,10 @@
       color: $im-background;
     }
 
+    &:not(.emptyNote):active {
+    background-color: $im-primary;
+  }
+
     &.emptyNote:hover {
       cursor: default;
     }
