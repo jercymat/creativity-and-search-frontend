@@ -1,2 +1,4 @@
-export { SMResultIM } from './SMResultIM';
+import SMResultIM from './SMResultIM';
+
+export { SMResultIM };
 export { SMThemeIM } from './SMThemeIM';

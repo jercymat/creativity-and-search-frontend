@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { SavedResultPlaceHolder } from './cell';
 import styles from './SavedResultList.module.scss';
-import { SMResultSERP, SMThemeSERP } from './serp-side';
+import { SMPlaceHolder, SMResultSERP, SMThemeSERP } from './serp-side';
 import {
   closeTextDialog,
   closeMessageDialog,
@@ -94,7 +93,7 @@ function SavedResultListSERP(props) {
 
   return (
     <div id="im-saved-results" className={styles.wrap}>
-      {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SavedResultPlaceHolder />}
+      {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SMPlaceHolder />}
       {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
         <SMThemeSERP
           key={theme.id}
@@ -140,7 +139,7 @@ function SavedResultListSERP(props) {
 }
 
 SavedResultListSERP.propTypes = {
-  loading: PropTypes.bool.isRequired,
+  // loading: PropTypes.bool.isRequired,
   submitting: PropTypes.bool.isRequired,
   messageDialogShow: PropTypes.bool.isRequired,
   textDialogShow: PropTypes.bool.isRequired,
@@ -165,9 +164,9 @@ SavedResultListSERP.propTypes = {
   renameTheme: PropTypes.func.isRequired,
   editThemeIdea: PropTypes.func.isRequired,
   changeTheme: PropTypes.func.isRequired,
-  openFormThemeMsgDialog: PropTypes.func.isRequired,
+  // openFormThemeMsgDialog: PropTypes.func.isRequired,
   closeMessageDialog: PropTypes.func.isRequired,
-  openAddIdeaDialog: PropTypes.func.isRequired,
+  // openAddIdeaDialog: PropTypes.func.isRequired,
   openEditIdeaDialog: PropTypes.func.isRequired,
   openRenameThemeDialog: PropTypes.func.isRequired,
   closeTextDialog: PropTypes.func.isRequired,

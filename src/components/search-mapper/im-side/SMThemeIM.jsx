@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styles from './SMTheme.IM.module.scss'
-import { SMResultIM } from './SMResultIM';
+import SMResultIM from './SMResultIM';
 
 export const SMThemeIM = props => {
   const { theme } = props;
