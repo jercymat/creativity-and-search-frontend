@@ -65,6 +65,11 @@ SMResultIM.propTypes = {
     desc: PropTypes.string.isRequired,
     imgUrl: PropTypes.string
   }).isRequired,
+  graph: PropTypes.shape({
+    nodes: PropTypes.array.isRequired,
+    edges: PropTypes.array.isRequired,
+  }).isRequired,
+  updateGraph: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({

@@ -1,7 +1,7 @@
 import { Handle, Position } from "react-flow-renderer";
 import './IdeaNode.scss';
 
-function TextIdeaNode({ data }) {
+export const TextIdeaNode = ({ data }) => {
   return (
     <div className={`im-text-idea-node im-idea-node-wrap ${data.color}`}>
       <Handle type="target" position={Position.Top} />
@@ -11,6 +11,4 @@ function TextIdeaNode({ data }) {
       <div className="im-text-idea__label-wrap noselect"><span className="font-im-ideas">{data.label}</span></div>
     </div>
   )
-}
-
-export default TextIdeaNode;
+};

@@ -1,4 +1,4 @@
 import SMResultIM from './SMResultIM';
+import SMThemeIM from './SMThemeIM.jsx'
 
-export { SMResultIM };
-export { SMThemeIM } from './SMThemeIM';
+export { SMResultIM, SMThemeIM };

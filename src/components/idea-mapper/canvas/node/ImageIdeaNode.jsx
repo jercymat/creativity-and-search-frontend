@@ -1,7 +1,7 @@
 import { Handle, Position } from "react-flow-renderer";
 import './IdeaNode.scss';
 
-function ImageIdeaNode({ data }) {
+export const ImageIdeaNode = ({ data }) => {
   return (
     <div className={`im-image-idea-node im-idea-node-wrap ${data.color}`}>
       <Handle type="target" position={Position.Top} />
@@ -16,6 +16,4 @@ function ImageIdeaNode({ data }) {
       </div>
     </div>
   )
-}
-
-export default ImageIdeaNode;
+};

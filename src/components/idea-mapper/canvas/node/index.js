@@ -1,5 +1,4 @@
-import TextIdeaNode from "./TextIdeaNode";
-import LinkIdeaNode from "./LinkIdeaNode";
-import ImageIdeaNode from "./ImageIdeaNode";
-
-export { TextIdeaNode, LinkIdeaNode, ImageIdeaNode };
+export { TextIdeaNode } from "./TextIdeaNode";
+export { LinkIdeaNode } from "./LinkIdeaNode";
+export { ImageIdeaNode } from "./ImageIdeaNode";
+export { SMNoteNode } from './SMNoteNode';
