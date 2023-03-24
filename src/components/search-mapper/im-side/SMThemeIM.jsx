@@ -55,37 +55,42 @@ export const SMThemeIM = props => {
     }
 
     // test
-    const resultNode = {
-      id: `sm-result-46`,
-      type: 'sm_result',
-      selected: false,
-      data: {
-        theme_id: theme.id,
-        title: "Reduced Basis, Embedded Methods and Parametrized Levelset Geometry",
-        url: "https://arxiv.org/abs/2301.12401",
-        desc: "Numerical experiments verify the efficiency of the introduced ``hello world'' problems considering reduced order results in several cases for one, two, three and four dimensional geometrical kind of parametrization. We investigate execution times, and we illustrate transport methods and improvements. A list of important references related to ...",
-        color: 'w',
-      },
-      position: getNodeSpawnPosition(graph.nodes),
-    }
+    // const resultNode = {
+    //   id: `sm-result-46`,
+    //   type: 'sm_result',
+    //   selected: false,
+    //   data: {
+    //     theme_id: theme.id,
+    //     title: "Reduced Basis, Embedded Methods and Parametrized Levelset Geometry",
+    //     url: "https://arxiv.org/abs/2301.12401",
+    //     desc: "Numerical experiments verify the efficiency of the introduced ``hello world'' problems considering reduced order results in several cases for one, two, three and four dimensional geometrical kind of parametrization. We investigate execution times, and we illustrate transport methods and improvements. A list of important references related to ...",
+    //     color: 'w',
+    //   },
+    //   position: getNodeSpawnPosition(graph.nodes),
+    // }
 
-    const noteNode = {
-      id: `sm-theme-note-${theme.id}`,
-      type: 'sm_note',
-      selected: false,
-      data: {
-        theme_id: theme.id,
-        label: 'New note',
-        color: 'w',
-      },
-      position: getNodeSpawnPosition(graph.nodes),
-    }
+    // const noteNode = {
+    //   id: `sm-theme-note-${theme.id}`,
+    //   type: 'sm_note',
+    //   selected: false,
+    //   data: {
+    //     theme_id: theme.id,
+    //     label: 'New note',
+    //     color: 'w',
+    //   },
+    //   position: getNodeSpawnPosition(graph.nodes),
+    // }
+
+    // updateGraph({
+    //   nodes: graph.nodes.map(node => ({ ...node, selected: false }))
+    //     .concat(themeNode)
+    //     .concat(resultNode)
+    //     .concat(noteNode),
+    //   edges: graph.edges
+    // });
 
     updateGraph({
-      nodes: graph.nodes.map(node => ({ ...node, selected: false }))
-        .concat(themeNode)
-        .concat(resultNode)
-        .concat(noteNode),
+      nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(themeNode),
       edges: graph.edges
     });
   }
