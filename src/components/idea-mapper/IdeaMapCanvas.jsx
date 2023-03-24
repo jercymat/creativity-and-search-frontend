@@ -10,7 +10,14 @@ import ReactFlow, {
 import IdeaAddingBar from './IdeaAddingBar';
 import IdeaModal from './IdeaModal';
 import { IdeaMapperEdge } from './canvas/edge';
-import { TextIdeaNode, LinkIdeaNode, ImageIdeaNode } from './canvas/node';
+import {
+  TextIdeaNode,
+  LinkIdeaNode,
+  ImageIdeaNode,
+  SMResultNode,
+  SMNoteNode,
+  SMThemeNode,
+} from './canvas/node';
 import { IdeaMapperConnection } from './canvas/connect';
 import { useDebouncedCallback } from 'use-debounce';
 import axios from 'axios';
@@ -26,7 +33,10 @@ import { updateGraph } from '../../actions/idea';
 const nodeTypes = { 
   text: TextIdeaNode,
   link: LinkIdeaNode,
-  image: ImageIdeaNode
+  image: ImageIdeaNode,
+  sm_theme: SMThemeNode,
+  sm_result: SMResultNode,
+  sm_note: SMNoteNode,
 }
 const edgeTypes = { idea_mapper_edge: IdeaMapperEdge }
 
@@ -146,6 +156,13 @@ function IdeaMapCanvas(props) {
   // open idea editing modal after double click on ideas
   const onNodeDoubleClick = useCallback(
     (e, node) => {
+      if (['sm_result', 'sm_note'].includes(node.type)) return;
+
+      if (node.type === 'sm_theme') {
+        console.log('TODO: open theme toggle dialog');
+        return;
+      }
+
       handleOpenModal('edit', node.type, node)();
     },
     [handleOpenModal]

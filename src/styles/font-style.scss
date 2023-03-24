@@ -65,6 +65,10 @@ p {
   @extend .font-size-title2;
 }
 
+.font-im-theme-subtitle {
+  @extend .font-size-footnote;
+}
+
 .font-placeholder {
   @extend .font-weight-medium;
   @extend .font-size-subtitle;
