@@ -5,6 +5,7 @@
 .wrap {
   @extend .block-border;
   @extend .parent-block-corner;
+  position: relative;
   padding: .5rem;
   background-color: $im-light;
 
@@ -56,5 +57,16 @@
     &.emptyNote:hover {
       cursor: default;
     }
+  }
+
+  .actions {
+    position: absolute;
+    top: .4rem;
+    right: .5rem;
+    visibility: hidden;
+  }
+
+  &:hover .actions {
+    visibility: visible;
   }
 }

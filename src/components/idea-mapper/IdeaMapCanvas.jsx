@@ -201,6 +201,8 @@ function IdeaMapCanvas(props) {
     }, [modalEditNode, updateGraph, graph]
   )
 
+  // TODO: delete node through delete key will not trigger this function to clear connected edges
+  // disable delete key after theme toggle dialog implemented.
   const handleDeleteIdea = useCallback(
     () => {
       const edgesToRemove = getConnectedEdges([modalEditNode], graph.edges).map(edge => edge.id);

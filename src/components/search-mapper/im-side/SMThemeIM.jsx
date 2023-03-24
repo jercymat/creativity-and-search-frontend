@@ -6,6 +6,12 @@ import { updateGraph } from '../../../actions/idea';
 import SMResultIM from './SMResultIM';
 import { connect } from 'react-redux';
 import { getNodeSpawnPosition } from '../../idea-mapper/canvas/CanvasUtil';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { CircleIconButton } from '../../general/button';
+
+const renderTooltip = text => props => (
+  <Tooltip {...props}>{text}</Tooltip>
+);
 
 export const SMThemeIM = props => {
   const { graph, theme, updateGraph } = props;
@@ -99,11 +105,7 @@ export const SMThemeIM = props => {
     <div className={styles.wrap}>
       <button
         type='button'
-        className={styles['theme-title']}
-        onClick={handleAddTheme}>{theme.name}</button>
-      {/* <div
-        className={styles['theme-title']}
-        onClick={handleAddTheme}>{theme.name}</div> */}
+        className={styles['theme-title']}>{theme.name}</button>
       <div className={styles.results}>
         {
           theme.searchResultList.map(s => (
@@ -122,6 +124,21 @@ export const SMThemeIM = props => {
             ? `${theme.note}`
             : 'There is no idea in this theme'
         }
+      </div>
+      <div className={styles.actions}>
+        <OverlayTrigger
+          placement="bottom"
+          delay={{ show: 250 }}
+          overlay={renderTooltip('Add to IdeaMapper')}
+        >
+          <div className={`d-inline-block ${styles.action}`}>
+            <CircleIconButton
+              onClick={handleAddTheme}
+              className={styles.add}
+              variant='primary'
+              fsIcon={['fas', 'plus']} />
+          </div>
+        </OverlayTrigger>
       </div>
     </div>
   )
