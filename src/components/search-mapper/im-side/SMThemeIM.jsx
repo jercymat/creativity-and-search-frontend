@@ -17,26 +17,26 @@ export const SMThemeIM = props => {
   const { graph, theme, updateGraph } = props;
   const { trackEvent } = useTracking();
 
-  const handleAddNoteAsText = () => {
-    if (theme.note === '') return;
+  // const handleAddNoteAsText = () => {
+  //   if (theme.note === '') return;
 
-    const newNode = {
-      id: `${Date.now()}`,
-      type: 'text',
-      selected: true,
-      data: {
-        label: theme.note,
-        color: 'w'
-      },
-      position: getNodeSpawnPosition(graph.nodes),
-    };
-    trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
+  //   const newNode = {
+  //     id: `${Date.now()}`,
+  //     type: 'text',
+  //     selected: true,
+  //     data: {
+  //       label: theme.note,
+  //       color: 'w'
+  //     },
+  //     position: getNodeSpawnPosition(graph.nodes),
+  //   };
+  //   trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
 
-    updateGraph({
-      nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
-      edges: graph.edges
-    });
-  }
+  //   updateGraph({
+  //     nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
+  //     edges: graph.edges
+  //   });
+  // }
 
   const handleAddTheme = () => {
     console.log('here');
@@ -117,8 +117,7 @@ export const SMThemeIM = props => {
       </div>
       <hr />
       <div
-        className={`${styles.note}${theme.note === '' ? ` ${styles.emptyNote} noselect` : ''}`}
-        onClick={handleAddNoteAsText}>
+        className={`${styles.note}${theme.note === '' ? ` ${styles.emptyNote} noselect` : ''}`}>
         {
           theme.note !== ''
             ? `${theme.note}`

@@ -2,19 +2,19 @@
 @import '../../../styles/font-style.scss';
 @import '../../../styles/effect-style.scss';
 
-.add-idea {
-  transition: all .1s ease-in-out;
+// .add-idea {
+//   transition: all .1s ease-in-out;
 
-  &:hover {
-    cursor: crosshair;
-    background-color: $im-secondary;
-    color: $im-background;
-  }
+//   &:hover {
+//     cursor: crosshair;
+//     background-color: $im-secondary;
+//     color: $im-background;
+//   }
 
-  &:active {
-    background-color: $im-primary;
-  }
-}
+//   &:active {
+//     background-color: $im-primary;
+//   }
+// }
 
 .wrap {
   @extend .block-shadow;
@@ -27,7 +27,7 @@
     margin-bottom: .25rem;
 
     .title {
-      @extend .add-idea;
+      // @extend .add-idea;
       @extend .font-weight-medium;
       font-size: $font-size-title2;
       color: $im-primary;
@@ -35,7 +35,7 @@
     }
 
     .url {
-      @extend .add-idea;
+      // @extend .add-idea;
       @extend .font-weight-medium;
       color: $im-secondary;
       margin-bottom: 0;
@@ -45,7 +45,7 @@
   }
 
   .desc {
-    @extend .add-idea;
+    // @extend .add-idea;
     @extend .font-weight-regular;
     margin-bottom: 0;
   }

@@ -44,19 +44,19 @@
       color: $im-unaccent;
     }
 
-    &:not(.emptyNote):hover {
-      cursor: crosshair;
-      background-color: $im-secondary;
-      color: $im-background;
-    }
+    // &:not(.emptyNote):hover {
+    //   cursor: crosshair;
+    //   background-color: $im-secondary;
+    //   color: $im-background;
+    // }
 
-    &:not(.emptyNote):active {
-    background-color: $im-primary;
-  }
+    // &:not(.emptyNote):active {
+    //   background-color: $im-primary;
+    // }
 
-    &.emptyNote:hover {
-      cursor: default;
-    }
+    // &.emptyNote:hover {
+    //   cursor: default;
+    // }
   }
 
   .actions {
