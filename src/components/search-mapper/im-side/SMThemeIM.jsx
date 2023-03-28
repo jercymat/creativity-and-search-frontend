@@ -103,9 +103,7 @@ export const SMThemeIM = props => {
 
   return (
     <div className={styles.wrap}>
-      <button
-        type='button'
-        className={styles['theme-title']}>{theme.name}</button>
+      <div className={styles['theme-title']}>{theme.name}</div>
       <div className={styles.results}>
         {
           theme.searchResultList.map(s => (
