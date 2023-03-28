@@ -20,13 +20,10 @@ import {
 } from './canvas/node';
 import { IdeaMapperConnection } from './canvas/connect';
 import { useDebouncedCallback } from 'use-debounce';
-import axios from 'axios';
-import config from '../../config';
-import { getCurrentTime } from '../../utils';
 import { useTracking } from 'react-tracking';
 import { getNodeSpawnPosition } from './canvas/CanvasUtil';
 import { connect } from 'react-redux';
-import { closeThemeToggleModal, openThemeToggleModal, updateGraph } from '../../actions/idea';
+import { closeThemeToggleModal, loadGraph, saveGraph, updateGraph } from '../../actions/idea';
 import ThemeToggleModal from './ThemeToggleModal';
 
 // idea canvas
@@ -46,7 +43,7 @@ function IdeaMapCanvas(props) {
     themeToggleModalShow,
     graph,
     closeThemeToggleModal,
-    updateGraph,
+    loadGraphAction, saveGraphAction, updateGraphAction,
   } = props;
   const { trackEvent } = useTracking();
 
@@ -56,60 +53,11 @@ function IdeaMapCanvas(props) {
   const [modalEditNode, setModalEditNode] = useState(null);
   const [modalType, setModalType] = useState('text');
 
-  // idea mapper canvas
-  const [fetched, setFetched] = useState(false);
-  const [lastGraph, setLastGraph] = useState("");
-  
-  const saveGraphUtil = () => {
-    const stringGraph = JSON.stringify(graph)
-
-    // compare to last graph, if different then save to server
-    if (lastGraph === stringGraph) return;
-
-    axios.post(config.api.HOST + '/graphs', {
-      action: "modify_graph",
-      id: 1,
-      newdata: {
-        name: "TestGraph",
-        xml: stringGraph
-      }
-    }, { withCredentials: true })
-      .then(response => response.data.ret)
-      .then(ret => {
-        if (ret === 0) {
-          console.log(`Graph successfully saved to server - ${getCurrentTime()}`);
-          setLastGraph(stringGraph);
-        }
-      })
-  }
-  
-  // load and save graph
-  const saveGraph = useDebouncedCallback(saveGraphUtil, 250);
-
-  const loadGraph = async () => {
-    const response = await axios.post(config.api.HOST + '/graphs', {
-      action: 'list_graph'
-    }, { withCredentials: true });
-    var stringGraph = response.data.relist[0].xml;
-    console.log(`Graph successfully retrieved from server - ${getCurrentTime()}`);
-    stringGraph = stringGraph === ''
-      ? '{"nodes":[],"edges":[]}'
-      : stringGraph;
-    setLastGraph(stringGraph)
-    return JSON.parse(stringGraph);
-  }
+  const saveGraphDebounced = useDebouncedCallback(saveGraphAction, 250);
 
   useEffect(() => {
-    if (!fetched) {
-      setFetched(true);
-      loadGraph()
-        .then(g => updateGraph(g));
-    }
-
-    return (() => {
-      saveGraph();
-    })
-  }, [fetched, updateGraph, saveGraph]);
+    loadGraphAction();
+  }, [loadGraphAction]);
 
   const handleOpenModal = useCallback(
     (mode, type, node) => () => {
@@ -128,46 +76,41 @@ function IdeaMapCanvas(props) {
 
   const onNodesChange = useCallback(
     (changes) => {
-      updateGraph({
+      updateGraphAction({
         nodes: applyNodeChanges(changes, graph.nodes) ,
         edges: graph.edges
       });
-      saveGraph();
+      saveGraphDebounced();
     },
-    [saveGraph, updateGraph, graph]
+    [saveGraphDebounced, updateGraphAction, graph]
   );
 
   const onEdgesChange = useCallback(
     (changes) => {
-      updateGraph({
+      updateGraphAction({
         nodes: graph.nodes,
         edges: applyEdgeChanges(changes, graph.edges)
       });
-      saveGraph();
+      saveGraphDebounced();
     },
-    [saveGraph, updateGraph, graph]
+    [saveGraphDebounced, updateGraphAction, graph]
   );
 
   const onConnect = useCallback(
     (connection) => {
-      updateGraph({
+      updateGraphAction({
         nodes: graph.nodes,
         edges: addEdge({ ...connection, type: 'idea_mapper_edge' }, graph.edges)
       });
-      saveGraph();
+      saveGraphDebounced();
     },
-    [saveGraph, updateGraph, graph]
+    [saveGraphDebounced, updateGraphAction, graph]
   );
 
   // open idea editing modal after double click on ideas
   const onNodeDoubleClick = useCallback(
     (e, node) => {
-      if (['sm_result', 'sm_note'].includes(node.type)) return;
-
-      if (node.type === 'sm_theme') {
-        console.log('TODO: open theme toggle dialog');
-        return;
-      }
+      if (['sm_theme', 'sm_result', 'sm_note'].includes(node.type)) return;
 
       handleOpenModal('edit', node.type, node)();
     },
@@ -183,18 +126,18 @@ function IdeaMapCanvas(props) {
         data: { ...data },
         position: getNodeSpawnPosition(graph.nodes)
       };
-      updateGraph({
+      updateGraphAction({
         nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
         edges: graph.edges
       });
-
       setModalShow(false);
-    }, [setModalShow, updateGraph, graph]
+      saveGraphDebounced()
+    }, [setModalShow, updateGraphAction, saveGraphDebounced, graph]
   )
 
   const handleUpdateIdea = useCallback(
     (data) => {
-      updateGraph({
+      updateGraphAction({
         nodes: graph.nodes.map(node => {
           if (node.id === modalEditNode.id) {
             node.data = { ...data };
@@ -204,7 +147,8 @@ function IdeaMapCanvas(props) {
         edges: graph.edges
       });
       setModalShow(false);
-    }, [modalEditNode, updateGraph, graph]
+      saveGraphDebounced();
+    }, [modalEditNode, updateGraphAction, saveGraphDebounced, graph]
   )
 
   // TODO: delete node through delete key will not trigger this function to clear connected edges
@@ -212,12 +156,13 @@ function IdeaMapCanvas(props) {
   const handleDeleteIdea = useCallback(
     () => {
       const edgesToRemove = getConnectedEdges([modalEditNode], graph.edges).map(edge => edge.id);
-      updateGraph({
+      updateGraphAction({
         nodes: graph.nodes.filter(node => node.id !== modalEditNode.id),
         edges: graph.edges.filter(edge => !edgesToRemove.includes(edge.id))
       });
       setModalShow(false);
-    }, [modalEditNode, setModalShow, updateGraph, graph]
+      saveGraphDebounced()
+    }, [modalEditNode, setModalShow, updateGraphAction, saveGraphDebounced, graph]
   );
 
   return (
@@ -269,7 +214,9 @@ IdeaMapCanvas.propTypes = {
     nodes: PropTypes.array.isRequired,
     edges: PropTypes.array.isRequired,
   }).isRequired,
-  updateGraph: PropTypes.func.isRequired,
+  loadGraphAction: PropTypes.func.isRequired,
+  saveGraphAction: PropTypes.func.isRequired,
+  updateGraphAction: PropTypes.func.isRequired,
   closeThemeToggleModal: PropTypes.func.isRequired,
 }
 
@@ -279,7 +226,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateGraph,
+  loadGraphAction: loadGraph,
+  saveGraphAction: saveGraph,
+  updateGraphAction: updateGraph,
   closeThemeToggleModal,
 };
 
