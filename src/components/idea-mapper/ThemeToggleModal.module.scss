@@ -1,0 +1,19 @@
+@import '../../styles/font-style.scss';
+@import '../../theme/colors-theme.scss';
+
+.form_check {
+  @extend .font-weight-semibold;
+}
+
+.form_multiline_check {
+  .label_title {
+    @extend .font-weight-semibold;
+    line-height: 1;
+  }
+
+  .label_subtitle {
+    @extend .font-weight-semibold;
+    @extend .font-footnote;
+    color: $im-unaccent;
+  }
+}

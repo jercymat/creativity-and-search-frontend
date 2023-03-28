@@ -7,9 +7,11 @@ import { LeftIconButton } from '../components/general/button';
 import { SavedResultListIM } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
+import { openThemeToggleModal } from '../actions/idea';
 
 function IdeaMapPage(props) {
-  const { savedAreaWidth } = props;
+  const { savedAreaWidth, openThemeToggleModal } = props;
   const navigate = useNavigate();
   const { Track, trackEvent } = useTracking({ page: 'ideaMapper' });
 
@@ -34,6 +36,10 @@ function IdeaMapPage(props) {
               fsIcon={['fas', 'chevron-left']}
               onClick={handleBack} />
           </div>
+          <Button
+            className='mb-3 w-100'
+            variant='secondary'
+            onClick={openThemeToggleModal}>Theme Toggle Modal</Button>
           <SavedResultListIM />
         </div>
         <div
@@ -48,12 +54,15 @@ function IdeaMapPage(props) {
 
 IdeaMapPage.propTypes = {
   savedAreaWidth: PropTypes.number.isRequired,
+  openThemeToggleModal: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   savedAreaWidth: state.global.savedAreaWidth,
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  openThemeToggleModal,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapPage);
