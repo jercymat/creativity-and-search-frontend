@@ -1,8 +1,13 @@
 import React from 'react';
+import { Handle, Position } from 'react-flow-renderer';
 
 export const SMThemeNode = ({ data }) => {
   return (
-    <div className="im-sm-theme-node im-idea-node-wrap">
+    <div className="im-sm-theme-node im-sm-node-wrap">
+      <Handle className='disabled' isConnectable={false} type="target" position={Position.Top} />
+      <Handle className='disabled' isConnectable={false} type="target" position={Position.Left} />
+      <Handle className='disabled' isConnectable={false} type="source" position={Position.Bottom} />
+      <Handle className='disabled' isConnectable={false} type="source" position={Position.Right} />
       <div className="im-sm-theme__theme-wrap noselect">
         <h2 className="im-sm-theme__title">{data.title}</h2>
         <p className="im-sm-theme__subtitle">

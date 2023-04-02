@@ -62,21 +62,31 @@ export const SMThemeIM = props => {
 
     // test
     // const resultNode = {
-    //   id: `sm-result-46`,
+    //   id: `sm-theme-4-result-46`,
     //   type: 'sm_result',
     //   selected: false,
     //   data: {
     //     theme_id: theme.id,
+    //     result_id: 46,
     //     title: "Reduced Basis, Embedded Methods and Parametrized Levelset Geometry",
     //     url: "https://arxiv.org/abs/2301.12401",
     //     desc: "Numerical experiments verify the efficiency of the introduced ``hello world'' problems considering reduced order results in several cases for one, two, three and four dimensional geometrical kind of parametrization. We investigate execution times, and we illustrate transport methods and improvements. A list of important references related to ...",
     //     color: 'w',
     //   },
     //   position: getNodeSpawnPosition(graph.nodes),
-    // }
+    // };
+    
+    // const resultEdge1 = {
+    //   id: "sm-edge_sm-theme-4_sm-theme-4-result-46",
+    //   source: "sm-theme-4",
+    //   sourceHandle: null,
+    //   target: "sm-theme-4-result-46",
+    //   targetHandle: null,
+    //   type: "idea_mapper_edge",
+    // };
 
     // const noteNode = {
-    //   id: `sm-theme-note-${theme.id}`,
+    //   id: "sm-theme-4-note",
     //   type: 'sm_note',
     //   selected: false,
     //   data: {
@@ -85,7 +95,16 @@ export const SMThemeIM = props => {
     //     color: 'w',
     //   },
     //   position: getNodeSpawnPosition(graph.nodes),
-    // }
+    // };
+
+    // const resultEdge2 = {
+    //   id: "sm-edge_sm-theme-4_sm-theme-4-note",
+    //   source: "sm-theme-4",
+    //   sourceHandle: null,
+    //   target: "sm-theme-4-note",
+    //   targetHandle: null,
+    //   type: "idea_mapper_edge",
+    // };
 
     // updateGraph({
     //   nodes: graph.nodes.map(node => ({ ...node, selected: false }))
@@ -93,6 +112,8 @@ export const SMThemeIM = props => {
     //     .concat(resultNode)
     //     .concat(noteNode),
     //   edges: graph.edges
+    //     .concat(resultEdge1)
+    //     .concat(resultEdge2),
     // });
 
     updateGraph({

@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { NavigationBar } from '../components/general/navigation';
-import { IdeaMapPage, LandingPage, SERPPage } from "../pages";
+import { IdeaMapperPage, LandingPage, SERPPage } from "../pages";
 import { connect } from 'react-redux';
 import { useTracking } from "react-tracking";
 import PropTypes from 'prop-types';
@@ -29,7 +29,7 @@ function DefaultLayout(props) {
         <Routes>
           <Route path='/' element={<LandingPage />} />
           <Route path='/search' element={ isLoggedin ? <SERPPage /> : <Navigate replace to='/login' />} />
-          <Route path='/map' element={ isLoggedin ? <IdeaMapPage /> : <Navigate replace to='/login' />} />
+          <Route path='/map' element={ isLoggedin ? <IdeaMapperPage /> : <Navigate replace to='/login' />} />
         </Routes>
       </div>
     </Track>

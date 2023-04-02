@@ -1,7 +1,6 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Handle, Position } from "react-flow-renderer";
-import './IdeaNode.scss';
 
 export const LinkIdeaNode = ({ data }) => {
   return (
@@ -12,10 +11,10 @@ export const LinkIdeaNode = ({ data }) => {
       <Handle type="source" position={Position.Right} />
       <div className="im-link-idea__link-wrap noselect">
         <div className="im-link-idea__url">
-          <span className="font-im-ideas">{data.title !== '' ? data.title : data.link}</span>
+          {data.title !== '' ? data.title : data.link}
         </div>
         <div className="im-link-idea__icon">
-          <span className="font-im-ideas">
+          <span className="font-im-bold">
             <a href={data.link} target='_blank' rel='noreferrer'>
               <FontAwesomeIcon icon={faLink} />
             </a>

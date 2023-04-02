@@ -1,3 +1,8 @@
+// overall page
+export const IM_LOAD_PAGE = 'IM_LOAD_PAGE';
+export const IM_LOAD_PAGE_SUCCESS = 'IM_LOAD_PAGE_SUCCESS';
+export const IM_LOAD_PAGE_FAIL = 'IM_LOAD_PAGE_FAIL';
+
 // graph save/load
 export const IM_LOAD_GRAPH = 'IM_LOAD_GRAPH';
 export const IM_LOAD_GRAPH_SUCCESS = 'IM_LOAD_GRAPH_SUCCESS';

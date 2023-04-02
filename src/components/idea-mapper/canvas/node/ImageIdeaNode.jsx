@@ -1,5 +1,4 @@
 import { Handle, Position } from "react-flow-renderer";
-import './IdeaNode.scss';
 
 export const ImageIdeaNode = ({ data }) => {
   return (

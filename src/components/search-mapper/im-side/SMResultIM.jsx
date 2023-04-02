@@ -42,13 +42,12 @@ const SMResultIM = props => {
   return (
     <div className={styles.wrap}>
       <div className={styles.head}>
-        <h2
-          className={styles.title}>{save.title}</h2>
-        <h4
-          className={styles.url}>{save.url}</h4>
+        <a href={save.url} target='_blank' rel="noreferrer">
+        <h2 className={styles.title}>{save.title}</h2>
+        </a>
+        <h4 className={styles.url}>{save.url}</h4>
       </div>
-      <p
-        className={styles.desc}>{save.desc}</p>
+      <p className={styles.desc}>{save.desc}</p>
     </div>
   )
 }

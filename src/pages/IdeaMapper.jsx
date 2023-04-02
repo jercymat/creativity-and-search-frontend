@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import config from '../config';
-import styles from './IdeaMap.module.scss';
+import styles from './IdeaMapper.module.scss';
 import IdeaMapCanvas from '../components/idea-mapper/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
 import { LeftIconButton } from '../components/general/button';
@@ -8,10 +8,11 @@ import { SavedResultListIM } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
-import { openThemeToggleModal } from '../actions/idea';
+import { loadPage, openThemeToggleModal } from '../actions/idea';
+import { useEffect } from 'react';
 
-function IdeaMapPage(props) {
-  const { savedAreaWidth, openThemeToggleModal } = props;
+function IdeaMapperPage(props) {
+  const { savedAreaWidth, openThemeToggleModalAction, loadPageAction } = props;
   const navigate = useNavigate();
   const { Track, trackEvent } = useTracking({ page: 'ideaMapper' });
 
@@ -22,6 +23,10 @@ function IdeaMapPage(props) {
     trackEvent({ event: 'switchSerpMapper', timestamp: Date.now() });
     trackEvent({ event: 'leaveIdeaMap', timestamp: Date.now() });
   }
+
+  useEffect(() => {
+    loadPageAction();
+  }, [loadPageAction]);
 
   return (
     <Track>
@@ -39,7 +44,7 @@ function IdeaMapPage(props) {
           <Button
             className='mb-3 w-100'
             variant='secondary'
-            onClick={openThemeToggleModal}>Theme Toggle Modal</Button>
+            onClick={openThemeToggleModalAction}>[For Test] Theme Toggle Modal</Button>
           <SavedResultListIM />
         </div>
         <div
@@ -52,9 +57,10 @@ function IdeaMapPage(props) {
   )
 }
 
-IdeaMapPage.propTypes = {
+IdeaMapperPage.propTypes = {
   savedAreaWidth: PropTypes.number.isRequired,
-  openThemeToggleModal: PropTypes.func.isRequired,
+  openThemeToggleModalAction: PropTypes.func.isRequired,
+  loadPageAction: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -62,7 +68,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  openThemeToggleModal,
+  openThemeToggleModalAction: openThemeToggleModal,
+  loadPageAction: loadPage,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapPage);
+export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapperPage);

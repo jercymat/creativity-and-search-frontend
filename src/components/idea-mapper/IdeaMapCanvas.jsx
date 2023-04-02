@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 import ReactFlow, {
   addEdge,
   applyEdgeChanges,
@@ -23,8 +23,9 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useTracking } from 'react-tracking';
 import { getNodeSpawnPosition } from './canvas/CanvasUtil';
 import { connect } from 'react-redux';
-import { closeThemeToggleModal, loadGraph, saveGraph, updateGraph } from '../../actions/idea';
+import { closeThemeToggleModal, saveGraph, updateGraph } from '../../actions/idea';
 import ThemeToggleModal from './ThemeToggleModal';
+import './canvas/node/IdeaNode.scss';
 
 // idea canvas
 // const initialGraph = '{"nodes":[{"id":"node-1","type":"text","data":{"label":"Test Idea 1","color":"r"},"position":{"x":0,"y":0},"width":129,"height":44},{"id":"node-2","type":"text","data":{"label":"Test Idea 2","color":"p"},"position":{"x":200,"y":0},"width":131,"height":44},{"id":"node-3","type":"text","data":{"label":"Test Idea 3","color":"w"},"position":{"x":400,"y":0},"width":132,"height":44},{"id":"node-4","type":"text","data":{"label":"Test Idea 4","color":"w"},"position":{"x":0,"y":100},"width":132,"height":44},{"id":"node-5","type":"text","data":{"label":"Test Idea 5","color":"r"},"position":{"x":200,"y":100},"width":132,"height":44},{"id":"node-6","type":"text","data":{"label":"Test Idea 6","color":"g"},"position":{"x":400,"y":100},"width":132,"height":44},{"id":"node-7","type":"text","data":{"label":"Test Idea 7","color":"p"},"position":{"x":0,"y":200},"width":131,"height":44},{"id":"node-8","type":"text","data":{"label":"Test Idea 8","color":"r"},"position":{"x":200,"y":200},"width":132,"height":44},{"id":"node-9","type":"text","data":{"label":"Test Idea 9","color":"b"},"position":{"x":400,"y":200},"width":132,"height":44},{"id":"node-link-1","type":"link","data":{"link":"https://youtu.be/dQw4w9WgXcQ","color":"p"},"position":{"x":0,"y":300},"width":319,"height":46},{"id":"node-img-1","type":"image","data":{"img_url":"https://cdn.vox-cdn.com/thumbor/9j-s_MPUfWM4bWdZfPqxBxGkvlw=/1400x1050/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/22312759/rickroll_4k.jpg","color":"g"},"position":{"x":0,"y":400},"width":166,"height":166},{"id":"node-img-2","type":"image","data":{"img_url":"https://i.imgur.com/Jvh1OQm.jpeg","color":"g"},"position":{"x":200,"y":400},"width":166,"height":166},{"id":"node-img-3","type":"image","data":{"img_url":"https://i.imgur.com/x62B7BA.png","color":"r"},"position":{"x":400,"y":400},"width":166,"height":166}],"edges":[{"id":"edge-1","source":"node-1","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-2","source":"node-2","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-3","source":"node-3","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-4","source":"node-4","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-6","source":"node-6","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-7","source":"node-7","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-8","source":"node-8","target":"node-5","type":"idea_mapper_edge"},{"id":"edge-9","source":"node-9","target":"node-5","type":"idea_mapper_edge"}]}';
@@ -43,7 +44,7 @@ function IdeaMapCanvas(props) {
     themeToggleModalShow,
     graph,
     closeThemeToggleModal,
-    loadGraphAction, saveGraphAction, updateGraphAction,
+    saveGraphAction, updateGraphAction,
   } = props;
   const { trackEvent } = useTracking();
 
@@ -54,10 +55,6 @@ function IdeaMapCanvas(props) {
   const [modalType, setModalType] = useState('text');
 
   const saveGraphDebounced = useDebouncedCallback(saveGraphAction, 250);
-
-  useEffect(() => {
-    loadGraphAction();
-  }, [loadGraphAction]);
 
   const handleOpenModal = useCallback(
     (mode, type, node) => () => {
@@ -98,6 +95,7 @@ function IdeaMapCanvas(props) {
 
   const onConnect = useCallback(
     (connection) => {
+      console.log(connection);
       updateGraphAction({
         nodes: graph.nodes,
         edges: addEdge({ ...connection, type: 'idea_mapper_edge' }, graph.edges)
@@ -214,7 +212,6 @@ IdeaMapCanvas.propTypes = {
     nodes: PropTypes.array.isRequired,
     edges: PropTypes.array.isRequired,
   }).isRequired,
-  loadGraphAction: PropTypes.func.isRequired,
   saveGraphAction: PropTypes.func.isRequired,
   updateGraphAction: PropTypes.func.isRequired,
   closeThemeToggleModal: PropTypes.func.isRequired,
@@ -226,7 +223,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  loadGraphAction: loadGraph,
   saveGraphAction: saveGraph,
   updateGraphAction: updateGraph,
   closeThemeToggleModal,

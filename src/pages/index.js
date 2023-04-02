@@ -1,5 +1,5 @@
-import IdeaMapPage from "./IdeaMap";
+import IdeaMapperPage from "./IdeaMapper";
 import LandingPage from "./Landing";
 import SERPPage from "./SERP";
 
-export { IdeaMapPage, LandingPage, SERPPage };
+export { IdeaMapperPage, LandingPage, SERPPage };
