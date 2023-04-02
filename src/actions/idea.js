@@ -19,5 +19,5 @@ export const updateGraph = (graph) => ({
   payload: { graph }
 });
 
-export const openThemeToggleModal = () => ({ type: IM_MODAL_THEME_TOGGLE_OPEN });
+export const openThemeToggleModal = themeID => ({ type: IM_MODAL_THEME_TOGGLE_OPEN, payload: { themeID } });
 export const closeThemeToggleModal = () => ({ type: IM_MODAL_THEME_TOGGLE_CLOSE });

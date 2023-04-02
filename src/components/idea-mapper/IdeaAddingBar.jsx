@@ -5,7 +5,7 @@ import styles from './IdeaAddingBar.module.scss';
 function IdeaAddingBar(props) {
   return (
     <div className={`noselect ${styles.bar_wrap}`}>
-      <p className="font-weight-bold">Add Ideas</p>
+      <p className="font-weight-bold">Add Custom Ideas</p>
       <IdeaAddingType type='text' onClick={props.onTextIdea}/>
       <IdeaAddingType type='link' onClick={props.onLinkIdea}/>
       <IdeaAddingType type='image' onClick={props.onImageIdea}/>

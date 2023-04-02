@@ -7,12 +7,15 @@ import { LeftIconButton } from '../components/general/button';
 import { SavedResultListIM } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
-import { loadPage, openThemeToggleModal } from '../actions/idea';
+import { closeThemeToggleModal, loadPage } from '../actions/idea';
 import { useEffect } from 'react';
+import { ThemeToggleModal } from '../components/idea-mapper';
 
 function IdeaMapperPage(props) {
-  const { savedAreaWidth, openThemeToggleModalAction, loadPageAction } = props;
+  const {
+    savedAreaWidth, themeToggleModalShow,
+    loadPageAction, closeThemeToggleModalAction,
+  } = props;
   const navigate = useNavigate();
   const { Track, trackEvent } = useTracking({ page: 'ideaMapper' });
 
@@ -41,10 +44,6 @@ function IdeaMapperPage(props) {
               fsIcon={['fas', 'chevron-left']}
               onClick={handleBack} />
           </div>
-          <Button
-            className='mb-3 w-100'
-            variant='secondary'
-            onClick={openThemeToggleModalAction}>[For Test] Theme Toggle Modal</Button>
           <SavedResultListIM />
         </div>
         <div
@@ -52,6 +51,10 @@ function IdeaMapperPage(props) {
           style={{ width: `calc(100vw - 1.5rem - ${savedAreaWidth}px)` }}>
             <IdeaMapCanvas />
         </div>
+        <ThemeToggleModal
+          show={themeToggleModalShow}
+          onCloseModal={closeThemeToggleModalAction}
+          onRemoveTheme={() => { }} />
       </div>
     </Track>
   )
@@ -59,17 +62,19 @@ function IdeaMapperPage(props) {
 
 IdeaMapperPage.propTypes = {
   savedAreaWidth: PropTypes.number.isRequired,
-  openThemeToggleModalAction: PropTypes.func.isRequired,
+  themeToggleModalShow: PropTypes.bool.isRequired,
   loadPageAction: PropTypes.func.isRequired,
+  closeThemeToggleModalAction: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   savedAreaWidth: state.global.savedAreaWidth,
+  themeToggleModalShow: state.idea.themeToggleModalShow,
 });
 
 const mapDispatchToProps = {
-  openThemeToggleModalAction: openThemeToggleModal,
   loadPageAction: loadPage,
+  closeThemeToggleModalAction: closeThemeToggleModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapperPage);

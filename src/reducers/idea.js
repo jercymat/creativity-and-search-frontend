@@ -25,6 +25,7 @@ const initialState = {
     edges: []
   },
   themeToggle: [],
+  focusedThemeID: -1,
 }
 
 // const toggle = [
@@ -78,7 +79,11 @@ const reducer = (state = initialState, { type, payload }) => {
     return { ...state, graph: payload.graph }
 
   case IM_MODAL_THEME_TOGGLE_OPEN:
-    return { ...state, themeToggleModalShow: true }
+    return {
+      ...state,
+      themeToggleModalShow: true,
+      focusedThemeID: payload.themeID,
+    }
 
   case IM_MODAL_THEME_TOGGLE_CLOSE:
     return { ...state, themeToggleModalShow: false }

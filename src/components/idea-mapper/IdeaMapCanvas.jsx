@@ -23,8 +23,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useTracking } from 'react-tracking';
 import { getNodeSpawnPosition } from './canvas/CanvasUtil';
 import { connect } from 'react-redux';
-import { closeThemeToggleModal, saveGraph, updateGraph } from '../../actions/idea';
-import ThemeToggleModal from './ThemeToggleModal';
+import { saveGraph, updateGraph } from '../../actions/idea';
 import './canvas/node/IdeaNode.scss';
 
 // idea canvas
@@ -41,9 +40,7 @@ const edgeTypes = { idea_mapper_edge: IdeaMapperEdge }
 
 function IdeaMapCanvas(props) {
   const {
-    themeToggleModalShow,
     graph,
-    closeThemeToggleModal,
     saveGraphAction, updateGraphAction,
   } = props;
   const { trackEvent } = useTracking();
@@ -193,11 +190,6 @@ function IdeaMapCanvas(props) {
         onDeleteIdea={handleDeleteIdea}
         node={modalEditNode}
         show={modalShow}/>
-      <ThemeToggleModal
-        show={themeToggleModalShow}
-        onCloseModal={closeThemeToggleModal}
-        onRemoveTheme={() => {}}
-        onUpdateToggle={() => {}} />
       <IdeaAddingBar
         onTextIdea={handleOpenModal('add', 'text', null)}
         onLinkIdea={handleOpenModal('add', 'link', null)}
@@ -207,25 +199,21 @@ function IdeaMapCanvas(props) {
 }
 
 IdeaMapCanvas.propTypes = {
-  themeToggleModalShow: PropTypes.bool.isRequired,
   graph: PropTypes.shape({
     nodes: PropTypes.array.isRequired,
     edges: PropTypes.array.isRequired,
   }).isRequired,
   saveGraphAction: PropTypes.func.isRequired,
   updateGraphAction: PropTypes.func.isRequired,
-  closeThemeToggleModal: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   graph: state.idea.graph,
-  themeToggleModalShow: state.idea.themeToggleModalShow,
 });
 
 const mapDispatchToProps = {
   saveGraphAction: saveGraph,
   updateGraphAction: updateGraph,
-  closeThemeToggleModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapCanvas);

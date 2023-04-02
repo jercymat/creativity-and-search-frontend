@@ -1,58 +1,83 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Modal } from 'react-bootstrap';
 import { IconButton, StandardButton } from '../general/button';
 import styles from './ThemeToggleModal.module.scss';
+import { connect } from 'react-redux';
 
 const ThemeToggleModal = props => {
-  const { show, onCloseModal, onRemoveTheme, onUpdateToggle } = props;
+  const {
+    show, focusedThemeID, themeToggles, savedResults,
+    onCloseModal, onRemoveTheme,
+  } = props;
 
   const handleSubmit = event => {
-    const form = event.currentTarget;
-
     event.preventDefault();
     event.stopPropagation();
 
-    // TODO: fill with actual function call
-    onUpdateToggle();
+    const newToggle = {
+      ...themeToggle,
+      sr: themeToggle.sr.map(result => ({
+        ...result,
+        shown: event.currentTarget[`theme-sr-${result.id}`].checked,
+      })),
+      noteShown: event.currentTarget['theme-note'].checked,
+    }
+
+    console.log(newToggle);
+
+    onCloseModal();
   }
+
+  const themeToggle = useMemo(() => themeToggles.find(theme => theme.id === focusedThemeID)
+    ? themeToggles.find(theme => theme.id === focusedThemeID)
+    : {
+      id: -1,
+      name: "",
+      note: "",
+      shown: false,
+      noteShown: false,
+      sr: [{ id: -1, shown: false }],
+    }, [focusedThemeID, themeToggles]);
+
+  const theme = useMemo(() => savedResults.find(theme => theme.id === focusedThemeID)
+    ? savedResults.find(theme => theme.id === focusedThemeID)
+    : {
+      id: -1,
+      name: "",
+      userid_id: -1,
+      searchResultList: [{ id: -1, title: "", url: "", desc: "" }],
+      note: "",
+      noteID: -1,
+    }, [focusedThemeID, savedResults]);
 
   return (
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
-        <Modal.Title>SearchMapper Theme A</Modal.Title>
+        <Modal.Title>{theme.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {/* <p>Now you have add this theme to the canvas,<br />toggle some Saved Results and Notes to show them in the canvas.</p>
+        <hr /> */}
         <Form id='theme-toggle' noValidate onSubmit={handleSubmit}>
-          <Form.Group className={`mb-3 ${styles.form_check}`} controlId='theme-sr-1'>
-            <Form.Check
-              type='switch'
-              name='theme-sr-1'
-              label='Search Title A1' />
-          </Form.Group>
-          <Form.Group className={`mb-3 ${styles.form_check}`} controlId='theme-sr-2'>
-            <Form.Check
-              type='switch'
-              name='theme-sr-2'
-              label='Search Title A2' />
-          </Form.Group>
-          <Form.Group className={styles.form_check} controlId='theme-sr-3'>
-            <Form.Check
-              type='switch'
-              name='theme-sr-3'
-              label='Search Title A3' />
-          </Form.Group>
+          { theme.searchResultList.map((result, idx) =>
+            <Form.Group key={result.id} className={`mb-3 ${styles.form_check}`} controlId={`theme-sr-${result.id}`}>
+              <Form.Switch
+                name={`theme-sr-${result.id}`}
+                defaultChecked={themeToggle.sr[idx].shown}
+                label={result.title} />
+            </Form.Group>) }
           <hr />
           <Form.Group
             className={styles.form_multiline_check}
             controlId='theme-note'>
-            <Form.Check type='checkbox'>
-              <Form.Check.Input type='checkbox' />
-              <Form.Check.Label>
+            <Form.Switch>
+              <Form.Switch.Input name='theme-note' defaultChecked={themeToggle.noteShown} />
+              <Form.Switch.Label>
                 <div className={styles.label_title}>Theme Idea</div>
-                <div className={styles.label_subtitle}>Some sort of SearchMapper notes</div>
-              </Form.Check.Label>
-            </Form.Check>
+                <div className={styles.label_subtitle}>{theme.note}</div>
+              </Form.Switch.Label>
+            </Form.Switch>
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -63,7 +88,7 @@ const ThemeToggleModal = props => {
           fsIcon={['fas', 'trash-can']}
           onClick={onRemoveTheme} />
         <StandardButton variant='secondary' btnText='Cancel' onClick={onCloseModal} />
-        <StandardButton variant='primary' btnText='Save' type='submit' form='add-idea' />
+        <StandardButton variant='primary' btnText='Save' type='submit' form='theme-toggle' />
       </Modal.Footer>
     </Modal>
   )
@@ -71,9 +96,17 @@ const ThemeToggleModal = props => {
 
 ThemeToggleModal.propTypes = {
   show: PropTypes.bool.isRequired,
+  focusedThemeID: PropTypes.number.isRequired,
+  themeToggles: PropTypes.array.isRequired,
+  savedResults: PropTypes.array.isRequired,
   onCloseModal: PropTypes.func.isRequired,
   onRemoveTheme: PropTypes.func.isRequired,
-  onUpdateToggle: PropTypes.func.isRequired,
 }
 
-export default ThemeToggleModal
+const mapStateToProps = (state) => ({
+  focusedThemeID: state.idea.focusedThemeID,
+  themeToggles: state.idea.themeToggle,
+  savedResults: state.search.savedResultsV2,
+});
+
+export default connect(mapStateToProps, null)(ThemeToggleModal);

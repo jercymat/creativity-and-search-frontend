@@ -15,6 +15,7 @@ import {
   faImage,
   faBars,
   faShareFromSquare,
+  faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { AccountLayout, DefaultLayout, TestLayout } from './layouts';
 import './theme/bootstrap-theme.scss';
@@ -29,7 +30,8 @@ const root = ReactDOMClient.createRoot(document.getElementById('root'));
 // import fontawesome icons for global use
 library.add(
   faChevronLeft, faChevronRight, faMagnifyingGlass, faTrashCan,
-  faFont, faLink, faPlus, faImage, faBars, faShareFromSquare
+  faFont, faLink, faPlus, faImage, faBars, faShareFromSquare,
+  faPenToSquare,
 );
 
 // initial website title

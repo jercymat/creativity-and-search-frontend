@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './SMTheme.IM.module.scss';
 import { useTracking } from 'react-tracking';
-import { updateGraph } from '../../../actions/idea';
+import { openThemeToggleModal, updateGraph } from '../../../actions/idea';
 import SMResultIM from './SMResultIM';
 import { connect } from 'react-redux';
 import { getNodeSpawnPosition } from '../../idea-mapper/canvas/CanvasUtil';
@@ -14,7 +14,7 @@ const renderTooltip = text => props => (
 );
 
 export const SMThemeIM = props => {
-  const { graph, theme, updateGraph } = props;
+  const { graph, theme, toggled, updateGraph, openThemeToggleModalAction } = props;
   const { trackEvent } = useTracking();
 
   // const handleAddNoteAsText = () => {
@@ -122,6 +122,10 @@ export const SMThemeIM = props => {
     });
   }
 
+  const handleToggleTheme = () => {
+    openThemeToggleModalAction(theme.id);
+  }
+
   return (
     <div className={styles.wrap}>
       <div className={styles['theme-title']}>{theme.name}</div>
@@ -147,14 +151,13 @@ export const SMThemeIM = props => {
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250 }}
-          overlay={renderTooltip('Add to IdeaMapper')}
+          overlay={renderTooltip(toggled ? 'Edit Theme in IdeaMapper' : 'Add to IdeaMapper')}
         >
-          <div className={`d-inline-block ${styles.action}`}>
+          <div className='d-inline-block'>
             <CircleIconButton
-              onClick={handleAddTheme}
-              className={styles.add}
-              variant='primary'
-              fsIcon={['fas', 'plus']} />
+              onClick={toggled ? handleToggleTheme : handleAddTheme}
+              variant={toggled ? 'light' : 'primary'}
+              fsIcon={toggled ? ['fas', 'pen-to-square'] : ['fas', 'plus']} />
           </div>
         </OverlayTrigger>
       </div>
@@ -168,6 +171,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
   updateGraph,
+  openThemeToggleModalAction: openThemeToggleModal,
 };
 
 
@@ -184,6 +188,8 @@ SMThemeIM.propTypes = {
     }).isRequired).isRequired,
     note: PropTypes.string.isRequired,
   }).isRequired,
+  toggled: PropTypes.bool.isRequired,
+  openThemeToggleModalAction: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SMThemeIM);

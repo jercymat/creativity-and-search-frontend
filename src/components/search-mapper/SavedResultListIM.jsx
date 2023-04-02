@@ -4,15 +4,20 @@ import { connect } from 'react-redux';
 import { SMResultIM, SMThemeIM } from './im-side';
 
 function SavedResultListIM(props) {
-  const { savedResultsV2 } = props;
+  const { savedResults, themeToggles } = props;
 
   return (
     <div id='im-saved-results' className={styles.wrap}>
-      {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
+      {savedResults.length > 1 && savedResults.slice(1).map(theme =>
         <SMThemeIM
           key={theme.id}
-          theme={theme} />)}
-      {savedResultsV2[0].searchResultList.map(save =>
+          theme={theme}
+          toggled={
+            themeToggles.find(t => t.id === theme.id)
+              ? themeToggles.find(t => t.id === theme.id).shown
+              : false
+          } />)}
+      {savedResults[0].searchResultList.map(save =>
         <SMResultIM
           key={save.id}
           save={save} />)}
@@ -21,11 +26,21 @@ function SavedResultListIM(props) {
 }
 
 SavedResultListIM.propTypes = {
-  savedResultsV2: PropTypes.array.isRequired,
+  savedResults: PropTypes.array.isRequired,
+  themeToggles: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    shown: PropTypes.bool.isRequired,
+    noteShown: PropTypes.bool.isRequired,
+    sr: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      shown: PropTypes.bool.isRequired,
+    })).isRequired
+  })).isRequired,
 }
 
 const mapStateToProps = (state) => ({
-  savedResultsV2: state.search.savedResultsV2,
+  savedResults: state.search.savedResultsV2,
+  themeToggles: state.idea.themeToggle,
 });
 
 const mapDispatchToProps = {};
