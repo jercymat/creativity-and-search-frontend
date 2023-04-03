@@ -46,7 +46,7 @@ function IdeaModal(props) {
         if (type === 'text') {
           onUpdateIdea({ label: event.target.text.value, color: color });
         } else if (type === 'link') {
-          onUpdateIdea({ link: event.target.link_url.value, color: color });
+          onUpdateIdea({ title: '', link: event.target.link_url.value, color: color });
         } else if (type === 'image') {
           onUpdateIdea({ img_url: event.target.image_url.value, color: color });
         }
