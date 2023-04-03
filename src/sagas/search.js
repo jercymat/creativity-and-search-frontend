@@ -31,7 +31,7 @@ export function* smAddSavedResults(action) {
     url: result.url,
     snippet: result.desc
   };
-  console.log('add result saga');
+  console.log('[saga] add result');
 
   try {
     const response = yield call(addSavedResultAPI, data);
@@ -54,7 +54,7 @@ export function* smAddSavedResults(action) {
 }
 
 export function* smLoadSavedResults() {
-  console.log('load saved results saga');
+  console.log('[saga] load saved results');
   try {
     const response = yield call(loadSavedResultAPI);
 
@@ -77,7 +77,7 @@ export function* smLoadSavedResults() {
 
 export function* smReorderSavedResults(action) {
   const { newOrder } = action.payload;
-  console.log('reorder saga')
+  console.log('[saga] reorder saved results');
 
   try {
     const response = yield call(reorderSavedResultAPI, newOrder);
@@ -95,7 +95,7 @@ export function* smReorderSavedResults(action) {
 
 export function* smDeleteSavedResults(action) {
   const { id } = action.payload;
-  console.log('delete saga');
+  console.log('[saga] delete saved results');
 
   try {
     const response = yield call(deleteSavedResultAPI, id);
@@ -114,7 +114,7 @@ export function* smDeleteSavedResults(action) {
 }
 
 export function* smLoadSavedResultsV2() {
-  console.log('load saved reuslts v2 saga');
+  console.log('[saga] load saved reuslts v2');
 
   try {
     const response = yield call(loadSavedResultV2API);
@@ -154,7 +154,7 @@ export function* smLoadSavedResultsV2() {
 
 export function* smRenameTheme(action) {
   const data = action.payload;
-  console.log('rename theme saga');
+  console.log('[saga] rename search mapper theme');
 
   try {
     const response = yield call(renameThemeAPI, data);
@@ -174,7 +174,7 @@ export function* smRenameTheme(action) {
 
 export function* smEditThemeIdea(action) {
   const data = action.payload;
-  console.log('edit theme idea saga');
+  console.log('[saga] edit search mapper theme idea');
 
   try {
     const response = data.noteID !== -1
@@ -196,7 +196,7 @@ export function* smEditThemeIdea(action) {
 
 export function* smChangeTheme(action) {
   const data = action.payload;
-  console.log('add to theme saga');
+  console.log('[saga] add to search mapper theme');
 
   if (data.themeID === -1) {
     yield put({ type: SM_TXT_DIALOG_CREATE_THEME_OPEN });
@@ -220,6 +220,7 @@ export function* smChangeTheme(action) {
 }
 
 export function* smCreateTheme(action) {
+  console.log('[saga] create search mapper theme');
   const { name, resultID } = action.payload;
 
   try {

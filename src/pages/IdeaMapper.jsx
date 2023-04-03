@@ -53,8 +53,7 @@ function IdeaMapperPage(props) {
         </div>
         <ThemeToggleModal
           show={themeToggleModalShow}
-          onCloseModal={closeThemeToggleModalAction}
-          onRemoveTheme={() => { }} />
+          onCloseModal={closeThemeToggleModalAction} />
       </div>
     </Track>
   )

@@ -58,6 +58,7 @@ const reducer = (state = initialState, { type, payload }) => {
     return {
       ...state,
       graph: payload.reflectedGraph,
+      cachedGraph: payload.reflectedGraph,
       themeToggle: payload.themeToggle,
     }
 

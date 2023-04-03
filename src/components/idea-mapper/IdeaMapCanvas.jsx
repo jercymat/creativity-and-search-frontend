@@ -74,7 +74,7 @@ function IdeaMapCanvas(props) {
         nodes: applyNodeChanges(changes, graph.nodes) ,
         edges: graph.edges
       });
-      saveGraphDebounced();
+      saveGraphDebounced(false);
     },
     [saveGraphDebounced, updateGraphAction, graph]
   );
@@ -85,7 +85,7 @@ function IdeaMapCanvas(props) {
         nodes: graph.nodes,
         edges: applyEdgeChanges(changes, graph.edges)
       });
-      saveGraphDebounced();
+      saveGraphDebounced(false);
     },
     [saveGraphDebounced, updateGraphAction, graph]
   );
@@ -97,20 +97,10 @@ function IdeaMapCanvas(props) {
         nodes: graph.nodes,
         edges: addEdge({ ...connection, type: 'idea_mapper_edge' }, graph.edges)
       });
-      saveGraphDebounced();
+      saveGraphDebounced(false);
     },
     [saveGraphDebounced, updateGraphAction, graph]
   );
-
-  // open idea editing modal after double click on ideas
-  const onNodeDoubleClick = useCallback(
-    (e, node) => {
-      if (['sm_theme', 'sm_result', 'sm_note'].includes(node.type)) return;
-
-      handleOpenModal('edit', node.type, node)();
-    },
-    [handleOpenModal]
-  )
 
   const handleAddIdea = useCallback(
     (type, data) => {
@@ -126,7 +116,7 @@ function IdeaMapCanvas(props) {
         edges: graph.edges
       });
       setModalShow(false);
-      saveGraphDebounced()
+      saveGraphDebounced(false)
     }, [setModalShow, updateGraphAction, saveGraphDebounced, graph]
   )
 
@@ -142,12 +132,10 @@ function IdeaMapCanvas(props) {
         edges: graph.edges
       });
       setModalShow(false);
-      saveGraphDebounced();
+      saveGraphDebounced(false);
     }, [modalEditNode, updateGraphAction, saveGraphDebounced, graph]
   )
 
-  // TODO: delete node through delete key will not trigger this function to clear connected edges
-  // disable delete key after theme toggle dialog implemented.
   const handleDeleteIdea = useCallback(
     () => {
       const edgesToRemove = getConnectedEdges([modalEditNode], graph.edges).map(edge => edge.id);
@@ -156,9 +144,19 @@ function IdeaMapCanvas(props) {
         edges: graph.edges.filter(edge => !edgesToRemove.includes(edge.id))
       });
       setModalShow(false);
-      saveGraphDebounced()
+      saveGraphDebounced(false)
     }, [modalEditNode, setModalShow, updateGraphAction, saveGraphDebounced, graph]
   );
+
+  // open idea editing modal after double click on ideas
+  const onNodeDoubleClick = useCallback(
+    (e, node) => {
+      if (['sm_theme', 'sm_result', 'sm_note'].includes(node.type)) return;
+
+      handleOpenModal('edit', node.type, node)();
+    },
+    [handleOpenModal]
+  )
 
   return (
     <Fragment>
@@ -178,7 +176,8 @@ function IdeaMapCanvas(props) {
         minZoom={0.5}
         maxZoom={2}
         fitView
-        fitViewOptions={{ maxZoom: 1 }}>
+        fitViewOptions={{ maxZoom: 1 }}
+        deleteKeyCode={null}>
         <Background />
       </ReactFlow>
       <IdeaModal

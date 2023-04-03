@@ -4,11 +4,12 @@ import { Form, Modal } from 'react-bootstrap';
 import { IconButton, StandardButton } from '../general/button';
 import styles from './ThemeToggleModal.module.scss';
 import { connect } from 'react-redux';
+import { updateToggle } from '../../actions/idea';
 
 const ThemeToggleModal = props => {
   const {
     show, focusedThemeID, themeToggles, savedResults,
-    onCloseModal, onRemoveTheme,
+    onCloseModal, updateToggleAction,
   } = props;
 
   const handleSubmit = event => {
@@ -24,8 +25,19 @@ const ThemeToggleModal = props => {
       noteShown: event.currentTarget['theme-note'].checked,
     }
 
-    console.log(newToggle);
+    updateToggleAction(newToggle.id, newToggle);
+    onCloseModal();
+  }
 
+  const handleRemoveTheme = () => {
+    const newToggle = {
+      ...themeToggle,
+      shown: false,
+      noteShown: false,
+      sr: themeToggle.sr.map(result => ({ ...result, shown: false }))
+    }
+    
+    updateToggleAction(newToggle.id, newToggle);
     onCloseModal();
   }
 
@@ -86,7 +98,7 @@ const ThemeToggleModal = props => {
           variant='danger'
           className='me-auto'
           fsIcon={['fas', 'trash-can']}
-          onClick={onRemoveTheme} />
+          onClick={handleRemoveTheme} />
         <StandardButton variant='secondary' btnText='Cancel' onClick={onCloseModal} />
         <StandardButton variant='primary' btnText='Save' type='submit' form='theme-toggle' />
       </Modal.Footer>
@@ -100,7 +112,7 @@ ThemeToggleModal.propTypes = {
   themeToggles: PropTypes.array.isRequired,
   savedResults: PropTypes.array.isRequired,
   onCloseModal: PropTypes.func.isRequired,
-  onRemoveTheme: PropTypes.func.isRequired,
+  updateToggleAction: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
@@ -109,4 +121,8 @@ const mapStateToProps = (state) => ({
   savedResults: state.search.savedResultsV2,
 });
 
-export default connect(mapStateToProps, null)(ThemeToggleModal);
+const mapDispatchToProps = {
+  updateToggleAction: updateToggle,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ThemeToggleModal);

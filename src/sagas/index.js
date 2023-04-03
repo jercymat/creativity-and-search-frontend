@@ -1,6 +1,6 @@
 import { all, takeEvery } from 'redux-saga/effects';
 import { GLOBAL_LOGIN, GLOBAL_LOGOUT } from '../actions/types/global';
-import { IM_LOAD_GRAPH, IM_LOAD_PAGE, IM_SAVE_GRAPH } from '../actions/types/idea';
+import { IM_LOAD_GRAPH, IM_LOAD_PAGE, IM_SAVE_GRAPH, IM_UPDATE_TOGGLE } from '../actions/types/idea';
 import {
   SM_SR2_CHANGE_THEME,
   SM_SR2_CREATE_THEME,
@@ -17,6 +17,7 @@ import {
   ideaLoadGraph,
   ideaLoadPage,
   ideaSaveGraph,
+  ideaUpdateToggle,
 } from './idea';
 import {
   smAddSavedResults,
@@ -51,5 +52,6 @@ export default function* rootSaga() {
     takeEvery(IM_LOAD_PAGE, ideaLoadPage),
     takeEvery(IM_LOAD_GRAPH, ideaLoadGraph),
     takeEvery(IM_SAVE_GRAPH, ideaSaveGraph),
+    takeEvery(IM_UPDATE_TOGGLE, ideaUpdateToggle),
   ]);
 }

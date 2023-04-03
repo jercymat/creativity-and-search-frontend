@@ -1,11 +1,12 @@
 import { call, put, select } from "redux-saga/effects";
-import { IM_LOAD_GRAPH, IM_LOAD_GRAPH_FAIL, IM_LOAD_GRAPH_SUCCESS, IM_LOAD_PAGE_SUCCESS, IM_SAVE_GRAPH_FAIL, IM_SAVE_GRAPH_SUCCESS } from "../actions/types/idea";
+import { IM_LOAD_GRAPH, IM_LOAD_GRAPH_FAIL, IM_LOAD_GRAPH_SUCCESS, IM_LOAD_PAGE, IM_LOAD_PAGE_SUCCESS, IM_SAVE_GRAPH, IM_SAVE_GRAPH_FAIL, IM_SAVE_GRAPH_SUCCESS, IM_UPDATE_GRAPH } from "../actions/types/idea";
 import { loadGraphAPI, saveGraphAPI } from "../apis/idea";
+import { getNodeSpawnPosition } from "../components/idea-mapper/canvas/CanvasUtil";
 import { getCurrentTime } from "../utils";
 import { smLoadSavedResultsV2 } from "./search";
 
 export function* ideaLoadPage() {
-  console.log('load whole IdeaMapper page saga');
+  console.log('[saga] load whole IdeaMapper page');
 
   // laod SearchMapper results and IdeaMapper graph first
   yield* smLoadSavedResultsV2();
@@ -102,7 +103,7 @@ export function* ideaLoadPage() {
 }
 
 export function* ideaLoadGraph() {
-  console.log('load IdeaMapper graph saga');
+  console.log('[saga] load IdeaMapper graph');
 
   try {
     const response = yield call(loadGraphAPI);
@@ -121,8 +122,9 @@ export function* ideaLoadGraph() {
   } 
 }
 
-export function* ideaSaveGraph() {
-  console.log('save IdeaMapper graph saga');
+export function* ideaSaveGraph(action) {
+  const { searchMapperChanges } = action.payload;
+  console.log(`[saga] save IdeaMapper graph with search mapper changes: ${searchMapperChanges}`);
 
   const { graph, cachedGraph } = yield select(state => state.idea);
   const stringGraph = JSON.stringify(graph);
@@ -140,11 +142,116 @@ export function* ideaSaveGraph() {
     if (response.ret === 0) {
       console.log(`Graph successfully saved to server - ${getCurrentTime()}`);
       yield put({ type: IM_SAVE_GRAPH_SUCCESS });
-      yield put({ type: IM_LOAD_GRAPH });
+
+      if (searchMapperChanges) {
+        yield put({ type: IM_LOAD_PAGE });
+      } else yield put({ type: IM_LOAD_GRAPH });
     } else {
       yield put({ type: IM_SAVE_GRAPH_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
     yield put({ type: IM_SAVE_GRAPH_FAIL, payload: { error: error.toString() } });
   }
-} 
+}
+
+export function* ideaUpdateToggle(action) {
+  const { themeID, newToggle } = action.payload;
+  console.log('[saga] update toggle');
+
+  const sr = yield select(state => state.search.savedResultsV2);
+  const oldGraph = yield select(state => state.idea.graph);
+  const toggles = yield select(state => state.idea.themeToggle);
+
+  const theme = sr.find(theme => theme.id === themeID);
+  const oldToggle = toggles.find(theme => theme.id === themeID);
+  const newGraph = { nodes: [ ...oldGraph.nodes ], edges: [ ...oldGraph.edges ] };
+
+  // console.log('theme', theme);
+  // console.log('old toggle', oldToggle);
+  // console.log('new toggle', newToggle);
+
+  // if theme deleted, delete all nodes and edges
+  if (!newToggle.shown) {
+    newGraph.nodes = newGraph.nodes.filter(node => !node.id.includes(`sm-theme-${theme.id}`));
+    newGraph.edges = newGraph.edges.filter(edge => !edge.id.includes(`sm-edge_sm-theme-${theme.id}`));
+
+    // push to server and trigger load whole page
+    yield put({ type: IM_UPDATE_GRAPH, payload: { graph: newGraph } });
+    yield put({ type: IM_SAVE_GRAPH, payload: { searchMapperChanges: true } });
+    return;
+  }
+
+  // deal with saved results
+  newToggle.sr.forEach((sr, idx) => {
+    if (sr.shown === oldToggle.sr[idx].shown) return;
+
+    // create/remove nodes and edges for the toggled result
+    const result = theme.searchResultList.find(r => r.id === sr.id);
+    if (sr.shown) {
+      newGraph.nodes.push({
+        id: `sm-theme-${theme.id}-result-${result.id}`,
+        type: 'sm_result',
+        selected: false,
+        data: {
+          theme_id: theme.id,
+          result_id: result.id,
+          title: result.title,
+          url: result.url,
+          desc: result.desc,
+          color: 'w',
+        },
+        position: getNodeSpawnPosition(newGraph.nodes),
+      });
+
+      newGraph.edges.push({
+        id: `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-result-${result.id}`,
+        source: `sm-theme-${theme.id}`,
+        sourceHandle: null,
+        target: `sm-theme-${theme.id}-result-${result.id}`,
+        targetHandle: null,
+        type: "idea_mapper_edge",
+      });
+    } else {
+      newGraph.nodes = newGraph.nodes.filter(node => node.id !== `sm-theme-${theme.id}-result-${result.id}`);
+      newGraph.edges = newGraph.edges.filter(edge => edge.id !== `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-result-${result.id}`);
+    }
+  });
+
+  // deal with note
+  if (newToggle.noteShown !== oldToggle.noteShown) {
+
+    // create/remove nodes and edges for the toggled note
+    if (newToggle.noteShown) {
+      newGraph.nodes.push({
+        id: `sm-theme-${theme.id}-note`,
+        type: 'sm_note',
+        selected: false,
+        data: {
+          theme_id: theme.id,
+          label: theme.note,
+          color: 'w',
+        },
+        position: getNodeSpawnPosition(newGraph.nodes),
+      });
+
+      newGraph.edges.push({
+        id: `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-note`,
+        source: `sm-theme-${theme.id}`,
+        sourceHandle: null,
+        target: `sm-theme-${theme.id}-note`,
+        targetHandle: null,
+        type: "idea_mapper_edge",
+      });
+    } else {
+      newGraph.nodes = newGraph.nodes.filter(node => node.id !== `sm-theme-${theme.id}-note`);
+      newGraph.edges = newGraph.edges.filter(edge => edge.id !== `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-note`);
+    }
+  }
+
+  // console.log('graph', oldGraph);
+  // console.log('new graph', newGraph);
+
+  // push to server and trigger load whole page
+  yield put({ type: IM_UPDATE_GRAPH, payload: { graph: newGraph } });
+  yield put({ type: IM_SAVE_GRAPH, payload: { searchMapperChanges: true } });
+}
