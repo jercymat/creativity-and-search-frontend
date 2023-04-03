@@ -1,0 +1,40 @@
+@import '../../../styles/effect-style.scss';
+@import '../../../theme/colors-theme.scss';
+
+.picker {
+  @extend .modal-border;
+  @extend .modal-corner;
+  position: absolute;
+  top: -1px;
+  left: calc(100% + 16px);
+  background-color: $im-background;
+  background-clip: padding-box;
+
+  .hue {
+    @extend .block-border;
+    width: 24px;
+    height: 24px;
+    background-color: beige;
+
+    &:not(:last-of-type) {
+      margin-right: .5rem;
+    }
+
+    &:hover {
+      // outline: 2px $im-danger solid;
+      box-shadow: 0 0 0 2px $im-secondary-alpha;
+    }
+
+    &:active {
+      box-shadow: 0 0 0 2px $im-secondary;
+    }
+
+    &.active {
+      box-shadow: 0 0 0 2px $im-secondary;
+    }
+  }
+
+  hr {
+    margin: .625rem -0.5rem .5rem -0.5rem;
+  }
+}

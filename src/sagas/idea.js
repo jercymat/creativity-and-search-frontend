@@ -166,10 +166,6 @@ export function* ideaUpdateToggle(action) {
   const oldToggle = toggles.find(theme => theme.id === themeID);
   const newGraph = { nodes: [ ...oldGraph.nodes ], edges: [ ...oldGraph.edges ] };
 
-  // console.log('theme', theme);
-  // console.log('old toggle', oldToggle);
-  // console.log('new toggle', newToggle);
-
   // if theme deleted, delete all nodes and edges
   if (!newToggle.shown) {
     newGraph.nodes = newGraph.nodes.filter(node => !node.id.includes(`sm-theme-${theme.id}`));
@@ -247,9 +243,6 @@ export function* ideaUpdateToggle(action) {
       newGraph.edges = newGraph.edges.filter(edge => edge.id !== `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-note`);
     }
   }
-
-  // console.log('graph', oldGraph);
-  // console.log('new graph', newGraph);
 
   // push to server and trigger load whole page
   yield put({ type: IM_UPDATE_GRAPH, payload: { graph: newGraph } });

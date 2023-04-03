@@ -1,0 +1,1 @@
+export { IdeaModalColorPicker } from './IdeaModalColorPicker';

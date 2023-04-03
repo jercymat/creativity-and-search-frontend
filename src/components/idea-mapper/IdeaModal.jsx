@@ -1,23 +1,15 @@
 import { Form, Modal } from 'react-bootstrap';
 import { IconButton, StandardButton } from '../general/button';
 import PropTypes from 'prop-types';
-import styles from './IdeaModal.module.scss';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import { useTracking } from 'react-tracking';
-
-const colors = ['w', 'p', 'g', 'b', 'r'];
+import { IdeaModalColorPicker } from './modals';
 
 function IdeaModal(props) {
   const { show, mode, type, onCloseModal, onAddIdea, onUpdateIdea, onDeleteIdea, node } = props
   const [validated, setValidated] = useState(false);
-  const [color, setColor] = useState(colors[0]);
+  const [colorHex, setColorHex] = useState('#FFFFFF');
   const { trackEvent } = useTracking();
-
-  useEffect(() => {
-    if (mode === 'edit') {
-      setColor(node.data.color)
-    }
-  }, [mode, node])
 
   // helper function
   const firstLetterUpper = (word) => word.charAt(0).toUpperCase() + word.slice(1);
@@ -34,41 +26,34 @@ function IdeaModal(props) {
         trackEvent({ event: 'ideaAddedFromCustom', timestamp: Date.now() });
 
         if (type === 'text') {
-          onAddIdea(type, { label: event.target.text.value, color: color });
+          onAddIdea(type, { label: event.target.text.value, color: 'w', colorHex });
         } else if (type === 'link') {
-          onAddIdea(type, { title: '', link: event.target.link_url.value, color: color });
+          onAddIdea(type, { title: '', link: event.target.link_url.value, color: 'w', colorHex });
         } else if (type === 'image') {
-          onAddIdea(type, { img_url: event.target.image_url.value, color: color });
+          onAddIdea(type, { img_url: event.target.image_url.value, color: 'w', colorHex });
         }
       } else if (mode === 'edit') {
         trackEvent({ event: 'ideaEdited', timestamp: Date.now() });
 
         if (type === 'text') {
-          onUpdateIdea({ label: event.target.text.value, color: color });
+          onUpdateIdea({ label: event.target.text.value, color: 'w', colorHex });
         } else if (type === 'link') {
-          onUpdateIdea({ title: '', link: event.target.link_url.value, color: color });
+          onUpdateIdea({ title: '', link: event.target.link_url.value, color: 'w', colorHex });
         } else if (type === 'image') {
-          onUpdateIdea({ img_url: event.target.image_url.value, color: color });
+          onUpdateIdea({ img_url: event.target.image_url.value, color: 'w', colorHex });
         }
       }
       setValidated(false);
     }
   }
-
-  const handleColorPick = c => () => setColor(c);
   
   return (
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
         <Modal.Title>{firstLetterUpper(mode)} {firstLetterUpper(type)} Idea</Modal.Title>
-        <div className='d-flex align-items-center'>
-          { colors.map(c => 
-            <div
-              key={c}
-              className={`${styles.picker} ${styles[c]} ${color === c ? styles.active : ''}`}
-              onClick={handleColorPick(c)}></div>
-            ) }
-        </div>
+        <IdeaModalColorPicker
+          defaultColor={mode === 'edit' ? node.data.colorHex : '#FFFFFF'}
+          onPickedColor={(hex) => setColorHex(hex)} />
       </Modal.Header>
       <Modal.Body>
         <Form id='add-idea' noValidate validated={validated} onSubmit={handleSubmit}>

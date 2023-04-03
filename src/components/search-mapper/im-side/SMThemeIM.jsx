@@ -17,27 +17,6 @@ export const SMThemeIM = props => {
   const { graph, theme, toggled, updateGraph, openThemeToggleModalAction } = props;
   const { trackEvent } = useTracking();
 
-  // const handleAddNoteAsText = () => {
-  //   if (theme.note === '') return;
-
-  //   const newNode = {
-  //     id: `${Date.now()}`,
-  //     type: 'text',
-  //     selected: true,
-  //     data: {
-  //       label: theme.note,
-  //       color: 'w'
-  //     },
-  //     position: getNodeSpawnPosition(graph.nodes),
-  //   };
-  //   trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
-
-  //   updateGraph({
-  //     nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),
-  //     edges: graph.edges
-  //   });
-  // }
-
   const handleAddTheme = () => {
     console.log('here');
 
@@ -59,62 +38,6 @@ export const SMThemeIM = props => {
       },
       position: getNodeSpawnPosition(graph.nodes),
     }
-
-    // test
-    // const resultNode = {
-    //   id: `sm-theme-4-result-46`,
-    //   type: 'sm_result',
-    //   selected: false,
-    //   data: {
-    //     theme_id: theme.id,
-    //     result_id: 46,
-    //     title: "Reduced Basis, Embedded Methods and Parametrized Levelset Geometry",
-    //     url: "https://arxiv.org/abs/2301.12401",
-    //     desc: "Numerical experiments verify the efficiency of the introduced ``hello world'' problems considering reduced order results in several cases for one, two, three and four dimensional geometrical kind of parametrization. We investigate execution times, and we illustrate transport methods and improvements. A list of important references related to ...",
-    //     color: 'w',
-    //   },
-    //   position: getNodeSpawnPosition(graph.nodes),
-    // };
-    
-    // const resultEdge1 = {
-    //   id: "sm-edge_sm-theme-4_sm-theme-4-result-46",
-    //   source: "sm-theme-4",
-    //   sourceHandle: null,
-    //   target: "sm-theme-4-result-46",
-    //   targetHandle: null,
-    //   type: "idea_mapper_edge",
-    // };
-
-    // const noteNode = {
-    //   id: "sm-theme-4-note",
-    //   type: 'sm_note',
-    //   selected: false,
-    //   data: {
-    //     theme_id: theme.id,
-    //     label: 'New note',
-    //     color: 'w',
-    //   },
-    //   position: getNodeSpawnPosition(graph.nodes),
-    // };
-
-    // const resultEdge2 = {
-    //   id: "sm-edge_sm-theme-4_sm-theme-4-note",
-    //   source: "sm-theme-4",
-    //   sourceHandle: null,
-    //   target: "sm-theme-4-note",
-    //   targetHandle: null,
-    //   type: "idea_mapper_edge",
-    // };
-
-    // updateGraph({
-    //   nodes: graph.nodes.map(node => ({ ...node, selected: false }))
-    //     .concat(themeNode)
-    //     .concat(resultNode)
-    //     .concat(noteNode),
-    //   edges: graph.edges
-    //     .concat(resultEdge1)
-    //     .concat(resultEdge2),
-    // });
 
     updateGraph({
       nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(themeNode),
