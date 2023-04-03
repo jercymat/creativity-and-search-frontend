@@ -3,7 +3,9 @@ import { Handle, Position } from 'react-flow-renderer';
 
 export const SMThemeNode = ({ data }) => {
   return (
-    <div className="im-sm-theme-node im-sm-node-wrap">
+    <div
+      className="im-sm-theme-node im-sm-node-wrap"
+      style={{ backgroundColor: data.colorHex }}>
       <Handle className='disabled' isConnectable={false} type="target" position={Position.Top} />
       <Handle className='disabled' isConnectable={false} type="target" position={Position.Left} />
       <Handle className='disabled' isConnectable={false} type="source" position={Position.Bottom} />

@@ -15,7 +15,7 @@ const colors = [
   ['#F6EEFB', '#E5CDF4', '#D4A8ED'],
   ['#FCEEF5', '#F5CCE0', '#EEAACB'],
   ['#F2EFE2', '#E7DFC5', '#D8CFA9'],
-  ['#FFFFFF', '#E0E0E0', '#CCCCCC'],
+  ['#FFFFFF', '#F0F0F0', '#CCCCCC'],
 ]
 
 const renderTooltip = text => props => (

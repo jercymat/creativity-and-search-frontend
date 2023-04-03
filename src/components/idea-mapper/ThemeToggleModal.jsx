@@ -5,6 +5,7 @@ import { IconButton, StandardButton } from '../general/button';
 import styles from './ThemeToggleModal.module.scss';
 import { connect } from 'react-redux';
 import { updateToggle } from '../../actions/idea';
+// import { IdeaModalColorPicker } from './modals';
 
 const ThemeToggleModal = props => {
   const {
@@ -67,6 +68,7 @@ const ThemeToggleModal = props => {
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
         <Modal.Title>{theme.name}</Modal.Title>
+        {/* <IdeaModalColorPicker onPickedColor={() => { }} defaultColor='#FFFFFF' /> */}
       </Modal.Header>
       <Modal.Body>
         {/* <p>Now you have add this theme to the canvas,<br />toggle some Saved Results and Notes to show them in the canvas.</p>

@@ -35,6 +35,7 @@ export const SMThemeIM = props => {
         total_sr: theme.searchResultList.length,
         shown_sr: 0,
         note_shown: false,
+        colorHex: '#F0F0F0',
       },
       position: getNodeSpawnPosition(graph.nodes),
     }

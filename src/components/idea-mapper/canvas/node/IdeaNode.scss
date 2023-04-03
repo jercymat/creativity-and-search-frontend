@@ -17,30 +17,9 @@
   border-radius: .5rem;
   padding: .75rem 1rem;
   line-height: 1;
-  background-color: #F5F5F5;
 
   .selected & {
     outline: 2px solid $im-secondary;
-  }
-
-  &.w {
-    background-color: $im-background;
-  }
-
-  &.p {
-    background-color: $im-content-purple;
-  }
-
-  &.g {
-    background-color: $im-content-green;
-  }
-
-  &.b {
-    background-color: $im-content-blue;
-  }
-
-  &.r {
-    background-color: $im-content-red;
   }
 }
 

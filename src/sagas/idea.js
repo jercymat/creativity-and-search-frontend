@@ -194,7 +194,7 @@ export function* ideaUpdateToggle(action) {
           title: result.title,
           url: result.url,
           desc: result.desc,
-          color: 'w',
+          colorHex: '#FFFFFF',
         },
         position: getNodeSpawnPosition(newGraph.nodes),
       });
@@ -225,7 +225,7 @@ export function* ideaUpdateToggle(action) {
         data: {
           theme_id: theme.id,
           label: theme.note,
-          color: 'w',
+          colorHex: '#FFFFFF',
         },
         position: getNodeSpawnPosition(newGraph.nodes),
       });
