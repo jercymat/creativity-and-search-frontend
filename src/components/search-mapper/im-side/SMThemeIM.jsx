@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './SMTheme.IM.module.scss';
 import { useTracking } from 'react-tracking';
-import { openThemeToggleModal, updateGraph } from '../../../actions/idea';
+import { openThemeToggleModal, saveGraph, updateGraph } from '../../../actions/idea';
 import SMResultIM from './SMResultIM';
 import { connect } from 'react-redux';
 import { getNodeSpawnPosition } from '../../idea-mapper/canvas/CanvasUtil';
@@ -14,7 +14,7 @@ const renderTooltip = text => props => (
 );
 
 export const SMThemeIM = props => {
-  const { graph, theme, toggled, updateGraph, openThemeToggleModalAction } = props;
+  const { graph, theme, toggled, updateGraphAction, saveGraphAction, openThemeToggleModalAction } = props;
   const { trackEvent } = useTracking();
 
   const handleAddTheme = () => {
@@ -39,10 +39,11 @@ export const SMThemeIM = props => {
       position: getNodeSpawnPosition(graph.nodes),
     }
 
-    updateGraph({
+    updateGraphAction({
       nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(themeNode),
       edges: graph.edges
     });
+    saveGraphAction(true);
   }
 
   const handleToggleTheme = () => {
@@ -93,7 +94,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateGraph,
+  updateGraphAction: updateGraph,
+  saveGraphAction: saveGraph,
   openThemeToggleModalAction: openThemeToggleModal,
 };
 
