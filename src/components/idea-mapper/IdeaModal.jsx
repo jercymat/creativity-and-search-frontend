@@ -22,7 +22,7 @@ function IdeaModal(props) {
   // helper function
   const firstLetterUpper = (word) => word.charAt(0).toUpperCase() + word.slice(1);
 
-  const handleSubmitTest = (event) => {
+  const handleSubmit = event => {
     const form = event.currentTarget;
 
     event.preventDefault();
@@ -71,7 +71,7 @@ function IdeaModal(props) {
         </div>
       </Modal.Header>
       <Modal.Body>
-        <Form id='add-idea' noValidate validated={validated} onSubmit={handleSubmitTest}>
+        <Form id='add-idea' noValidate validated={validated} onSubmit={handleSubmit}>
           {
             {
               text: <TextIdeaModal data={mode === 'edit' ? node.data : null}/>,

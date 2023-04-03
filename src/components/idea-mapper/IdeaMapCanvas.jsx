@@ -122,14 +122,15 @@ function IdeaMapCanvas(props) {
 
   const handleUpdateIdea = useCallback(
     (data) => {
+      const newNode = graph.nodes.find(node => node.id === modalEditNode.id);
       updateGraphAction({
-        nodes: graph.nodes.map(node => {
-          if (node.id === modalEditNode.id) {
-            node.data = { ...data };
-          }
-          return node;
-        }),
-        edges: graph.edges
+        ...graph,
+        nodes: graph.nodes
+          .filter(node => node.id !== newNode.id)
+          .concat({
+            ...newNode,
+            data: data,
+          }),
       });
       setModalShow(false);
       saveGraphDebounced(false);
