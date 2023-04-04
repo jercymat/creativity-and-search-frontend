@@ -88,7 +88,11 @@ const reducer = (state = initialState, { type, payload }) => {
     }
 
   case IM_MODAL_THEME_TOGGLE_CLOSE:
-    return { ...state, themeToggleModalShow: false }
+    return {
+      ...state,
+      themeToggleModalShow: false,
+      focusedThemeID: -1,
+    }
 
   default:
     return state

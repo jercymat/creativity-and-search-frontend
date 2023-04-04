@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Modal } from 'react-bootstrap';
 import { IconButton, StandardButton } from '../general/button';
@@ -86,18 +86,20 @@ const ThemeToggleModal = props => {
                 defaultChecked={themeToggle.sr[idx].shown}
                 label={result.title} />
             </Form.Group>) }
-          <hr />
-          <Form.Group
-            className={styles.form_multiline_check}
-            controlId='theme-note'>
-            <Form.Switch>
-              <Form.Switch.Input name='theme-note' defaultChecked={themeToggle.noteShown} />
-              <Form.Switch.Label>
-                <div className={styles.label_title}>Theme Idea</div>
-                <div className={styles.label_subtitle}>{theme.note}</div>
-              </Form.Switch.Label>
-            </Form.Switch>
-          </Form.Group>
+          { theme.note !== '' && <>
+            <hr />
+            <Form.Group
+              className={styles.form_multiline_check}
+              controlId='theme-note'>
+              <Form.Switch>
+                <Form.Switch.Input name='theme-note' defaultChecked={themeToggle.noteShown} />
+                <Form.Switch.Label>
+                  <div className={styles.label_title}>Theme Idea</div>
+                  <div className={styles.label_subtitle}>{theme.note}</div>
+                </Form.Switch.Label>
+              </Form.Switch>
+            </Form.Group>
+          </> }
         </Form>
       </Modal.Body>
       <Modal.Footer style={{ borderTop: 'none' }}>
