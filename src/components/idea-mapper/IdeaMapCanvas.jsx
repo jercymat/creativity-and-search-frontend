@@ -21,7 +21,7 @@ import {
 import { IdeaMapperConnection } from './canvas/connect';
 import { useDebouncedCallback } from 'use-debounce';
 import { useTracking } from 'react-tracking';
-import { getNodeSpawnPosition } from './canvas/CanvasUtil';
+import { getNodeSpawnPosition } from './util/canvas';
 import { connect } from 'react-redux';
 import { saveGraph, updateGraph } from '../../actions/idea';
 import './canvas/node/IdeaNode.scss';

@@ -33,6 +33,7 @@ const initialState = {
 //     id: 0,
 //     shown: false,
 //     noteShown: false,
+//     colorScheme: '#F0F0F0'
 //     sr: [
 //       {
 //         id: 1,

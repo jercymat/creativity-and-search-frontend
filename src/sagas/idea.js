@@ -1,7 +1,8 @@
 import { call, put, select } from "redux-saga/effects";
 import { IM_LOAD_GRAPH, IM_LOAD_GRAPH_FAIL, IM_LOAD_GRAPH_SUCCESS, IM_LOAD_PAGE, IM_LOAD_PAGE_SUCCESS, IM_SAVE_GRAPH, IM_SAVE_GRAPH_FAIL, IM_SAVE_GRAPH_SUCCESS, IM_UPDATE_GRAPH } from "../actions/types/idea";
 import { loadGraphAPI, saveGraphAPI } from "../apis/idea";
-import { getNodeSpawnPosition } from "../components/idea-mapper/canvas/CanvasUtil";
+import { getNodeSpawnPosition } from "../components/idea-mapper/util/canvas";
+import { themeColorScheme } from "../components/idea-mapper/util/color-picker";
 import { getCurrentTime } from "../utils";
 import { smLoadSavedResultsV2 } from "./search";
 
@@ -64,6 +65,7 @@ export function* ideaLoadPage() {
     note: theme.note,
     shown: smIdeas.some(idea => idea.id === `sm-theme-${theme.id}`),
     noteShown: smIdeas.some(idea => idea.id === `sm-theme-${theme.id}-note`),
+    colorScheme: graph.nodes.find(node => node.id === `sm-theme-${theme.id}`) ? graph.nodes.find(node => node.id === `sm-theme-${theme.id}`).data.colorHex : '#F0F0F0',
     sr: theme.searchResultList.map(result => ({
       id: result.id,
       shown: smIdeas.some(idea => idea.id === `sm-theme-${theme.id}-result-${result.id}`),
@@ -242,6 +244,45 @@ export function* ideaUpdateToggle(action) {
       newGraph.nodes = newGraph.nodes.filter(node => node.id !== `sm-theme-${theme.id}-note`);
       newGraph.edges = newGraph.edges.filter(edge => edge.id !== `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-note`);
     }
+  }
+
+  // update theme color scheme
+  if (newToggle.colorScheme !== oldToggle.colorScheme) {
+    // update theme nodes
+    const themeNode = newGraph.nodes.find(node => node.id === `sm-theme-${theme.id}`);
+    newGraph.nodes = newGraph.nodes
+      .filter(node => node.id !== `sm-theme-${theme.id}`)
+      .concat({
+        ...themeNode,
+        data: {
+          ...themeNode.data,
+          colorHex: newToggle.colorScheme,
+        },
+      });
+
+    // update sr nodes
+    const resultNodes = newGraph.nodes.filter(node => node.id.includes(`sm-theme-${theme.id}-result-`));
+    newGraph.nodes = newGraph.nodes
+      .filter(node => !node.id.includes(`sm-theme-${theme.id}-result-`))
+      .concat(resultNodes.map(node => ({
+        ...node,
+        data: {
+          ...node.data,
+          colorHex: themeColorScheme[newToggle.colorScheme],
+        }
+      })));
+
+    // update note nodes
+    const noteNode = newGraph.nodes.find(node => node.id === `sm-theme-${theme.id}-note`);
+    newGraph.nodes = newGraph.nodes
+      .filter(node => node.id !== `sm-theme-${theme.id}-note`)
+      .concat({
+        ...noteNode,
+        data: {
+          ...noteNode.data,
+          colorHex: themeColorScheme[newToggle.colorScheme],
+        }
+      });
   }
 
   // push to server and trigger load whole page

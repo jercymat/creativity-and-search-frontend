@@ -1,5 +1,5 @@
 import { getBezierPath } from "react-flow-renderer";
-import { getEdgeParams } from "../CanvasUtil";
+import { getEdgeParams } from "../../util/canvas";
 import './IdeaMapperConnection.scss';
 
 function IdeaMapperConnection({

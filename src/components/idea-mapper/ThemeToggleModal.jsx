@@ -1,17 +1,19 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Modal } from 'react-bootstrap';
 import { IconButton, StandardButton } from '../general/button';
 import styles from './ThemeToggleModal.module.scss';
 import { connect } from 'react-redux';
 import { updateToggle } from '../../actions/idea';
-// import { IdeaModalColorPicker } from './modals';
+import { ThemeToggleModalColorPicker } from './modals';
 
 const ThemeToggleModal = props => {
   const {
     show, focusedThemeID, themeToggles, savedResults,
     onCloseModal, updateToggleAction,
   } = props;
+
+  const [colorScheme, setColorScheme] = useState('#F0F0F0');
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -24,6 +26,7 @@ const ThemeToggleModal = props => {
         shown: event.currentTarget[`theme-sr-${result.id}`].checked,
       })),
       noteShown: event.currentTarget['theme-note'].checked,
+      colorScheme,
     }
 
     updateToggleAction(newToggle.id, newToggle);
@@ -68,7 +71,9 @@ const ThemeToggleModal = props => {
     <Modal show={show} centered>
       <Modal.Header style={{ borderBottom: 'none' }}>
         <Modal.Title>{theme.name}</Modal.Title>
-        {/* <IdeaModalColorPicker onPickedColor={() => { }} defaultColor='#FFFFFF' /> */}
+        <ThemeToggleModalColorPicker
+          defaultColor={themeToggle.colorScheme !== undefined ? themeToggle.colorScheme : '#F0F0F0'}
+          onPickedColor={(hex) => setColorScheme(hex)} />
       </Modal.Header>
       <Modal.Body>
         {/* <p>Now you have add this theme to the canvas,<br />toggle some Saved Results and Notes to show them in the canvas.</p>

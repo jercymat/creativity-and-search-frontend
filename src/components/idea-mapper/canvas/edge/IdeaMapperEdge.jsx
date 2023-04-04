@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { getBezierPath, useStore } from "react-flow-renderer";
-import { getEdgeParams } from "../CanvasUtil";
+import { getEdgeParams } from "../../util/canvas";
 import './IdeaMapperEdge.scss';
 
 function IdeaMapperEdge({ id, source, target, markerEnd, style }) {

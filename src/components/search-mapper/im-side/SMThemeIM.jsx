@@ -5,7 +5,7 @@ import { useTracking } from 'react-tracking';
 import { openThemeToggleModal, saveGraph, updateGraph } from '../../../actions/idea';
 import SMResultIM from './SMResultIM';
 import { connect } from 'react-redux';
-import { getNodeSpawnPosition } from '../../idea-mapper/canvas/CanvasUtil';
+import { getNodeSpawnPosition } from '../../idea-mapper/util/canvas';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { CircleIconButton } from '../../general/button';
 
@@ -18,8 +18,6 @@ export const SMThemeIM = props => {
   const { trackEvent } = useTracking();
 
   const handleAddTheme = () => {
-    console.log('here');
-
     // check if theme already being added to the canvas
     if (graph.nodes.find(node => node.id === `sm-theme-${theme.id}`)) return;
 
