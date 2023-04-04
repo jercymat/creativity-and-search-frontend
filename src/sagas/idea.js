@@ -196,7 +196,7 @@ export function* ideaUpdateToggle(action) {
           title: result.title,
           url: result.url,
           desc: result.desc,
-          colorHex: '#FFFFFF',
+          colorHex: themeColorScheme[newToggle.colorScheme],
         },
         position: getNodeSpawnPosition(newGraph.nodes),
       });
@@ -227,7 +227,7 @@ export function* ideaUpdateToggle(action) {
         data: {
           theme_id: theme.id,
           label: theme.note,
-          colorHex: '#FFFFFF',
+          colorHex: themeColorScheme[newToggle.colorScheme],
         },
         position: getNodeSpawnPosition(newGraph.nodes),
       });
@@ -274,15 +274,17 @@ export function* ideaUpdateToggle(action) {
 
     // update note nodes
     const noteNode = newGraph.nodes.find(node => node.id === `sm-theme-${theme.id}-note`);
-    newGraph.nodes = newGraph.nodes
-      .filter(node => node.id !== `sm-theme-${theme.id}-note`)
-      .concat({
-        ...noteNode,
-        data: {
-          ...noteNode.data,
-          colorHex: themeColorScheme[newToggle.colorScheme],
-        }
-      });
+    if (noteNode) {
+      newGraph.nodes = newGraph.nodes
+        .filter(node => node.id !== `sm-theme-${theme.id}-note`)
+        .concat({
+          ...noteNode,
+          data: {
+            ...noteNode.data,
+            colorHex: themeColorScheme[newToggle.colorScheme],
+          }
+        });
+    }
   }
 
   // push to server and trigger load whole page
