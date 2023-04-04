@@ -1,6 +1,7 @@
 {
   "name": "idea-map-frontend",
   "version": "0.1.0",
+  "homepage": "/v2",
   "private": true,
   "dependencies": {
     "@dnd-kit/core": "^5.0.3",

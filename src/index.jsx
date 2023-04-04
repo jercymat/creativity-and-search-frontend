@@ -42,7 +42,7 @@ axios.defaults.withCredentials = true;
 
 root.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename='/v2'>
       <Container id='im-root-wrap' fluid>
         <Routes>
           <Route path='/test' element={<TestLayout />} />
