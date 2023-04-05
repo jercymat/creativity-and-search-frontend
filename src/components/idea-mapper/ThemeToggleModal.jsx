@@ -25,7 +25,7 @@ const ThemeToggleModal = props => {
         ...result,
         shown: event.currentTarget[`theme-sr-${result.id}`].checked,
       })),
-      noteShown: event.currentTarget['theme-note'].checked,
+      noteShown: theme.note !== '' ? event.currentTarget['theme-note'].checked : false,
       colorScheme,
     }
 

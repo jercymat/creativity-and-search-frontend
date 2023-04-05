@@ -54,7 +54,7 @@ export const SMThemeDialog = props => {
             <h2 className={styles.title}>New Theme</h2>
             <h4 className={styles.sr_count}>Create a new theme for this result</h4>
           </Button>
-          <hr />
+          { themes.slice(1).length !== 0 && <hr /> }
           {
             themes.slice(1).map(theme => (
               <Button
@@ -71,8 +71,6 @@ export const SMThemeDialog = props => {
       </Modal.Body>
       <Modal.Footer style={{ borderTop: 'none' }}>
         <StandardButton variant='secondary' btnText='Cancel' onClick={handleCancel} />
-        {/* TODO: change button style to support submission */}
-        {/* <StandardButton variant='primary' btnText='Save' type='submit' form='add-theme-idea' /> */}
         <Button
           variant='primary'
           disabled={submitting || chosenGroupID === null}
