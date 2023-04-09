@@ -53,7 +53,7 @@ export function* ideaLoadPage() {
 
   // if no themed results, no need to construct toggle list
   if (sr.length <= 1) {
-    yield put({ type: IM_LOAD_PAGE_SUCCESS, payload: { themeToggle: [], reflectedGraph: graph } });
+    yield put({ type: IM_LOAD_PAGE_SUCCESS, payload: { themeToggle: [], reflectedGraph } });
     return;
   }
 
