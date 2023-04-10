@@ -1,5 +1,6 @@
 import { LogoLarge } from '../components/general/logo';
 import SearchField from '../components/search/SearchField';
+import config from '../config';
 
 function LandingPage() {
   return (
@@ -13,7 +14,7 @@ function LandingPage() {
         id='im-search-area'
         className='w-50 mx-auto mb-3'
         placeholder='Your creativity starts here.'/>
-      <p className="text-center"><small>Development Version v0.0.0</small></p>
+      <p className="text-center"><small>Version v{config.PRODUCT_VERSION}</small></p>
     </div>
   )
 }
