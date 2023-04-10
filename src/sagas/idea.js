@@ -19,37 +19,30 @@ export function* ideaLoadPage() {
   // --- reflect changes of SearchMapper to graph ---
   const reflectedGraph = {}
 
-  // remove theme, sr, and note ideas of deleted theme
-  const themeIDs = sr.slice(1).map(theme => theme.id);
+  // remove deleted theme and results
+  const validNodeIDs = sr
+    .slice(1)
+    .map(theme => theme.searchResultList
+      .map(result => `sm-theme-${theme.id}-result-${result.id}`)
+      .concat([`sm-theme-${theme.id}`, `sm-theme-${theme.id}-note`]))
+    .flat();
+  const validEdgeIDs = sr
+    .slice(1)
+    .map(theme => theme.searchResultList
+      .map(result => `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-result-${result.id}`)
+      .concat(`sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-note`))
+    .flat();
 
   reflectedGraph.nodes = graph.nodes.filter(node => {
     if (node.id.includes('sm-theme')) {
-      return themeIDs.includes(node.data.theme_id);
+      return validNodeIDs.includes(node.id);
     } else return true;
   });
   reflectedGraph.edges = graph.edges.filter(edge => {
     if (edge.id.includes('sm-edge')) {
-      return themeIDs.some(id => edge.id.includes(`sm-edge_sm-theme-${id}`));
+      return validEdgeIDs.includes(edge.id);
     } else return true;
   });
-
-  // remove deleted sr
-  const savedResultIDs = sr.slice(1)
-    .map(theme => theme.searchResultList)
-    .flat()
-    .map(sr => sr.id);
-
-  reflectedGraph.nodes = reflectedGraph.nodes.filter(node => {
-    if (node.id.includes('result')) {
-      return savedResultIDs.includes(node.data.result_id);
-    } else return true;
-  });
-
-  reflectedGraph.edges = reflectedGraph.edges.filter(edge => {
-    if (edge.id.includes('result')) {
-      return savedResultIDs.some(id => edge.id.includes(`result-${id}`));
-    } else return true;
-  })
 
   // if no themed results, no need to construct toggle list
   if (sr.length <= 1) {
