@@ -92,7 +92,6 @@ function IdeaMapCanvas(props) {
 
   const onConnect = useCallback(
     (connection) => {
-      console.log(connection);
       updateGraphAction({
         nodes: graph.nodes,
         edges: addEdge({ ...connection, type: 'idea_mapper_edge' }, graph.edges)

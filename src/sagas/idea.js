@@ -41,6 +41,8 @@ export function* ideaLoadPage() {
   reflectedGraph.edges = graph.edges.filter(edge => {
     if (edge.id.includes('sm-edge')) {
       return validEdgeIDs.includes(edge.id);
+    } else if (edge.source.includes('sm-theme')) {
+      return validNodeIDs.includes(edge.source);
     } else return true;
   });
 
@@ -204,7 +206,9 @@ export function* ideaUpdateToggle(action) {
       });
     } else {
       newGraph.nodes = newGraph.nodes.filter(node => node.id !== `sm-theme-${theme.id}-result-${result.id}`);
+      // remove connections from theme to saved result and from saved result to customized ideas
       newGraph.edges = newGraph.edges.filter(edge => edge.id !== `sm-edge_sm-theme-${theme.id}_sm-theme-${theme.id}-result-${result.id}`);
+      newGraph.edges = newGraph.edges.filter(edge => edge.source !== `sm-theme-${theme.id}-result-${result.id}`);
     }
   });
 
