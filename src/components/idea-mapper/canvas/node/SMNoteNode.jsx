@@ -9,9 +9,7 @@ export const SMNoteNode = ({ data }) => {
       className='im-sm-note-node im-sm-node-wrap'
       style={{ backgroundColor: data.colorHex }}>
       <Handle className='disabled' isConnectable={false} type="target" position={Position.Top} />
-      <Handle className='disabled' isConnectable={false} type="target" position={Position.Left} />
       <Handle className='disabled' isConnectable={false} type="source" position={Position.Bottom} />
-      <Handle className='disabled' isConnectable={false} type="source" position={Position.Right} />
       <div className="im-sm-note__note-wrap noselect">
         <div className="im-sm-note__icon">
           <span className="font-im-ideas">
