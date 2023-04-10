@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useTracking } from 'react-tracking';
 import { CircleIconButton } from '../../general/button';
 import styles from './SearchResult.module.scss';
+import { EVENT_SEARCH_RESULT_CLICKED } from '../../../tracker/type/event/search';
 
 function SearchResult(props) {
   const { title, url, desc } = props.result;
@@ -34,7 +35,7 @@ function SearchResult(props) {
         <div className={styles.head_wrap}>
           <a 
             href={url} target='_blank' rel="noreferrer"
-            onClick={() => trackEvent({ event: 'docClicked', timestamp: Date.now() })}>
+            onClick={() => trackEvent({ event: EVENT_SEARCH_RESULT_CLICKED, timestamp: Date.now() })}>
             <h2 className={styles.title} ref={titleRef}>{title}</h2>
           </a>
           <h4 className={styles.url} ref={urlRef}>{url}</h4>

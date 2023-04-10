@@ -4,19 +4,19 @@ import styles from './SearchField.module.scss';
 import { useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTracking } from 'react-tracking';
+import { COMP_LANDING, COMP_SERP } from '../../tracker/type/component';
+import { EVENT_NEW_SEARCH } from '../../tracker/type/event/search';
 
 function SearchField(props) {
   const { id, placeholder, className, style, defaultQuery } = props;
   const [ query, setQuery ] = useState(defaultQuery !== undefined ? defaultQuery : '');
   const location = useLocation();
   const { trackEvent } = useTracking({
-    page: location.pathname === '/'
-      ? 'home'
-      : location.pathname === '/map'
-        ? 'ideaMapper'
-        : location.pathname === '/search'
-          ? 'SERP'
-          : ''
+    component: location.pathname === '/'
+      ? COMP_LANDING
+      : location.pathname === '/search'
+        ? COMP_SERP
+        : ''
   });
   const searchRef = useRef(null);
 
@@ -43,7 +43,7 @@ function SearchField(props) {
         <div className={styles['search-button']}>
           <Link
             className={query === '' ? styles.disabled : null}
-            onClick={() => trackEvent({ event: 'newSearch', timestamp: Date.now() })}
+            onClick={() => trackEvent({ event: EVENT_NEW_SEARCH, timestamp: Date.now() })}
             to={query !== '' ? `/search?q=${query.replace(' ', '+')}` : '#'}
             ref={searchRef}>
             <FontAwesomeIcon icon={['fas', 'magnifying-glass']} />

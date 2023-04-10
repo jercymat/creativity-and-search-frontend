@@ -4,6 +4,7 @@ import styles from './SMResult.IM.module.scss';
 import { updateGraph } from '../../../actions/idea';
 // import { getNodeSpawnPosition } from '../../idea-mapper/canvas/CanvasUtil';
 import { connect } from 'react-redux';
+// import { EVENT_IM_IDEA_ADD_FROM_CONTEXT } from '../../../tracker/type/event/idea-mapper';
 
 const SMResultIM = props => {
   // const { graph, save, updateGraph } = props;
@@ -31,7 +32,7 @@ const SMResultIM = props => {
   //         },
   //     position: getNodeSpawnPosition(graph.nodes),
   //   };
-  //   trackEvent({ event: 'ideaAddedFromSaved', timestamp: Date.now() });
+  //   trackEvent({ event: EVENT_IM_IDEA_ADD_FROM_CONTEXT, timestamp: Date.now() });
 
   //   updateGraph({
   //     nodes: graph.nodes.map(node => ({ ...node, selected: false })).concat(newNode),

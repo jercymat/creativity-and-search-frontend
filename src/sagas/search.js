@@ -4,6 +4,8 @@ import {
   SM_SR2_CHANGE_THEME_FAIL,
   SM_SR2_CHANGE_THEME_SUCCESS,
   SM_SR2_CREATE_THEME_FAIL,
+  SM_SR2_DELETE_THEME_FAIL,
+  SM_SR2_DELETE_THEME_SUCCESS,
   SM_SR2_EDIT_THEME_IDEA_FAIL,
   SM_SR2_EDIT_THEME_IDEA_SUCCESS,
   SM_SR2_LOAD,
@@ -21,7 +23,19 @@ import {
   SM_SR_REORDER_SUCCESS,
   SM_TXT_DIALOG_CREATE_THEME_OPEN,
 } from "../actions/types/search";
-import { addSavedResultAPI, addThemeIdeaAPI, changeThemeAPI, createThemeAPI, deleteSavedResultAPI, editThemeIdeaAPI, loadSavedResultAPI, loadSavedResultV2API, renameThemeAPI, reorderSavedResultAPI } from "../apis/search";
+import {
+  addSavedResultAPI,
+  addThemeIdeaAPI,
+  changeThemeAPI,
+  createThemeAPI,
+  deleteSavedResultAPI,
+  deleteThemeAPI,
+  editThemeIdeaAPI,
+  loadSavedResultAPI,
+  loadSavedResultV2API,
+  renameThemeAPI,
+  reorderSavedResultAPI,
+} from "../apis/search";
 import { getCurrentTime } from "../utils";
 
 export function* smAddSavedResults(action) {
@@ -230,7 +244,7 @@ export function* smCreateTheme(action) {
       yield all([
         put({
           type: SM_SR2_CHANGE_THEME, payload: {
-            themeID: response.id,
+            themeID: response.groupid,
             resultID,
           }
         }),
@@ -240,5 +254,25 @@ export function* smCreateTheme(action) {
     }
   } catch (error) {
     yield put({ type: SM_SR2_CREATE_THEME_FAIL, payload: { error: error.toString() } });
+  }
+}
+
+export function* smDeleteTheme(action) {
+  console.log('[saga] delete search mapper theme');
+  const { themeID } = action.payload;
+
+  try {
+    const response = yield call(deleteThemeAPI, { themeID });
+
+    if (response.ret === 0) {
+      yield all([
+        put({ type: SM_SR2_DELETE_THEME_SUCCESS }),
+        put({ type: SM_SR2_LOAD }),
+      ]);
+    } else {
+      yield put({ type: SM_SR2_DELETE_THEME_FAIL, payload: { error: response.error } });
+    }
+  } catch (error) {
+    yield put({ type: SM_SR2_DELETE_THEME_FAIL, payload: { error: error.toString() } });
   }
 }

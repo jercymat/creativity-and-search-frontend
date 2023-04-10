@@ -10,6 +10,9 @@ import { SavedResultListSERP } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
 import { syncSMWidth } from '../actions/global';
+import { COMP_SERP } from '../tracker/type/component';
+import { EVENT_SWITCH_SM_IM } from '../tracker/type/event/general';
+import { EVENT_IM_ENTER } from '../tracker/type/event/idea-mapper';
 
 function SERPPage(props) {
   const { savedResults, syncSMWidth } = props;
@@ -17,7 +20,7 @@ function SERPPage(props) {
   // hooks
   const savedArea = useRef(null);
   const [searchParams] = useSearchParams();
-  const { Track, trackEvent } = useTracking({ page: 'SERP' });
+  const { Track, trackEvent } = useTracking({ component: COMP_SERP });
 
   const curPage = searchParams.has('page')
     ? parseInt(searchParams.get('page'))
@@ -42,8 +45,8 @@ function SERPPage(props) {
             <LinkContainer to='/map'>
               <RightIconButton
                 onClick={() => {
-                  trackEvent({ event: 'switchSerpMapper', timestamp: Date.now() });
-                  trackEvent({ event: 'enterIdeaMap', timestamp: Date.now() });
+                  trackEvent({ event: EVENT_SWITCH_SM_IM, timestamp: Date.now() });
+                  trackEvent({ event: EVENT_IM_ENTER, timestamp: Date.now() });
                 }}
                 disabled={savedResults.length === 0}
                 variant='primary'
