@@ -41,7 +41,8 @@ function SERPPage(props) {
           queryParam={searchParams.get('q') }
           curPage={curPage} />
         <div ref={savedArea} className={styles.saved}>
-          <div className="d-flex justify-content-end mb-3">
+          <div className="d-flex justify-content-between mb-3">
+            <span className="font-logo-main ps-2 d-block">Search Mapper</span>
             <LinkContainer to='/map'>
               <RightIconButton
                 onClick={() => {
