@@ -18,6 +18,7 @@ import {
   editThemeIdea,
   changeTheme,
   createTheme,
+  deleteTheme,
 } from '../../actions/search';
 import { SMTextDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
@@ -33,7 +34,7 @@ function SavedResultListSERP(props) {
     savedResultsV2, messageContent, textDialogMode, themeDialogMode,
     currentFocusTheme, currentFocusResult,
     loadSavedResults, deleteSavedResults,
-    loadSavedResultsV2, createTheme, renameTheme, editThemeIdea, changeTheme,
+    loadSavedResultsV2, createTheme, renameTheme, editThemeIdea, changeTheme, deleteTheme, 
     closeMessageDialog,
     openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
@@ -48,9 +49,14 @@ function SavedResultListSERP(props) {
     loadSavedResultsV2();
   }, [fetched, loadSavedResults, loadSavedResultsV2]);
 
-  const onDeleteSaved = resultID => {
+  const onDeleteSaved = (resultID, deleteThemeID) => {
     console.log(`delete result ${resultID}`);
     deleteSavedResults(resultID);
+
+    if (deleteThemeID !== -1) {
+      console.log(`delete theme ${deleteThemeID}`);
+      deleteTheme(deleteThemeID);
+    }
   };
 
   const onCreateTheme = ({ name, resultID }) => {
@@ -73,7 +79,8 @@ function SavedResultListSERP(props) {
 
   const onAddToTheme = ({ fromThemeID, themeID, resultID }) => {
     const isThemed = ![0, -1].includes(savedResultsV2.map(theme => theme.id).indexOf(fromThemeID));
-    const isConfirmed = isThemed && savedResultsV2.find(el => el.id === fromThemeID).searchResultList.length === 1
+    const isLastResult = isThemed && savedResultsV2.find(el => el.id === fromThemeID).searchResultList.length === 1
+    const isConfirmed = isLastResult
       ? window.confirm(MESSAGE.MOVE_LAST_RESULT)
       : true;
 
@@ -81,7 +88,10 @@ function SavedResultListSERP(props) {
       console.log(`${themeDialogMode} result ${resultID} from theme ${fromThemeID} to theme ${themeID}`);
       changeTheme(themeID, resultID);
 
-      // TODO: add delete theme API
+      if (isLastResult) {
+        console.log(`delete theme ${fromThemeID}`);
+        deleteTheme(fromThemeID);
+      }
     }
     closeThemeDialog();
   };
@@ -164,6 +174,7 @@ SavedResultListSERP.propTypes = {
   renameTheme: PropTypes.func.isRequired,
   editThemeIdea: PropTypes.func.isRequired,
   changeTheme: PropTypes.func.isRequired,
+  deleteTheme: PropTypes.func.isRequired,
   // openFormThemeMsgDialog: PropTypes.func.isRequired,
   closeMessageDialog: PropTypes.func.isRequired,
   // openAddIdeaDialog: PropTypes.func.isRequired,
@@ -197,6 +208,7 @@ const mapDispatchToProps = {
   editThemeIdea,
   createTheme,
   changeTheme,
+  deleteTheme,
   closeMessageDialog,
   openEditIdeaDialog,
   openRenameThemeDialog,

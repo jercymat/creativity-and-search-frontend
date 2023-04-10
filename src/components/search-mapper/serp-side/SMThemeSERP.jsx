@@ -11,13 +11,13 @@ export function SMThemeSERP(props) {
   const { theme, onRenameTheme, onEditIdea, onRemoveFromTheme, onMoveToTheme, onDeleteSaved } = props;
 
   const handleDeleteSaved = resultID => {
-    const isConfirmed = theme.searchResultList.length === 1
+    const isLastResult = theme.searchResultList.length === 1
+    const isConfirmed = isLastResult
       ? window.confirm(MESSAGES.LAST_RESULT)
       : true;
 
     if (isConfirmed) {
-      onDeleteSaved(resultID);
-      // TODO: add delete theme API
+      onDeleteSaved(resultID, isLastResult ? theme.id : -1);
     }
   };
 

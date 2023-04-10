@@ -97,8 +97,6 @@ export const SMTextDialog = props => {
       </Modal.Body>
       <Modal.Footer style={{ borderTop: 'none' }}>
         <StandardButton variant='secondary' btnText='Cancel' onClick={onClose} />
-        {/* TODO: change button style to support submission */}
-        {/* <StandardButton variant='primary' btnText='Save' type='submit' form='add-theme-idea' /> */}
         <Button variant='primary' type='submit' form='add-theme-idea' disabled={submitting}>
           {
             submitting

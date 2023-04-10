@@ -21,6 +21,7 @@ import {
   SM_UPDATE_SAVED_RESULTS,
   SM_SR2_CREATE_THEME,
   SM_MSG_DIALOG_DELETE_THEME_OPEN,
+  SM_SR2_DELETE_THEME,
 } from "./types/search";
 
 export const updateBufferedSearch = (search) => ({
@@ -45,6 +46,7 @@ export const renameTheme = (themeID, name) => ({ type: SM_SR2_RENAME_THEME, payl
 export const editThemeIdea = (themeID, noteID, content) => ({ type: SM_SR2_EDIT_THEME_IDEA, payload: { themeID, noteID, content } });
 export const createTheme = (name, resultID) => ({ type: SM_SR2_CREATE_THEME, payload: { name, resultID } });
 export const changeTheme = (themeID, resultID) => ({ type: SM_SR2_CHANGE_THEME, payload: { themeID, resultID } });
+export const deleteTheme = themeID => ({ type: SM_SR2_DELETE_THEME, payload: { themeID } });
 
 // dialog
 export const openFormThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_FORM_THEME_OPEN });

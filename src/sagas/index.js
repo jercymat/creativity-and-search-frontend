@@ -4,6 +4,7 @@ import { IM_LOAD_GRAPH, IM_LOAD_PAGE, IM_SAVE_GRAPH, IM_UPDATE_TOGGLE } from '..
 import {
   SM_SR2_CHANGE_THEME,
   SM_SR2_CREATE_THEME,
+  SM_SR2_DELETE_THEME,
   SM_SR2_EDIT_THEME_IDEA,
   SM_SR2_LOAD,
   SM_SR2_RENAME_THEME,
@@ -24,6 +25,7 @@ import {
   smChangeTheme,
   smCreateTheme,
   smDeleteSavedResults,
+  smDeleteTheme,
   smEditThemeIdea,
   smLoadSavedResults,
   smLoadSavedResultsV2,
@@ -45,6 +47,7 @@ export default function* rootSaga() {
     takeEvery(SM_SR2_LOAD, smLoadSavedResultsV2),
     takeEvery(SM_SR2_CREATE_THEME, smCreateTheme),
     takeEvery(SM_SR2_RENAME_THEME, smRenameTheme),
+    takeEvery(SM_SR2_DELETE_THEME, smDeleteTheme),
     takeEvery(SM_SR2_EDIT_THEME_IDEA, smEditThemeIdea),
     takeEvery(SM_SR2_CHANGE_THEME, smChangeTheme),
 
