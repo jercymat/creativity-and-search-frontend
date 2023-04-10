@@ -10,6 +10,9 @@ import { connect } from 'react-redux';
 import { closeThemeToggleModal, loadPage } from '../actions/idea';
 import { useEffect } from 'react';
 import { ThemeToggleModal } from '../components/idea-mapper';
+import { COMP_SERP } from '../tracker/type/component';
+import { EVENT_SWITCH_SM_IM } from '../tracker/type/event/general';
+import { EVENT_IM_LEAVE } from '../tracker/type/event/idea-mapper';
 
 function IdeaMapperPage(props) {
   const {
@@ -17,14 +20,14 @@ function IdeaMapperPage(props) {
     loadPageAction, closeThemeToggleModalAction,
   } = props;
   const navigate = useNavigate();
-  const { Track, trackEvent } = useTracking({ page: 'ideaMapper' });
+  const { Track, trackEvent } = useTracking({ component: COMP_SERP });
 
   document.title = `${config.PRODUCT_NAME} ${config.IDEA_CANVAS_NAME}`;
 
   const handleBack = () => {
     navigate(-1);
-    trackEvent({ event: 'switchSerpMapper', timestamp: Date.now() });
-    trackEvent({ event: 'leaveIdeaMap', timestamp: Date.now() });
+    trackEvent({ event: EVENT_SWITCH_SM_IM, timestamp: Date.now() });
+    trackEvent({ event: EVENT_IM_LEAVE, timestamp: Date.now() });
   }
 
   useEffect(() => {

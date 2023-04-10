@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import { useTracking } from 'react-tracking';
 import { IdeaModalColorPicker } from './modals';
+import { EVENT_IM_IDEA_ADD_FROM_CUSTOM, EVENT_IM_IDEA_EDIT } from '../../tracker/type/event/idea-mapper';
 
 function IdeaModal(props) {
   const { show, mode, type, onCloseModal, onAddIdea, onUpdateIdea, onDeleteIdea, node } = props
@@ -23,7 +24,7 @@ function IdeaModal(props) {
 
     if (form.checkValidity() === true) {
       if (mode === 'add') {
-        trackEvent({ event: 'ideaAddedFromCustom', timestamp: Date.now() });
+        trackEvent({ event: EVENT_IM_IDEA_ADD_FROM_CUSTOM, timestamp: Date.now() });
 
         if (type === 'text') {
           onAddIdea(type, { label: event.target.text.value, color: 'w', colorHex });
@@ -33,7 +34,7 @@ function IdeaModal(props) {
           onAddIdea(type, { img_url: event.target.image_url.value, color: 'w', colorHex });
         }
       } else if (mode === 'edit') {
-        trackEvent({ event: 'ideaEdited', timestamp: Date.now() });
+        trackEvent({ event: EVENT_IM_IDEA_EDIT, timestamp: Date.now() });
 
         if (type === 'text') {
           onUpdateIdea({ label: event.target.text.value, color: 'w', colorHex });

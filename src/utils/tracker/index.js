@@ -1,5 +1,17 @@
 import axios from "axios";
 import config from "../../config";
+import { EVENT_NEW_SEARCH, EVENT_SEARCH_RESULT_CLICKED } from "../../tracker/type/event/search";
+import { EVENT_SWITCH_SM_IM } from "../../tracker/type/event/general";
+import {
+  EVENT_IM_ENTER,
+  EVENT_IM_IDEA_ADD_FROM_CONTEXT,
+  EVENT_IM_IDEA_ADD_FROM_CUSTOM,
+  EVENT_IM_IDEA_DELETE,
+  EVENT_IM_IDEA_EDIT,
+  EVENT_IM_IDEA_MOVE,
+  EVENT_IM_LEAVE,
+  EVNET_IM_LINE_DELETE,
+} from "../../tracker/type/event/idea-mapper";
 
 export const checkoutEvents = async (statOfQueryId) => {
   const events = {
@@ -32,7 +44,7 @@ export const checkoutEvents = async (statOfQueryId) => {
     }
 
     switch (ev.event) {
-      case 'newSearch':  // open a new search session
+      case EVENT_NEW_SEARCH:  // open a new search session
         if (!firstSearch) {
           docViewTimePerQuery.push(docViewTime);
           events.docClickedPerQuery.push(docsClicked);
@@ -41,38 +53,38 @@ export const checkoutEvents = async (statOfQueryId) => {
         docViewTime = [];
         docsClicked = 0;
         break;
-      case 'switchSerpMapper':
+      case EVENT_SWITCH_SM_IM:
         events.switchSerpMapper += 1;
         break;
-      case 'enterIdeaMap':
+      case EVENT_IM_ENTER:
         // start idea map timer
         mapperVisitStartPoint = ev.timestamp;
         break;
-      case 'leaveIdeaMap':
+      case EVENT_IM_LEAVE:
         // stop idea map timer
         events.ideaMapperTimeTotal += (ev.timestamp - mapperVisitStartPoint) / 1000;
         mapperVisitStartPoint = 0;
         break;
-      case 'docClicked':
+      case EVENT_SEARCH_RESULT_CLICKED:
         docsClicked += 1;
         docViewStartPoint = ev.timestamp;
         break;
-      case 'ideaAddedFromSaved':
+      case EVENT_IM_IDEA_ADD_FROM_CONTEXT:
         events.ideaAddedFromSaved += 1;
         break;
-      case 'ideaAddedFromCustom':
+      case EVENT_IM_IDEA_ADD_FROM_CUSTOM:
         events.ideaAddedFromCustom += 1;
         break;
-      case 'ideaEdited':
+      case EVENT_IM_IDEA_EDIT:
         events.ideaEdited += 1;
         break;
-      case 'ideaDeleted':
+      case EVENT_IM_IDEA_DELETE:
         events.ideaDeleted += 1;
         break;
-      case 'ideaLineDeleted':
+      case EVNET_IM_LINE_DELETE:
         events.ideaLineDeleted += 1;
         break;
-      case 'ideaMoved':
+      case EVENT_IM_IDEA_MOVE:
         events.ideaMoved += 1;
         break;
 

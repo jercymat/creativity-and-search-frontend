@@ -4,15 +4,16 @@ import { IdeaMapperPage, LandingPage, SERPPage } from "../pages";
 import { connect } from 'react-redux';
 import { useTracking } from "react-tracking";
 import PropTypes from 'prop-types';
+import { LAYOUT_MAIN } from "../tracker/type/layout";
 
 function DefaultLayout(props) {
   const { isLoggedin } = props;
   const { Track } = useTracking(
-    { layout: 'main' },
+    { layout: LAYOUT_MAIN },
     {
-      dispatch: data => {
-        console.log(data);
-        (window.loggedEvents = window.loggedEvents || []).push(data);
+      dispatch: event => {
+        console.log(event);
+        (window.loggedEvents = window.loggedEvents || []).push(event);
       }
     }
   );
