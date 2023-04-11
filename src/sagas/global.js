@@ -15,12 +15,8 @@ export function* globalLogin(action) {
     password,
   };
 
-  console.log('login');
-
   try {
     const response =  yield call(globalUserAPI, body);
-
-    console.log(response);
 
     if (response.ret === 0) {
       localStorage.setItem('__im_username__', name);
@@ -38,19 +34,13 @@ export function* globalLogout() {
     action: 'sign_out',
   };
 
-  console.log('logout');
-
   try {
     const response = yield call(globalUserAPI, body);
 
-    console.log(response);
-
     if (response.ret === 0) {
-      console.log('success');
       localStorage.removeItem('__im_username__');
       yield put({ type: GLOBAL_LOGOUT_SUCCESS });
     } else {
-      console.log('fail');
       yield put({ type: GLOBAL_LOGOUT_FAIL, payload: { error: response.error } });
     }
   } catch (error) {

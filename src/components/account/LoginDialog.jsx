@@ -5,10 +5,13 @@ import { StandardButton } from '../general/button';
 import { connect } from 'react-redux';
 import { login } from '../../actions/global';
 import PropTypes from 'prop-types';
+import { useTracking } from 'react-tracking';
+import { EVENT_LOGIN } from '../../tracker/type/event/general';
 
 function LoginDialog(props) {
   const { loading, login } = props;
   const [validated, setValidated] = useState(false);
+  const { trackEvent } = useTracking();
 
   const handleSubmit = async (event) => {
     const form = event.currentTarget;
@@ -25,6 +28,7 @@ function LoginDialog(props) {
       name: form.id.value,
       password: form.pwd.value
     });
+    trackEvent({ event: EVENT_LOGIN, user: form.id.value, timestamp: Date.now() });
   };
 
   return (
