@@ -43,7 +43,7 @@ function SearchField(props) {
         <div className={styles['search-button']}>
           <Link
             className={query === '' ? styles.disabled : null}
-            onClick={() => trackEvent({ event: EVENT_NEW_SEARCH, timestamp: Date.now() })}
+            onClick={() => trackEvent({ event: EVENT_NEW_SEARCH, timestamp: Date.now(), keyword: query })}
             to={query !== '' ? `/search?q=${query.replace(' ', '+')}` : '#'}
             ref={searchRef}>
             <FontAwesomeIcon icon={['fas', 'magnifying-glass']} />
