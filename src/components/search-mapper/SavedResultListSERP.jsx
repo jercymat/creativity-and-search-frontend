@@ -118,7 +118,7 @@ function SavedResultListSERP(props) {
   return (
     <Track>
       <div id="im-saved-results" className={styles.wrap}>
-        <Button className='w-100 mb-3' onClick={checkoutEventsV2}>[Test] Check Out Events</Button>
+        {/* <Button className='w-100 mb-3' onClick={checkoutEventsV2}>[Test] Check Out Events</Button> */}
         {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SMPlaceHolder />}
         {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
           <SMThemeSERP
