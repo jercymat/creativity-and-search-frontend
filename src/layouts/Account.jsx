@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import LoginDialog from '../components/account/LoginDialog';
@@ -8,10 +8,21 @@ import variables from './Login.module.scss';
 import styles from './Login.module.scss';
 import { AlertToast } from '../components/general/popup';
 import { closeToast } from '../actions/global';
+import { useTracking } from 'react-tracking';
+import { LAYOUT_ACCOUNT } from '../tracker/type/layout';
 
 function AccountLayout(props) {
   const { isLoggedin, errorToastShow, error, closeToast } = props;
   const navigate = useNavigate();
+  const { Track } = useTracking(
+    { layout: LAYOUT_ACCOUNT },
+    {
+      dispatch: event => {
+        console.log(event);
+        (window.loggedEvents = window.loggedEvents || []).push(event);
+      }
+    }
+  );
 
   useEffect(() => {
     if (isLoggedin) navigate('/');
@@ -19,7 +30,7 @@ function AccountLayout(props) {
   
 
   return (
-    <>
+    <Track>
       <div
         className="d-flex flex-column align-items-center"
         style={{
@@ -51,7 +62,7 @@ function AccountLayout(props) {
         timeout={2000}
         content={error}
         onClose={closeToast} />
-    </>
+    </Track>
   )
 }
 

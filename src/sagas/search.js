@@ -135,6 +135,7 @@ export function* smLoadSavedResultsV2() {
 
     if (response.ret === 0) {
       const sr = response.relist
+        .sort((a, b) => a.id - b.id)
         .map(theme => ({
           ...theme,
           searchResultList: theme.searchResultList.map(saved => ({

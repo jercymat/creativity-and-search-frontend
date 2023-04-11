@@ -16,9 +16,10 @@ function SearchResultList(props) {
 
   return (
     <div id="im-search-results" className={styles.wrap}>
-      {results.map(result => (
+      {results.map((result, idx) => (
         <SearchResult
           key={result.id}
+          index={idx}
           result={result}
           onAddSave={handleAddResult} />
       ))}

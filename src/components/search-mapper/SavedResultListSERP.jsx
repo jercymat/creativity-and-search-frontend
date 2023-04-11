@@ -22,6 +22,15 @@ import {
 } from '../../actions/search';
 import { SMTextDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
+import { Button } from 'react-bootstrap';
+import { checkoutEventsV2 } from '../../tracker';
+import { useTracking } from 'react-tracking';
+import { COMP_SM } from '../../tracker/type/component';
+import {
+  EVENT_SM_DELETE,
+  EVENT_SM_THEME_ADD,
+  EVENT_SM_THEME_CREATE,
+} from '../../tracker/type/event/search-mapper';
 
 const MESSAGE = {
   MOVE_LAST_RESULT: 'This is the last saved result in this theme, moving this result from the theme will also delete this theme and its notes.'
@@ -40,6 +49,7 @@ function SavedResultListSERP(props) {
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
   } = props;
   const [fetched, setFetched] = useState(false);
+  const { Track, trackEvent } = useTracking({ component: COMP_SM });
 
   useEffect(() => {
     if (fetched) return;
@@ -57,11 +67,14 @@ function SavedResultListSERP(props) {
       console.log(`delete theme ${deleteThemeID}`);
       deleteTheme(deleteThemeID);
     }
+    trackEvent({ event: EVENT_SM_DELETE, timestamp: Date.now() });
   };
 
   const onCreateTheme = ({ name, resultID }) => {
     console.log(`new theme: ${name} - result ${resultID}`);
     createTheme(name, resultID)
+    trackEvent({ event: EVENT_SM_THEME_CREATE, timestamp: Date.now() });
+    trackEvent({ event: EVENT_SM_THEME_ADD, timestamp: Date.now() });
     closeTextDialog();
   };
 
@@ -92,6 +105,7 @@ function SavedResultListSERP(props) {
         console.log(`delete theme ${fromThemeID}`);
         deleteTheme(fromThemeID);
       }
+      trackEvent({ event: EVENT_SM_THEME_ADD, timestamp: Date.now() });
     }
     closeThemeDialog();
   };
@@ -102,49 +116,52 @@ function SavedResultListSERP(props) {
   };
 
   return (
-    <div id="im-saved-results" className={styles.wrap}>
-      {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SMPlaceHolder />}
-      {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
-        <SMThemeSERP
-          key={theme.id}
-          theme={theme}
-          onRenameTheme={() => openRenameThemeDialog(theme.id)}
-          onEditIdea={() => openEditIdeaDialog(theme.id)}
-          onDeleteSaved={onDeleteSaved}
-          onMoveToTheme={({ resultID, fromThemeID }) => openMoveThemeDialog(fromThemeID, resultID)}
-          onRemoveFromTheme={onRemoveFromTheme} />)}
-      {savedResultsV2[0].searchResultList.map(save =>
-        <SMResultSERP
-          key={save.id}
-          save={save}
-          onDeleteSave={onDeleteSaved}
-          onAddToGroup={resultID => openAddThemeDialog(savedResultsV2[0].id, resultID)} />)}
-      <MessageDialog
-        show={messageDialogShow}
-        onClose={closeMessageDialog}
-        onConfirm={() => {}}
-        {...messageContent} />
-      <SMTextDialog
-        show={textDialogShow}
-        mode={textDialogMode}
-        submitting={submitting}
-        themes={savedResultsV2}
-        currentFocusTheme={currentFocusTheme}
-        currentFocusResult={currentFocusResult}
-        onEditIdea={onAddThemeIdea}
-        onCreateTheme={onCreateTheme}
-        onRenameTheme={onRenameTheme}
-        onClose={closeTextDialog} />
-      <SMThemeDialog
-        show={themeDialogShow}
-        mode={themeDialogMode}
-        submitting={submitting}
-        themes={savedResultsV2}
-        currentFocusTheme={currentFocusTheme}
-        currentFocusResult={currentFocusResult}
-        onSubmission={onAddToTheme}
-        onClose={closeThemeDialog} />
-    </div>
+    <Track>
+      <div id="im-saved-results" className={styles.wrap}>
+        {/* <Button className='w-100 mb-3' onClick={checkoutEventsV2}>[Test] Check Out Events</Button> */}
+        {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SMPlaceHolder />}
+        {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
+          <SMThemeSERP
+            key={theme.id}
+            theme={theme}
+            onRenameTheme={() => openRenameThemeDialog(theme.id)}
+            onEditIdea={() => openEditIdeaDialog(theme.id)}
+            onDeleteSaved={onDeleteSaved}
+            onMoveToTheme={({ resultID, fromThemeID }) => openMoveThemeDialog(fromThemeID, resultID)}
+            onRemoveFromTheme={onRemoveFromTheme} />)}
+        {savedResultsV2[0].searchResultList.map(save =>
+          <SMResultSERP
+            key={save.id}
+            save={save}
+            onDeleteSave={onDeleteSaved}
+            onAddToGroup={resultID => openAddThemeDialog(savedResultsV2[0].id, resultID)} />)}
+        <MessageDialog
+          show={messageDialogShow}
+          onClose={closeMessageDialog}
+          onConfirm={() => {}}
+          {...messageContent} />
+        <SMTextDialog
+          show={textDialogShow}
+          mode={textDialogMode}
+          submitting={submitting}
+          themes={savedResultsV2}
+          currentFocusTheme={currentFocusTheme}
+          currentFocusResult={currentFocusResult}
+          onEditIdea={onAddThemeIdea}
+          onCreateTheme={onCreateTheme}
+          onRenameTheme={onRenameTheme}
+          onClose={closeTextDialog} />
+        <SMThemeDialog
+          show={themeDialogShow}
+          mode={themeDialogMode}
+          submitting={submitting}
+          themes={savedResultsV2}
+          currentFocusTheme={currentFocusTheme}
+          currentFocusResult={currentFocusResult}
+          onSubmission={onAddToTheme}
+          onClose={closeThemeDialog} />
+      </div>
+    </Track>
   )
 }
 
