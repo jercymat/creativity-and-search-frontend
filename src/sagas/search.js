@@ -1,26 +1,22 @@
 import { all, call, put } from "redux-saga/effects";
 import {
-  SM_SR2_CHANGE_THEME,
-  SM_SR2_CHANGE_THEME_FAIL,
-  SM_SR2_CHANGE_THEME_SUCCESS,
-  SM_SR2_CREATE_THEME_FAIL,
-  SM_SR2_DELETE_THEME_FAIL,
-  SM_SR2_DELETE_THEME_SUCCESS,
-  SM_SR2_EDIT_THEME_IDEA_FAIL,
-  SM_SR2_EDIT_THEME_IDEA_SUCCESS,
-  SM_SR2_LOAD,
-  SM_SR2_LOAD_FAIL,
-  SM_SR2_LOAD_SUCCESS,
-  SM_SR2_RENAME_THEME_FAIL,
-  SM_SR2_RENAME_THEME_SUCCESS,
+  SM_SR_CHANGE_THEME,
+  SM_SR_CHANGE_THEME_FAIL,
+  SM_SR_CHANGE_THEME_SUCCESS,
+  SM_SR_CREATE_THEME_FAIL,
+  SM_SR_DELETE_THEME_FAIL,
+  SM_SR_DELETE_THEME_SUCCESS,
+  SM_SR_EDIT_THEME_IDEA_FAIL,
+  SM_SR_EDIT_THEME_IDEA_SUCCESS,
+  SM_SR_LOAD,
+  SM_SR_LOAD_FAIL,
+  SM_SR_LOAD_SUCCESS,
+  SM_SR_RENAME_THEME_FAIL,
+  SM_SR_RENAME_THEME_SUCCESS,
   SM_SR_ADD_FAIL,
   SM_SR_ADD_SUCCESS,
   SM_SR_DELETE_FAIL,
   SM_SR_DELETE_SUCCESS,
-  SM_SR_LOAD_FAIL,
-  SM_SR_LOAD_SUCCESS,
-  SM_SR_REORDER_FAIL,
-  SM_SR_REORDER_SUCCESS,
   SM_TXT_DIALOG_CREATE_THEME_OPEN,
 } from "../actions/types/search";
 import {
@@ -31,12 +27,9 @@ import {
   deleteSavedResultAPI,
   deleteThemeAPI,
   editThemeIdeaAPI,
-  loadSavedResultAPI,
   loadSavedResultV2API,
   renameThemeAPI,
-  reorderSavedResultAPI,
 } from "../apis/search";
-import { getCurrentTime } from "../utils";
 
 export function* smAddSavedResults(action) {
   const { result } = action.payload;
@@ -57,53 +50,13 @@ export function* smAddSavedResults(action) {
       }
       yield all([
         put({ type: SM_SR_ADD_SUCCESS, payload: { newResult } }),
-        put({ type: SM_SR2_LOAD }),
+        put({ type: SM_SR_LOAD }),
       ]);
     } else {
       yield put({ type: SM_SR_ADD_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
     yield put({ type: SM_SR_ADD_FAIL, payload: { error: error.toString() } });
-  }
-}
-
-export function* smLoadSavedResults() {
-  console.log('[saga] load saved results');
-  try {
-    const response = yield call(loadSavedResultAPI);
-
-    if (response.ret === 0) {
-      const savedResults = response.relist.map(saved => ({
-        id: saved.id.toString(),
-        title: saved.name,
-        url: saved.url,
-        desc: saved.snippet
-      }));
-
-      yield put({ type: SM_SR_LOAD_SUCCESS, payload: { savedResults } });
-    } else {
-      yield put({ type: SM_SR_LOAD_FAIL, payload: { error: response.error } });
-    }
-  } catch (error) {
-    yield put({ type: SM_SR_LOAD_FAIL, payload: { error: error.toString() } });
-  }
-}
-
-export function* smReorderSavedResults(action) {
-  const { newOrder } = action.payload;
-  console.log('[saga] reorder saved results');
-
-  try {
-    const response = yield call(reorderSavedResultAPI, newOrder);
-
-    if (response.ret === 0) {
-      console.log(`Graph successfully saved to server - ${getCurrentTime()}`);
-      yield put({ type: SM_SR_REORDER_SUCCESS });
-    } else {
-      yield put({ type: SM_SR_REORDER_FAIL, payload: { error: response.error } });
-    }
-  } catch (error) {
-    yield put({ type: SM_SR_REORDER_FAIL, payload: { error: error.toString() } });
   }
 }
 
@@ -117,7 +70,7 @@ export function* smDeleteSavedResults(action) {
     if (response.ret === 0) {
       yield all([
         put({ type: SM_SR_DELETE_SUCCESS, payload: { id } }),
-        put({ type: SM_SR2_LOAD }),
+        put({ type: SM_SR_LOAD }),
       ]);
     } else {
       yield put({ type: SM_SR_DELETE_FAIL, payload: { error: response.error } });
@@ -127,8 +80,8 @@ export function* smDeleteSavedResults(action) {
   }
 }
 
-export function* smLoadSavedResultsV2() {
-  console.log('[saga] load saved reuslts v2');
+export function* smLoadSavedResults() {
+  console.log('[saga] load saved reuslts');
 
   try {
     const response = yield call(loadSavedResultV2API);
@@ -158,12 +111,12 @@ export function* smLoadSavedResultsV2() {
           .filter(theme => theme.searchResultList.length !== 0)
       );
       
-      yield put({ type: SM_SR2_LOAD_SUCCESS, payload: { savedResults } });
+      yield put({ type: SM_SR_LOAD_SUCCESS, payload: { savedResults } });
     } else {
-      yield put({ type: SM_SR2_LOAD_FAIL, payload: { error: response.error } });
+      yield put({ type: SM_SR_LOAD_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
-    yield put({ type: SM_SR2_LOAD_FAIL, payload: { error: error.toString() } });
+    yield put({ type: SM_SR_LOAD_FAIL, payload: { error: error.toString() } });
   }
 }
 
@@ -176,14 +129,14 @@ export function* smRenameTheme(action) {
 
     if (response.ret === 0) {
       yield all([
-        put({ type: SM_SR2_RENAME_THEME_SUCCESS }),
-        put({ type: SM_SR2_LOAD }),
+        put({ type: SM_SR_RENAME_THEME_SUCCESS }),
+        put({ type: SM_SR_LOAD }),
       ]);
     } else {
-      yield put({ type: SM_SR2_RENAME_THEME_FAIL, payload: { error: response.error } });
+      yield put({ type: SM_SR_RENAME_THEME_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
-    yield put({ type: SM_SR2_RENAME_THEME_FAIL, payload: { error: error.toString() } });
+    yield put({ type: SM_SR_RENAME_THEME_FAIL, payload: { error: error.toString() } });
   }
 }
 
@@ -198,14 +151,14 @@ export function* smEditThemeIdea(action) {
 
     if (response.ret === 0) {
       yield all([
-        put({ type: SM_SR2_EDIT_THEME_IDEA_SUCCESS }),
-        put({ type: SM_SR2_LOAD }),
+        put({ type: SM_SR_EDIT_THEME_IDEA_SUCCESS }),
+        put({ type: SM_SR_LOAD }),
       ]);
     } else {
-      yield put({ type: SM_SR2_EDIT_THEME_IDEA_FAIL, payload: { error: response.error } });
+      yield put({ type: SM_SR_EDIT_THEME_IDEA_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
-    yield put({ type: SM_SR2_EDIT_THEME_IDEA_FAIL, payload: { error: error.toString() } });
+    yield put({ type: SM_SR_EDIT_THEME_IDEA_FAIL, payload: { error: error.toString() } });
   }
 }
 
@@ -223,14 +176,14 @@ export function* smChangeTheme(action) {
     
     if (response.ret === 0) {
       yield all([
-        put({ type: SM_SR2_CHANGE_THEME_SUCCESS }),
-        put({ type: SM_SR2_LOAD }),
+        put({ type: SM_SR_CHANGE_THEME_SUCCESS }),
+        put({ type: SM_SR_LOAD }),
       ]);
     } else {
-      yield put({ type: SM_SR2_CHANGE_THEME_FAIL, payload: { error: response.error } });
+      yield put({ type: SM_SR_CHANGE_THEME_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
-    yield put({ type: SM_SR2_CHANGE_THEME_FAIL, payload: { error: error.toString() } });
+    yield put({ type: SM_SR_CHANGE_THEME_FAIL, payload: { error: error.toString() } });
   }
 }
 
@@ -244,17 +197,17 @@ export function* smCreateTheme(action) {
     if (response.ret === 0) {
       yield all([
         put({
-          type: SM_SR2_CHANGE_THEME, payload: {
+          type: SM_SR_CHANGE_THEME, payload: {
             themeID: response.groupid,
             resultID,
           }
         }),
       ]);
     } else {
-      yield put({ type: SM_SR2_CREATE_THEME_FAIL, payload: { error: response.error } });
+      yield put({ type: SM_SR_CREATE_THEME_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
-    yield put({ type: SM_SR2_CREATE_THEME_FAIL, payload: { error: error.toString() } });
+    yield put({ type: SM_SR_CREATE_THEME_FAIL, payload: { error: error.toString() } });
   }
 }
 
@@ -267,13 +220,13 @@ export function* smDeleteTheme(action) {
 
     if (response.ret === 0) {
       yield all([
-        put({ type: SM_SR2_DELETE_THEME_SUCCESS }),
-        put({ type: SM_SR2_LOAD }),
+        put({ type: SM_SR_DELETE_THEME_SUCCESS }),
+        put({ type: SM_SR_LOAD }),
       ]);
     } else {
-      yield put({ type: SM_SR2_DELETE_THEME_FAIL, payload: { error: response.error } });
+      yield put({ type: SM_SR_DELETE_THEME_FAIL, payload: { error: response.error } });
     }
   } catch (error) {
-    yield put({ type: SM_SR2_DELETE_THEME_FAIL, payload: { error: error.toString() } });
+    yield put({ type: SM_SR_DELETE_THEME_FAIL, payload: { error: error.toString() } });
   }
 }

@@ -4,13 +4,13 @@ import { loadGraphAPI, saveGraphAPI } from "../apis/idea";
 import { getNodeSpawnPosition } from "../components/idea-mapper/util/canvas";
 import { themeColorScheme } from "../components/idea-mapper/util/color-picker";
 import { getCurrentTime } from "../utils";
-import { smLoadSavedResultsV2 } from "./search";
+import { smLoadSavedResults } from "./search";
 
 export function* ideaLoadPage() {
   console.log('[saga] load whole IdeaMapper page');
 
   // laod SearchMapper results and IdeaMapper graph first
-  yield* smLoadSavedResultsV2();
+  yield* smLoadSavedResults();
   yield* ideaLoadGraph();
 
   const sr = yield select(state => state.search.savedResultsV2);

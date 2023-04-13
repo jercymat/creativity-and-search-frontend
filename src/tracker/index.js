@@ -1,1 +1,1 @@
-export * from './util';
+export { checkoutEventsV2 } from './util';

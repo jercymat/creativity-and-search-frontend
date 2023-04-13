@@ -16,27 +16,6 @@ export const addSavedResultAPI = data =>
       error: e.message
     }));
 
-export const loadSavedResultAPI = () =>
-  axios.post(SEARCH_URL, {
-    action: 'list_searchresult'
-  }, { withCredentials: true })
-    .then(response => response.data)
-    .catch(e => ({
-      status: false,
-      error: e.message
-    }));
-
-export const reorderSavedResultAPI = newOrder =>
-  axios.post(SEARCH_URL, {
-    action: 'reorder_searchresult',
-    data: newOrder
-  }, { withCredentials: true })
-    .then(response => response.data)
-    .catch(e => ({
-      status: false,
-      error: e.message
-    }));
-
 export const deleteSavedResultAPI = id =>
   axios.post(SEARCH_URL, {
     action: 'delete_searchresult',

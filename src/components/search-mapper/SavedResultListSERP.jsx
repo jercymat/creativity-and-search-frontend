@@ -7,13 +7,12 @@ import {
   closeTextDialog,
   closeMessageDialog,
   deleteSavedResults,
-  loadSavedResults,
   openRenameThemeDialog,
   openEditIdeaDialog,
   openAddThemeDialog,
   openMoveThemeDialog,
   closeThemeDialog,
-  loadSavedResultsV2,
+  loadSavedResults,
   renameTheme,
   editThemeIdea,
   changeTheme,
@@ -42,8 +41,8 @@ function SavedResultListSERP(props) {
     messageDialogShow, textDialogShow, themeDialogShow,
     savedResultsV2, messageContent, textDialogMode, themeDialogMode,
     currentFocusTheme, currentFocusResult,
-    loadSavedResults, deleteSavedResults,
-    loadSavedResultsV2, createTheme, renameTheme, editThemeIdea, changeTheme, deleteTheme, 
+    deleteSavedResults,
+    loadSavedResults, createTheme, renameTheme, editThemeIdea, changeTheme, deleteTheme, 
     closeMessageDialog,
     openEditIdeaDialog, openRenameThemeDialog, closeTextDialog,
     openAddThemeDialog, openMoveThemeDialog, closeThemeDialog,
@@ -56,8 +55,7 @@ function SavedResultListSERP(props) {
     
     setFetched(true);
     loadSavedResults();
-    loadSavedResultsV2();
-  }, [fetched, loadSavedResults, loadSavedResultsV2]);
+  }, [fetched, loadSavedResults]);
 
   const onDeleteSaved = (resultID, deleteThemeID) => {
     console.log(`delete result ${resultID}`);
@@ -184,9 +182,8 @@ SavedResultListSERP.propTypes = {
   currentFocusResult: PropTypes.number.isRequired,
   
   // functions
-  loadSavedResults: PropTypes.func.isRequired,
   deleteSavedResults: PropTypes.func.isRequired,
-  loadSavedResultsV2: PropTypes.func.isRequired,
+  loadSavedResults: PropTypes.func.isRequired,
   createTheme: PropTypes.func.isRequired,
   renameTheme: PropTypes.func.isRequired,
   editThemeIdea: PropTypes.func.isRequired,
@@ -210,7 +207,6 @@ const mapStateToProps = (state) => ({
   textDialogMode: state.search.textDialogMode,
   themeDialogShow: state.search.themeDialogShow,
   themeDialogMode: state.search.themeDialogMode,
-  savedResults: state.search.savedResults,
   savedResultsV2: state.search.savedResultsV2,
   messageContent: state.search.messageContent,
   currentFocusTheme: state.search.currentFocusTheme,
@@ -218,9 +214,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  loadSavedResults,
   deleteSavedResults,
-  loadSavedResultsV2,
+  loadSavedResults,
   renameTheme,
   editThemeIdea,
   createTheme,

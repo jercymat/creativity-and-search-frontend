@@ -8,7 +8,7 @@ import {
   EVENT_SM_THEME_CREATE,
 } from "../type/event/search-mapper";
 
-export const checkoutEventsV2 = () => {
+export const checkoutEventsV2 = statOfQueryID => {
   const now = Date.now();
   const events = window.loggedEvents || [];
 
