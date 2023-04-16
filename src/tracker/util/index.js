@@ -11,6 +11,11 @@ import {
 export const checkoutEventsV2 = statOfQueryID => {
   // helper functions
   const getQueryAvgDocViewTimes = ev => {
+    const searchTime = ev
+      .filter(e => e.event === EVENT_NEW_SEARCH)
+      .map((s, idx, arr) => idx === 0 ? 0 : s.timestamp - arr[idx - 1].timestamp)
+      .map(t => Math.round(t / 10) / 100);
+
     const docClicks = ev
       .filter(e => [
         EVENT_SEARCH_SERP_LEAVE,
@@ -19,13 +24,6 @@ export const checkoutEventsV2 = statOfQueryID => {
       .filter((e, idx, arr) => e.event === EVENT_SEARCH_SERP_LEAVE
         ? idx > 0 && arr[idx - 1].event === EVENT_SEARCH_RESULT_CLICKED
         : e.event === EVENT_SEARCH_RESULT_CLICKED);
-
-    const searchTime = ev
-      .filter(e => e.event === EVENT_NEW_SEARCH)
-      .map((s, idx, arr) => idx === 0 ? 0 : s.timestamp - arr[idx - 1].timestamp)
-      .map(t => Math.round(t / 10) / 100);
-
-    console.log(searchTime);
 
     const queryClickTimes = {}
     const queryDocViewTime = {}
@@ -37,9 +35,6 @@ export const checkoutEventsV2 = statOfQueryID => {
       queryClickTimes[e.queryID] = (queryClickTimes[e.queryID] || 0) + 1;
       queryDocViewTime[e.queryID] = (queryDocViewTime[e.queryID] || []).concat(arr[idx + 1].timestamp - e.timestamp);
     });
-
-    // console.log(docClicks);
-    // console.log(queryClickTimes, queryDocViewTime);
 
     return statOfQueryID.map((queryId, idx) => ({
       queryId,
@@ -72,8 +67,6 @@ export const checkoutEventsV2 = statOfQueryID => {
         startTime = 0;
         isInIdeaMapper = false;
       });
-
-    console.log(rlt);
 
     return Math.round(rlt / 10) / 100;
   }
