@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { syncSMWidth } from '../actions/global';
 import { COMP_SERP } from '../tracker/type/component';
 import { EVENT_SWITCH_SM_IM } from '../tracker/type/event/general';
-import { EVENT_IM_ENTER } from '../tracker/type/event/idea-mapper';
+import { EVENT_SEARCH_SERP_ENTER, EVENT_SEARCH_SERP_LEAVE } from '../tracker/type/event/search';
 
 function SERPPage(props) {
   const { savedResultsV2, syncSMWidth } = props;
@@ -31,7 +31,12 @@ function SERPPage(props) {
 
   useEffect(() => {
     syncSMWidth(savedArea.current.offsetWidth);
-  }, [syncSMWidth]);
+    trackEvent({ event: EVENT_SEARCH_SERP_ENTER, timestamp: Date.now() });
+
+    return () => {
+      trackEvent({ event: EVENT_SEARCH_SERP_LEAVE, timestamp: Date.now() });
+    }
+  }, [syncSMWidth, trackEvent]);
 
   return (
     <Track>
@@ -47,7 +52,6 @@ function SERPPage(props) {
               <RightIconButton
                 onClick={() => {
                   trackEvent({ event: EVENT_SWITCH_SM_IM, timestamp: Date.now() });
-                  trackEvent({ event: EVENT_IM_ENTER, timestamp: Date.now() });
                 }}
                 disabled={savedResultsV2[0].searchResultList.length === 0}
                 variant='primary'

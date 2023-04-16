@@ -5,6 +5,12 @@ import styles from './AccountBadge.module.scss'
 import { checkoutEvents } from '../../utils/tracker';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/global';
+import { useTracking } from 'react-tracking';
+import { COMP_IM, COMP_SERP } from '../../tracker/type/component';
+import { useLocation } from 'react-router-dom';
+import { EVENT_IM_LEAVE } from '../../tracker/type/event/idea-mapper';
+import { EVENT_SEARCH_SERP_LEAVE } from '../../tracker/type/event/search';
+import { EVENT_LOGOUT } from '../../tracker/type/event/general';
 
 const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, ref) => (
   <div
@@ -24,10 +30,27 @@ const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, r
 ));
 
 function AccountBadge(props) {
-  const { logout, statOfQueryId } = props;
+  const { logout, statOfQueryID } = props;
+  const location = useLocation();
+  const { trackEvent } = useTracking({
+    component: location.pathname === '/map'
+        ? COMP_IM
+        : location.pathname === '/search'
+          ? COMP_SERP
+          : ''
+  });
 
   const handleLogout = () => {
-    checkoutEvents(statOfQueryId)
+    trackEvent({
+      event: location.pathname === '/map'
+        ? EVENT_IM_LEAVE
+        : location.pathname === '/search'
+          ? EVENT_SEARCH_SERP_LEAVE
+          : '',
+      timestamp: Date.now() });
+    trackEvent({ event: EVENT_LOGOUT, timestamp: Date.now() });
+    console.log(window.loggedEvents);
+    checkoutEvents(statOfQueryID)
       .then(values => values.map(v => v.status))
       .then(statuses => {
         console.log('logging data requests', statuses.toString());
@@ -60,7 +83,7 @@ AccountBadge.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-  statOfQueryId: state.global.statOfQueryId,
+  statOfQueryID: state.search.statOfQueryID,
 });
 
 const mapDispatchToProps = {

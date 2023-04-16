@@ -8,7 +8,7 @@ import { COMP_SM } from '../../../tracker/type/component';
 import { EVENT_SM_SAVE } from '../../../tracker/type/event/search-mapper';
 
 function SearchResult(props) {
-  const { index, result: { title, url, desc } } = props;
+  const { index, queryID, result: { title, url, desc } } = props;
   const { onAddSave } = props;
   const { trackEvent } = useTracking();
 
@@ -38,7 +38,7 @@ function SearchResult(props) {
         <div className={styles.head_wrap}>
           <a 
             href={url} target='_blank' rel="noreferrer"
-            onClick={() => trackEvent({ event: EVENT_SEARCH_RESULT_CLICKED, position: index+1, timestamp: Date.now() })}>
+            onClick={() => trackEvent({ event: EVENT_SEARCH_RESULT_CLICKED, position: index+1, queryID, timestamp: Date.now() })}>
             <h2 className={styles.title} ref={titleRef}>{title}</h2>
           </a>
           <h4 className={styles.url} ref={urlRef}>{url}</h4>
@@ -51,6 +51,7 @@ function SearchResult(props) {
 
 SearchResult.propTypes = {
   index: PropTypes.number.isRequired,
+  queryID: PropTypes.number.isRequired,
   result: PropTypes.exact({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,

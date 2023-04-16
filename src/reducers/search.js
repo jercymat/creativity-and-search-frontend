@@ -29,12 +29,12 @@ import {
   SM_TXT_DIALOG_CREATE_THEME_OPEN,
   SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
+  SM_UPDATE_QUERY_ID,
 } from "../actions/types/search";
 
 const initialState = {
   loading: false,
   submitting: false,
-  bgLoading: false,
 
   // focus
   currentFocusTheme: -1,
@@ -55,6 +55,7 @@ const initialState = {
 
   // stat
   statOfQueryID: [],
+  currentQueryID: -1,
 
   // other data
   bufferedSearch: {
@@ -74,6 +75,13 @@ const reducer = (state = initialState, { type, payload }) => {
 
   case SM_SET_BUFFERED_SEARCH:
     return { ...state, bufferedSearch: payload.bufferedSearch };
+
+  case SM_UPDATE_QUERY_ID:
+    return {
+      ...state,
+      statOfQueryID: state.statOfQueryID.concat(payload.queryID),
+      currentQueryID: payload.queryID,
+    };
 
   case SM_SR_ADD:
   case SM_SR_DELETE:

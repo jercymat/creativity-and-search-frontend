@@ -19,6 +19,7 @@ import {
   SM_SR_CREATE_THEME,
   SM_MSG_DIALOG_DELETE_THEME_OPEN,
   SM_SR_DELETE_THEME,
+  SM_UPDATE_QUERY_ID,
 } from "./types/search";
 
 
@@ -27,6 +28,7 @@ export const updateBufferedSearch = (search) => ({
   type: SM_SET_BUFFERED_SEARCH,
   payload: { bufferedSearch: search }
 });
+export const addQueryID = queryID => ({ type: SM_UPDATE_QUERY_ID, payload: { queryID } });
 
 // search mapper
 export const loadSavedResults = () => ({ type: SM_SR_LOAD });

@@ -1,5 +1,6 @@
 // search engine
 export const SM_SET_BUFFERED_SEARCH = 'SM_SET_BUFFERED_SEARCH';
+export const SM_UPDATE_QUERY_ID = 'SM_UPDATE_QUERY_ID';
 
 // search mapper
 export const SM_SR_LOAD = 'SM_SR_LOAD';
