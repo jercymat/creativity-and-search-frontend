@@ -3,30 +3,24 @@ import {
   SM_MSG_DIALOG_DELETE_THEME_OPEN,
   SM_MSG_DIALOG_FORM_THEME_OPEN,
   SM_SET_BUFFERED_SEARCH,
-  SM_SR2_CREATE_THEME,
-  SM_SR2_CREATE_THEME_FAIL,
-  SM_SR2_CREATE_THEME_SUCCESS,
-  SM_SR2_EDIT_THEME_IDEA,
-  SM_SR2_EDIT_THEME_IDEA_FAIL,
-  SM_SR2_EDIT_THEME_IDEA_SUCCESS,
-  SM_SR2_LOAD,
-  SM_SR2_LOAD_FAIL,
-  SM_SR2_LOAD_SUCCESS,
-  SM_SR2_RENAME_THEME,
-  SM_SR2_RENAME_THEME_FAIL,
-  SM_SR2_RENAME_THEME_SUCCESS,
+  SM_SR_CREATE_THEME,
+  SM_SR_CREATE_THEME_FAIL,
+  SM_SR_CREATE_THEME_SUCCESS,
+  SM_SR_EDIT_THEME_IDEA,
+  SM_SR_EDIT_THEME_IDEA_FAIL,
+  SM_SR_EDIT_THEME_IDEA_SUCCESS,
+  SM_SR_LOAD,
+  SM_SR_LOAD_FAIL,
+  SM_SR_LOAD_SUCCESS,
+  SM_SR_RENAME_THEME,
+  SM_SR_RENAME_THEME_FAIL,
+  SM_SR_RENAME_THEME_SUCCESS,
   SM_SR_ADD,
   SM_SR_ADD_FAIL,
   SM_SR_ADD_SUCCESS,
   SM_SR_DELETE,
   SM_SR_DELETE_FAIL,
   SM_SR_DELETE_SUCCESS,
-  SM_SR_LOAD,
-  SM_SR_LOAD_FAIL,
-  SM_SR_LOAD_SUCCESS,
-  SM_SR_REORDER,
-  SM_SR_REORDER_FAIL,
-  SM_SR_REORDER_SUCCESS,
   SM_THEME_DIALOG_ADD_OPEN,
   SM_THEME_DIALOG_CLOSE,
   SM_THEME_DIALOG_MOVE_OPEN,
@@ -35,13 +29,12 @@ import {
   SM_TXT_DIALOG_CREATE_THEME_OPEN,
   SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
-  SM_UPDATE_SAVED_RESULTS,
+  SM_UPDATE_QUERY_ID,
 } from "../actions/types/search";
 
 const initialState = {
   loading: false,
   submitting: false,
-  bgLoading: false,
 
   // focus
   currentFocusTheme: -1,
@@ -60,6 +53,10 @@ const initialState = {
   themeDialogShow: false,
   themeDialogMode: 'add',
 
+  // stat
+  statOfQueryID: [],
+  currentQueryID: -1,
+
   // other data
   bufferedSearch: {
     results: [],
@@ -67,7 +64,6 @@ const initialState = {
     page: 1,
     totalCount: 0
   },
-  savedResults: [],
   savedResultsV2: [{
     id: -1,
     searchResultList: [],
@@ -80,60 +76,48 @@ const reducer = (state = initialState, { type, payload }) => {
   case SM_SET_BUFFERED_SEARCH:
     return { ...state, bufferedSearch: payload.bufferedSearch };
 
-  case SM_UPDATE_SAVED_RESULTS:
-    return { ...state, savedResults: payload.savedResults };
+  case SM_UPDATE_QUERY_ID:
+    return {
+      ...state,
+      statOfQueryID: state.statOfQueryID.concat(payload.queryID),
+      currentQueryID: payload.queryID,
+    };
 
   case SM_SR_ADD:
-  case SM_SR_LOAD:
   case SM_SR_DELETE:
-  case SM_SR2_LOAD:
-  case SM_SR2_CREATE_THEME:
-  case SM_SR2_RENAME_THEME:
-  case SM_SR2_EDIT_THEME_IDEA:
+  case SM_SR_LOAD:
+  case SM_SR_CREATE_THEME:
+  case SM_SR_RENAME_THEME:
+  case SM_SR_EDIT_THEME_IDEA:
     return { ...state, loading: true };
-
-  case SM_SR_REORDER:
-    return { ...state, bgLoading: true };
 
   case SM_SR_ADD_SUCCESS:
     return {
       ...state,
       loading: false,
-      savedResults: [...state.savedResults, payload.newResult]
     };
-
-  case SM_SR_LOAD_SUCCESS:
-    return { ...state, loading: false, savedResults: payload.savedResults };
 
   case SM_SR_DELETE_SUCCESS:
     return {
       ...state,
       loading: false,
-      savedResults: state.savedResults.filter(save => save.id !== payload.id)
     };
 
-  case SM_SR_REORDER_SUCCESS:
-    return { ...state, bgLoading: false };
-
-  case SM_SR2_LOAD_SUCCESS:
+  case SM_SR_LOAD_SUCCESS:
     return { ...state, loading: false, savedResultsV2: payload.savedResults };
 
-  case SM_SR2_CREATE_THEME_SUCCESS:
-  case SM_SR2_RENAME_THEME_SUCCESS:
-  case SM_SR2_EDIT_THEME_IDEA_SUCCESS:
+  case SM_SR_CREATE_THEME_SUCCESS:
+  case SM_SR_RENAME_THEME_SUCCESS:
+  case SM_SR_EDIT_THEME_IDEA_SUCCESS:
     return { ...state, loading: false };
 
   case SM_SR_ADD_FAIL:
-  case SM_SR_LOAD_FAIL:
   case SM_SR_DELETE_FAIL:
-  case SM_SR2_LOAD_FAIL:
-  case SM_SR2_CREATE_THEME_FAIL:
-  case SM_SR2_RENAME_THEME_FAIL:
-  case SM_SR2_EDIT_THEME_IDEA_FAIL:
+  case SM_SR_LOAD_FAIL:
+  case SM_SR_CREATE_THEME_FAIL:
+  case SM_SR_RENAME_THEME_FAIL:
+  case SM_SR_EDIT_THEME_IDEA_FAIL:
     return { ...state, loading: false };
-
-  case SM_SR_REORDER_FAIL:
-    return { ...state, bgLoading: false };
 
   // dialog
   case SM_MSG_DIALOG_FORM_THEME_OPEN:

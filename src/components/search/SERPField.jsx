@@ -8,8 +8,7 @@ import config from "../../config";
 import SearchResultList from './SearchResultList';
 import { SearchResultPaginator } from './general';
 import { connect } from 'react-redux';
-import { addQueryID } from '../../actions/global';
-import { updateBufferedSearch } from '../../actions/search';
+import { addQueryID, updateBufferedSearch } from '../../actions/search';
 
 function SERPField(props) {
   const {

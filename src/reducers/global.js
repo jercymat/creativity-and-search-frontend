@@ -1,5 +1,4 @@
 import {
-  GLOBAL_ADD_QUERY_ID,
   GLOBAL_CLOSE_TOAST,
   GLOBAL_LOGIN,
   GLOBAL_LOGIN_FAIL,
@@ -17,7 +16,6 @@ const initialState = {
     ? localStorage.getItem('__im_username__')
     : '',
   savedAreaWidth: 400,
-  statOfQueryId: [],
   errorToastShow: false,
   error: "",
 }
@@ -59,9 +57,6 @@ const reducer = (state = initialState, { type, payload }) => {
 
   case GLOBAL_SYNC_SM_WIDTH:
     return { ...state, savedAreaWidth: payload.savedAreaWidth }
-
-  case GLOBAL_ADD_QUERY_ID:
-    return { ...state, statOfQueryId: state.statOfQueryId.concat(payload.queryId) }
 
   default:
     return state

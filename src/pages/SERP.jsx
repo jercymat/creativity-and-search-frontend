@@ -12,10 +12,10 @@ import { connect } from 'react-redux';
 import { syncSMWidth } from '../actions/global';
 import { COMP_SERP } from '../tracker/type/component';
 import { EVENT_SWITCH_SM_IM } from '../tracker/type/event/general';
-import { EVENT_IM_ENTER } from '../tracker/type/event/idea-mapper';
+import { EVENT_SEARCH_SERP_ENTER, EVENT_SEARCH_SERP_LEAVE } from '../tracker/type/event/search';
 
 function SERPPage(props) {
-  const { savedResults, syncSMWidth } = props;
+  const { savedResultsV2, syncSMWidth } = props;
 
   // hooks
   const savedArea = useRef(null);
@@ -31,7 +31,12 @@ function SERPPage(props) {
 
   useEffect(() => {
     syncSMWidth(savedArea.current.offsetWidth);
-  }, [syncSMWidth]);
+    trackEvent({ event: EVENT_SEARCH_SERP_ENTER, timestamp: Date.now() });
+
+    return () => {
+      trackEvent({ event: EVENT_SEARCH_SERP_LEAVE, timestamp: Date.now() });
+    }
+  }, [syncSMWidth, trackEvent]);
 
   return (
     <Track>
@@ -47,9 +52,8 @@ function SERPPage(props) {
               <RightIconButton
                 onClick={() => {
                   trackEvent({ event: EVENT_SWITCH_SM_IM, timestamp: Date.now() });
-                  trackEvent({ event: EVENT_IM_ENTER, timestamp: Date.now() });
                 }}
-                disabled={savedResults.length === 0}
+                disabled={savedResultsV2[0].searchResultList.length === 0}
                 variant='primary'
                 btnText={config.IDEA_CANVAS_NAME}
                 fsIcon={['fas', 'chevron-right']} />
@@ -63,12 +67,12 @@ function SERPPage(props) {
 }
 
 SERPPage.propTypes = {
-  savedResults: PropTypes.array.isRequired,
+  savedResultsV2: PropTypes.array.isRequired,
   syncSMWidth: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => ({
-  savedResults: state.search.savedResults,
+  savedResultsV2: state.search.savedResultsV2,
 });
 
 const mapDispatchToProps = {
