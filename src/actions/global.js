@@ -1,5 +1,4 @@
 import {
-  GLOBAL_ADD_QUERY_ID,
   GLOBAL_CHECK_LOGIN,
   GLOBAL_CLOSE_TOAST,
   GLOBAL_LOGIN,
@@ -15,4 +14,3 @@ export const closeToast = () => ({ type: GLOBAL_CLOSE_TOAST });
 export const syncSMWidth = (width) => ({
   type: GLOBAL_SYNC_SM_WIDTH, payload: { savedAreaWidth: width },
 });
-export const addQueryID = (id) => ({ type: GLOBAL_ADD_QUERY_ID, payload: { queryId: id } });

@@ -6,7 +6,7 @@ import { SearchResult } from './general';
 import styles from './SearchResultList.module.scss';
 
 function SearchResultList(props) {
-  const { loading, results, addSavedResults } = props;
+  const { loading, currentQueryID, results, addSavedResults } = props;
 
   const handleAddResult = useCallback((result) => {
     if (!loading) {
@@ -21,6 +21,7 @@ function SearchResultList(props) {
           key={result.id}
           index={idx}
           result={result}
+          queryID={currentQueryID}
           onAddSave={handleAddResult} />
       ))}
     </div>
@@ -29,6 +30,7 @@ function SearchResultList(props) {
 
 SearchResultList.propTypes = {
   loading: PropTypes.bool.isRequired,
+  currentQueryID: PropTypes.number.isRequired,
   results: PropTypes.arrayOf(PropTypes.exact({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
@@ -41,6 +43,7 @@ SearchResultList.propTypes = {
 
 const mapStateToProps = (state) => ({
   loading: state.search.loading,
+  currentQueryID: state.search.currentQueryID, 
 });
 
 const mapDispatchToProps = {

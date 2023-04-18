@@ -8,4 +8,3 @@ export const GLOBAL_LOGOUT_FAIL = 'GLOBAL_LOGOUT_FAIL';
 
 export const GLOBAL_CLOSE_TOAST = 'GLOBAL_CLOSE_TOAST';
 export const GLOBAL_SYNC_SM_WIDTH = 'GLOBAL_SYNC_SM_WIDTH'; // sync search mapper width
-export const GLOBAL_ADD_QUERY_ID = 'GLOBAL_ADD_QUERY_ID';
