@@ -21,8 +21,8 @@ import {
 } from '../../actions/search';
 import { SMTextDialog, SMThemeDialog } from './dialogs';
 import { MessageDialog } from '../general/popup';
-import { Button } from 'react-bootstrap';
-import { checkoutEventsV2 } from '../../tracker';
+// import { Button } from 'react-bootstrap';
+// import { checkoutEventsV2 } from '../../tracker';
 import { useTracking } from 'react-tracking';
 import { COMP_SM } from '../../tracker/type/component';
 import {
@@ -40,7 +40,8 @@ function SavedResultListSERP(props) {
     submitting,
     messageDialogShow, textDialogShow, themeDialogShow,
     savedResultsV2, messageContent, textDialogMode, themeDialogMode,
-    currentFocusTheme, currentFocusResult, statOfQueryID,
+    currentFocusTheme, currentFocusResult,
+    // statOfQueryID,
     deleteSavedResults,
     loadSavedResults, createTheme, renameTheme, editThemeIdea, changeTheme, deleteTheme, 
     closeMessageDialog,
@@ -116,7 +117,7 @@ function SavedResultListSERP(props) {
   return (
     <Track>
       <div id="im-saved-results" className={styles.wrap}>
-        <Button className='w-100 mb-3' onClick={() => checkoutEventsV2(statOfQueryID)}>[Test] Check Out Events</Button>
+        {/* <Button className='w-100 mb-3' onClick={() => checkoutEventsV2(statOfQueryID)}>[Test] Check Out Events</Button> */}
         {savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0 && <SMPlaceHolder />}
         {savedResultsV2.length > 1 && savedResultsV2.slice(1).map(theme =>
           <SMThemeSERP
@@ -180,7 +181,7 @@ SavedResultListSERP.propTypes = {
   themeDialogMode: PropTypes.oneOf(['add', 'move']).isRequired,
   currentFocusTheme: PropTypes.number.isRequired,
   currentFocusResult: PropTypes.number.isRequired,
-  statOfQueryID: PropTypes.arrayOf(PropTypes.number).isRequired,
+  // statOfQueryID: PropTypes.arrayOf(PropTypes.number).isRequired,
   
   // functions
   deleteSavedResults: PropTypes.func.isRequired,
@@ -212,7 +213,7 @@ const mapStateToProps = (state) => ({
   messageContent: state.search.messageContent,
   currentFocusTheme: state.search.currentFocusTheme,
   currentFocusResult: state.search.currentFocusResult,
-  statOfQueryID: state.search.statOfQueryID,
+  // statOfQueryID: state.search.statOfQueryID,
 });
 
 const mapDispatchToProps = {

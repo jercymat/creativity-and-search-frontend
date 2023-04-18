@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import styles from './AccountBadge.module.scss'
-import { checkoutEvents } from '../../utils/tracker';
 import { connect } from 'react-redux';
 import { logout } from '../../actions/global';
 import { useTracking } from 'react-tracking';
@@ -11,6 +10,7 @@ import { useLocation } from 'react-router-dom';
 import { EVENT_IM_LEAVE } from '../../tracker/type/event/idea-mapper';
 import { EVENT_SEARCH_SERP_LEAVE } from '../../tracker/type/event/search';
 import { EVENT_LOGOUT } from '../../tracker/type/event/general';
+import { checkoutEventsV2 } from '../../tracker/util';
 
 const AccountBadgeToggle = React.forwardRef(({ onClick, userName, userImage }, ref) => (
   <div
@@ -49,17 +49,14 @@ function AccountBadge(props) {
           : '',
       timestamp: Date.now() });
     trackEvent({ event: EVENT_LOGOUT, timestamp: Date.now() });
-    console.log(window.loggedEvents);
-    checkoutEvents(statOfQueryID)
+    checkoutEventsV2(statOfQueryID)
       .then(values => values.map(v => v.status))
       .then(statuses => {
         console.log('logging data requests', statuses.toString());
-        // logoutReq();
         logout();
       })
       .catch(error => {
         console.log(error);
-        // logoutReq();
         logout();
       });
   };

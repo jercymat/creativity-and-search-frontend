@@ -1,4 +1,5 @@
-import { EVENT_LOGIN, EVENT_LOGOUT, EVENT_SWITCH_SM_IM } from "../type/event/general";
+import axios from "axios";
+import { EVENT_SWITCH_SM_IM } from "../type/event/general";
 import { EVENT_IM_ENTER, EVENT_IM_IDEA_ADD_FROM_CUSTOM, EVENT_IM_IDEA_EDIT, EVENT_IM_LEAVE } from "../type/event/idea-mapper";
 import { EVENT_SEARCH_RESULT_CLICKED, EVENT_SEARCH_SERP_LEAVE } from "../type/event/search";
 import { EVENT_NEW_SEARCH } from "../type/event/search";
@@ -7,8 +8,9 @@ import {
   EVENT_SM_SAVE,
   EVENT_SM_THEME_CREATE,
 } from "../type/event/search-mapper";
+import config from "../../config";
 
-export const checkoutEventsV2 = statOfQueryID => {
+export const checkoutEventsV2 = async statOfQueryID => {
   // helper functions
   const getQueryAvgDocViewTimes = ev => {
     const searchTime = ev
@@ -25,6 +27,13 @@ export const checkoutEventsV2 = statOfQueryID => {
         ? idx > 0 && arr[idx - 1].event === EVENT_SEARCH_RESULT_CLICKED
         : e.event === EVENT_SEARCH_RESULT_CLICKED);
 
+    // const docClickedPositions = ev
+    //   .filter(e => e.event === EVENT_SEARCH_RESULT_CLICKED)
+    //     .reduce((rv, x) => {
+    //       (rv[x['queryID']] = rv[x['queryID']] || []).push(x.position);
+    //       return rv;
+    //     }, {});  // position of clicked documents
+
     const queryClickTimes = {}
     const queryDocViewTime = {}
 
@@ -39,10 +48,12 @@ export const checkoutEventsV2 = statOfQueryID => {
     return statOfQueryID.map((queryId, idx) => ({
       queryId,
       clickedDocNum: queryClickTimes[queryId] || 0,
+      // clickedDocPos: docClickedPositions[queryId] || [],
+      clickedDocPos: 0,  // TODO: apply real doc click position
       avgTimeViewDocPerQuery: queryClickTimes[queryId]
         ? Math.round(queryDocViewTime[queryId].reduce((acc, v) => acc + v, 0) / queryClickTimes[queryId] / 10) / 100
         : 0,
-      timeFromLastQuery: searchTime[idx],  // count time from new search
+      timeFromLastQuery: searchTime[idx] || 0,  // count time from new search
     }));
   }
 
@@ -71,17 +82,14 @@ export const checkoutEventsV2 = statOfQueryID => {
     return Math.round(rlt / 10) / 100;
   }
 
-  // const events = window.loggedEvents || [];
+  const events = window.loggedEvents || [];
 
   // test: add leave serp and logout event to test
-  const events = (window.loggedEvents || []).concat([
-    { layout: 'MAIN', component: 'SEARCH_RESULT_LIST', event: 'SERP_LEAVE', timestamp: Date.now() },
-    { layout: 'MAIN', component: 'SEARCH_RESULT_LIST', event: 'LOGOUT', timestamp: Date.now() }
-  ]);
+  // const events = (window.loggedEvents || []).concat([
+  //   { layout: 'MAIN', component: 'SEARCH_RESULT_LIST', event: 'SERP_LEAVE', timestamp: Date.now() },
+  //   { layout: 'MAIN', component: 'SEARCH_RESULT_LIST', event: 'LOGOUT', timestamp: Date.now() }
+  // ]);
   // end test
-
-  const loginTime = (events.find(e => e.event === EVENT_LOGIN) || { timestamp: 0 }).timestamp / 1000;
-  const logoutTime = (events.find(e => e.event === EVENT_LOGOUT) || { timestamp: 0 }).timestamp / 1000;
 
   const keywords = events
     .filter(e => e.event === EVENT_NEW_SEARCH && e.keyword)
@@ -89,10 +97,6 @@ export const checkoutEventsV2 = statOfQueryID => {
     .filter((kw, idx, arr) => arr.indexOf(kw) === idx);
 
   const logging = {
-    users: {
-      action: 'update_stat',
-      totalTime: Math.round(logoutTime - loginTime),  // total time session (in second),
-    },
     graphs: {
       action: 'update_statOfGraph',
       totalTime: getIdeaMapperTimeTotal(events),  // total time spent in IdeaMapper
@@ -107,7 +111,7 @@ export const checkoutEventsV2 = statOfQueryID => {
         .length,  // number of time idea editted
 
         // leave default value for server to handle
-      wordCount: -1,
+      wordCount: 0,
       ideaNum: 0,
       connectLineNum: 0,
       urlNodeNum: 0,
@@ -137,11 +141,18 @@ export const checkoutEventsV2 = statOfQueryID => {
       countDocClicked: events
         .filter(e => e.event === EVENT_SEARCH_RESULT_CLICKED)
         .length,  // number of document clicked
-      docClickedPositions: events
-        .filter(e => e.event === EVENT_SEARCH_RESULT_CLICKED)
-        .map(e => e.position),  // position of clicked documents
     }
   }
 
-  console.log(JSON.stringify(logging, null, 4));
+  // console.log(JSON.stringify(logging, null, 4));
+
+  const client = axios.create({ withCredentials: true });
+
+  return await axios.all([
+    // client.post(config.api.HOST + '/users', logging.users),
+    client.post(config.api.HOST + '/graphs', logging.graphs),
+    ...logging.searchresults.map(q =>
+      client.post(config.api.HOST + '/searchresults', q),
+    ),
+  ]);
 }
