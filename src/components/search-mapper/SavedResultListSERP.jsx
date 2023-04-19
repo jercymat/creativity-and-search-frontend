@@ -26,7 +26,9 @@ import { MessageDialog } from '../general/popup';
 import { useTracking } from 'react-tracking';
 import { COMP_SM } from '../../tracker/type/component';
 import {
+  EVENT_SM_CHANGE_THEME,
   EVENT_SM_DELETE,
+  EVENT_SM_DELETE_THEME,
   EVENT_SM_THEME_ADD,
   EVENT_SM_THEME_CREATE,
 } from '../../tracker/type/event/search-mapper';
@@ -69,14 +71,6 @@ function SavedResultListSERP(props) {
     trackEvent({ event: EVENT_SM_DELETE, timestamp: Date.now() });
   };
 
-  const onCreateTheme = ({ name, resultID }) => {
-    console.log(`new theme: ${name} - result ${resultID}`);
-    createTheme(name, resultID)
-    trackEvent({ event: EVENT_SM_THEME_CREATE, timestamp: Date.now() });
-    trackEvent({ event: EVENT_SM_THEME_ADD, timestamp: Date.now() });
-    closeTextDialog();
-  };
-
   const onRenameTheme = ({ themeID, name }) => {
     console.log(`Rename Theme ${themeID} - ${name}`);
     renameTheme(themeID, name);
@@ -89,7 +83,7 @@ function SavedResultListSERP(props) {
     closeTextDialog();
   };
 
-  const onAddToTheme = ({ fromThemeID, themeID, resultID }) => {
+  const onAddToTheme = ({ fromThemeID, themeID, resultID, themeName }) => {
     const isThemed = ![0, -1].includes(savedResultsV2.map(theme => theme.id).indexOf(fromThemeID));
     const isLastResult = isThemed && savedResultsV2.find(el => el.id === fromThemeID).searchResultList.length === 1
     const isConfirmed = isLastResult
@@ -98,13 +92,20 @@ function SavedResultListSERP(props) {
 
     if (isConfirmed) {
       console.log(`${themeDialogMode} result ${resultID} from theme ${fromThemeID} to theme ${themeID}`);
-      changeTheme(themeID, resultID);
+      if (themeID === -1) {
+        createTheme(themeName, resultID);
+        trackEvent({ event: EVENT_SM_THEME_CREATE, timestamp: Date.now() });
+        trackEvent({ event: EVENT_SM_THEME_ADD, timestamp: Date.now() });
+      } else {
+        changeTheme(themeID, resultID);
+        trackEvent({ event: EVENT_SM_CHANGE_THEME, timestamp: Date.now() });
+      }
 
       if (isLastResult) {
         console.log(`delete theme ${fromThemeID}`);
         deleteTheme(fromThemeID);
+        trackEvent({ event: EVENT_SM_DELETE_THEME, timestamp: Date.now() });
       }
-      trackEvent({ event: EVENT_SM_THEME_ADD, timestamp: Date.now() });
     }
     closeThemeDialog();
   };
@@ -147,7 +148,6 @@ function SavedResultListSERP(props) {
           currentFocusTheme={currentFocusTheme}
           currentFocusResult={currentFocusResult}
           onEditIdea={onAddThemeIdea}
-          onCreateTheme={onCreateTheme}
           onRenameTheme={onRenameTheme}
           onClose={closeTextDialog} />
         <SMThemeDialog
@@ -177,7 +177,7 @@ SavedResultListSERP.propTypes = {
     cancelText: PropTypes.string.isRequired,
     confirmText: PropTypes.string.isRequired,
   }).isRequired,
-  textDialogMode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme', 'create-theme']).isRequired,
+  textDialogMode: PropTypes.oneOf(['add-idea', 'edit-idea', 'rename-theme']).isRequired,
   themeDialogMode: PropTypes.oneOf(['add', 'move']).isRequired,
   currentFocusTheme: PropTypes.number.isRequired,
   currentFocusResult: PropTypes.number.isRequired,

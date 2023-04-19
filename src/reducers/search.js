@@ -26,7 +26,6 @@ import {
   SM_THEME_DIALOG_MOVE_OPEN,
   SM_TXT_DIALOG_ADD_IDEA_OPEN,
   SM_TXT_DIALOG_CLOSE,
-  SM_TXT_DIALOG_CREATE_THEME_OPEN,
   SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
   SM_UPDATE_QUERY_ID,
@@ -160,13 +159,6 @@ const reducer = (state = initialState, { type, payload }) => {
       textDialogShow: true,
       textDialogMode: 'edit-idea',
       currentFocusTheme: payload.themeID,
-    };
-
-  case SM_TXT_DIALOG_CREATE_THEME_OPEN:
-    return {
-      ...state,
-      textDialogShow: true,
-      textDialogMode: 'create-theme',
     };
 
   case SM_TXT_DIALOG_RENAME_THEME_OPEN:

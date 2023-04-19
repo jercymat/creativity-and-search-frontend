@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Modal, Spinner } from 'react-bootstrap';
+import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { StandardButton } from '../../general/button';
 import styles from './SMThemeButton.module.scss';
 
@@ -12,6 +12,7 @@ const TITLES = {
 export const SMThemeDialog = props => {
   const { show, mode, submitting, themes, currentFocusTheme, currentFocusResult, onSubmission, onClose } = props;
   const [chosenGroupID, setChosenGroupID] = useState(null);
+  const [themeName, setThemeName] = useState('');
 
   const handleSubmit = () => {
     if (chosenGroupID !== null) {
@@ -19,6 +20,7 @@ export const SMThemeDialog = props => {
         fromThemeID: currentFocusTheme,
         themeID: chosenGroupID,
         resultID: currentFocusResult,
+        themeName: chosenGroupID !== -1 ? '' : themeName,
       });
       clearForm();
     }
@@ -31,6 +33,7 @@ export const SMThemeDialog = props => {
 
   const clearForm = () => {
     setChosenGroupID(null);
+    setThemeName('');
   }
 
   useEffect(() => {
@@ -46,14 +49,22 @@ export const SMThemeDialog = props => {
         <Modal.Title>{TITLES[mode]}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className={styles['btn-radios']}>
+        <div className={styles.controls}>
           <Button
             variant='outline-primary'
-            className={-1 === chosenGroupID && styles.active}
+            className={chosenGroupID === -1 && styles.active}
             onClick={() => setChosenGroupID(-1)}>
             <h2 className={styles.title}>New Theme</h2>
             <h4 className={styles.sr_count}>Create a new theme for this result</h4>
           </Button>
+          <Form.Control
+            name='new-theme-name'
+            defaultValue={themeName}
+            onChange={e => setThemeName(e.currentTarget.value)}
+            rows={3}
+            placeholder='Enter the theme name...'
+            hidden={chosenGroupID !== -1}
+            required={chosenGroupID === -1} />
           { themes.slice(1).length !== 0 && <hr /> }
           {
             themes.slice(1).map(theme => (

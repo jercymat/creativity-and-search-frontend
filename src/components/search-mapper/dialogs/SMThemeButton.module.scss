@@ -2,7 +2,7 @@
 @import '../../../styles/font-style.scss';
 @import '../../../styles/effect-style.scss';
 
-.btn-radios {
+.controls {
   button {
     @extend .block-corner;
 
@@ -50,5 +50,9 @@
       color: $im-unaccent;
       margin-bottom: 0;
     }
+  }
+
+  input {
+    margin-top: 1rem;
   }
 }
