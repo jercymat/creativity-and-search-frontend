@@ -1,7 +1,7 @@
 // global config file
 
 const config = {
-  PRODUCT_VERSION: '2.0.8',
+  PRODUCT_VERSION: '2.0.9',
   PRODUCT_NAME: 'Searchidea',
   IDEA_SAVER_NAME: 'Search Mapper',
   IDEA_CANVAS_NAME: 'Idea Mapper',
