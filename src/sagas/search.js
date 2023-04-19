@@ -17,7 +17,6 @@ import {
   SM_SR_ADD_SUCCESS,
   SM_SR_DELETE_FAIL,
   SM_SR_DELETE_SUCCESS,
-  SM_TXT_DIALOG_CREATE_THEME_OPEN,
 } from "../actions/types/search";
 import {
   addSavedResultAPI,
@@ -165,11 +164,6 @@ export function* smEditThemeIdea(action) {
 export function* smChangeTheme(action) {
   const data = action.payload;
   console.log('[saga] add to search mapper theme');
-
-  if (data.themeID === -1) {
-    yield put({ type: SM_TXT_DIALOG_CREATE_THEME_OPEN });
-    return;
-  }
 
   try {
     const response = yield call(changeThemeAPI, data);

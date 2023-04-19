@@ -53,7 +53,7 @@ function SERPPage(props) {
                 onClick={() => {
                   trackEvent({ event: EVENT_SWITCH_SM_IM, timestamp: Date.now() });
                 }}
-                disabled={savedResultsV2[0].searchResultList.length === 0}
+                disabled={savedResultsV2.length === 1 && savedResultsV2[0].searchResultList.length === 0}
                 variant='primary'
                 btnText={config.IDEA_CANVAS_NAME}
                 fsIcon={['fas', 'chevron-right']} />

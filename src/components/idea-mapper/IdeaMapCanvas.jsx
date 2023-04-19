@@ -23,7 +23,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { useTracking } from 'react-tracking';
 import { getNodeSpawnPosition } from './util/canvas';
 import { connect } from 'react-redux';
-import { saveGraph, updateGraph } from '../../actions/idea';
+import { openThemeToggleModal, saveGraph, updateGraph } from '../../actions/idea';
 import './canvas/node/IdeaNode.scss';
 import { EVENT_IM_IDEA_DELETE, EVENT_IM_IDEA_MOVE, EVNET_IM_LINE_DELETE } from '../../tracker/type/event/idea-mapper';
 
@@ -42,7 +42,7 @@ const edgeTypes = { idea_mapper_edge: IdeaMapperEdge }
 function IdeaMapCanvas(props) {
   const {
     graph,
-    saveGraphAction, updateGraphAction,
+    saveGraphAction, updateGraphAction, openThemeToggleModalAction,
   } = props;
   const { trackEvent } = useTracking();
 
@@ -152,12 +152,18 @@ function IdeaMapCanvas(props) {
   // open idea editing modal after double click on ideas
   const onNodeDoubleClick = useCallback(
     (e, node) => {
-      if (['sm_theme', 'sm_result', 'sm_note'].includes(node.type)) return;
+      if (['sm_result', 'sm_note'].includes(node.type)) return;
+
+      if (node.type === 'sm_theme') {
+        console.log(node);
+        openThemeToggleModalAction(node.data.theme_id);
+        return;
+      }
 
       handleOpenModal('edit', node.type, node)();
     },
-    [handleOpenModal]
-  )
+    [handleOpenModal, openThemeToggleModalAction]
+  );
 
   return (
     <Fragment>
@@ -214,6 +220,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   saveGraphAction: saveGraph,
   updateGraphAction: updateGraph,
+  openThemeToggleModalAction: openThemeToggleModal,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(IdeaMapCanvas);
