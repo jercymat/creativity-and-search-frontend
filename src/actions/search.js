@@ -12,7 +12,6 @@ import {
   SM_THEME_DIALOG_CLOSE,
   SM_THEME_DIALOG_MOVE_OPEN,
   SM_TXT_DIALOG_ADD_IDEA_OPEN,
-  SM_TXT_DIALOG_CREATE_THEME_OPEN,
   SM_TXT_DIALOG_CLOSE,
   SM_TXT_DIALOG_EDIT_IDEA_OPEN,
   SM_TXT_DIALOG_RENAME_THEME_OPEN,
@@ -46,7 +45,6 @@ export const openDeleteThemeMsgDialog = () => ({ type: SM_MSG_DIALOG_DELETE_THEM
 export const closeMessageDialog = () => ({ type: SM_MSG_DIALOG_CLOSE });
 export const openAddIdeaDialog = () => ({ type: SM_TXT_DIALOG_ADD_IDEA_OPEN });
 export const openEditIdeaDialog = themeID => ({ type: SM_TXT_DIALOG_EDIT_IDEA_OPEN, payload: { themeID } });
-export const openCreateThemeDialog = () => ({ type: SM_TXT_DIALOG_CREATE_THEME_OPEN });
 export const openRenameThemeDialog = themeID => ({ type: SM_TXT_DIALOG_RENAME_THEME_OPEN, payload: { themeID } });
 export const closeTextDialog = () => ({ type: SM_TXT_DIALOG_CLOSE });
 export const openAddThemeDialog = (fromThemeID, resultID) => ({ type: SM_THEME_DIALOG_ADD_OPEN, payload: { resultID, fromThemeID } });
