@@ -4,15 +4,15 @@ import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { StandardButton } from '../../general/button';
 
 const TITLES = {
-  'add-idea': 'Add Theme Idea',
-  'edit-idea': 'Edit Theme Idea',
-  'rename-theme': 'Rename Theme',
+  'add-idea': 'Add IdeaTag Idea',
+  'edit-idea': 'Edit IdeaTag Idea',
+  'rename-theme': 'Rename IdeaTag',
 };
 
 const PLACEHOLDERS = {
   'add-idea': 'Enter your idea...',
   'edit-idea': 'Enter your idea...',
-  'rename-theme': 'Enter the theme name...',
+  'rename-theme': 'Enter the IdeaTag name...',
 }
 
 export const SMTextDialog = props => {
