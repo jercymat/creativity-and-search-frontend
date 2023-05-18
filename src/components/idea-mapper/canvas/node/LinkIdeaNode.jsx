@@ -7,8 +7,8 @@ export const LinkIdeaNode = ({ data }) => {
     <div
       className={'im-link-idea-node im-idea-node-wrap'}
       style={{ backgroundColor: data.colorHex }}>
-      <Handle type="target" position={Position.Top} />
-      <Handle type="source" position={Position.Bottom} />
+      <Handle className='disabled' isConnectable={false} type="target" position={Position.Top} />
+      <Handle className='disabled' isConnectable={false} type="source" position={Position.Bottom} />
       <div className="im-link-idea__link-wrap noselect">
         <div className="im-link-idea__url">
           {data.title !== '' ? data.title : data.link}
