@@ -4,7 +4,7 @@ import styles from './SMTheme.SERP.module.scss'
 import { SMResultGroupedSERP } from './SMResultGroupedSERP'
 
 const MESSAGES = {
-  LAST_RESULT: 'This is the last saved result in this theme, removing this result from the theme will also delete this theme and its notes.'
+  LAST_RESULT: 'This is the last saved result in this IdeaTag, removing this result from the IdeaTag will also delete this IdeaTag and its IdeaNote.'
 };
 
 export function SMThemeSERP(props) {

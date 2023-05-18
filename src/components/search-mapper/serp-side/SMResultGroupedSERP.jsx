@@ -35,7 +35,7 @@ export const SMResultGroupedSERP = props => {
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250 }}
-          overlay={renderTooltip('Remove from Theme')}
+          overlay={renderTooltip('Remove from IdeaTag')}
         >
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton
@@ -47,7 +47,7 @@ export const SMResultGroupedSERP = props => {
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250 }}
-          overlay={renderTooltip('Move to Other Theme')}
+          overlay={renderTooltip('Move to Other IdeaTag')}
         >
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton

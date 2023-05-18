@@ -35,7 +35,7 @@ export const SMResultSERP = props => {
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250 }}
-          overlay={renderTooltip('Add to Theme')}
+          overlay={renderTooltip('Add to IdeaTag')}
         >
           <div className={`d-inline-block ${styles.action}`}>
             <CircleUniconButton

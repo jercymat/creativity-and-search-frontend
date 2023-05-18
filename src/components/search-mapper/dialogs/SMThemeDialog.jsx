@@ -5,8 +5,8 @@ import { StandardButton } from '../../general/button';
 import styles from './SMThemeButton.module.scss';
 
 const TITLES = {
-  'add': 'Add to Theme',
-  'move': 'Move to Theme',
+  'add': 'Add to IdeaTag',
+  'move': 'Move to IdeaTag',
 };
 
 export const SMThemeDialog = props => {
@@ -54,15 +54,15 @@ export const SMThemeDialog = props => {
             variant='outline-primary'
             className={chosenGroupID === -1 && styles.active}
             onClick={() => setChosenGroupID(-1)}>
-            <h2 className={styles.title}>New Theme</h2>
-            <h4 className={styles.sr_count}>Create a new theme for this result</h4>
+            <h2 className={styles.title}>New IdeaTag</h2>
+            <h4 className={styles.sr_count}>Create a new IdeaTag for this result</h4>
           </Button>
           <Form.Control
             name='new-theme-name'
             defaultValue={themeName}
             onChange={e => setThemeName(e.currentTarget.value)}
             rows={3}
-            placeholder='Enter the theme name...'
+            placeholder='Enter the IdeaTag name...'
             hidden={chosenGroupID !== -1}
             required={chosenGroupID === -1} />
           { themes.slice(1).length !== 0 && <hr /> }
