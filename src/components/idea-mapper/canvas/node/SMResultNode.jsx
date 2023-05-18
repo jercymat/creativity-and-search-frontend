@@ -7,7 +7,7 @@ export const SMResultNode = ({ data }) => {
       className='im-sm-result-node im-sm-node-wrap'
       style={{ backgroundColor: data.colorHex }}>
       <Handle className='disabled' isConnectable={false} type="target" position={Position.Top} />
-      <Handle type="source" position={Position.Bottom} />
+      <Handle className='disabled' isConnectable={false} type="source" position={Position.Bottom} />
       <div className="im-sm-result__content-wrap noselect">
         <div className="im-sm-result__head">
           <h2 className="im-sm-result__head__title">{data.title}</h2>
