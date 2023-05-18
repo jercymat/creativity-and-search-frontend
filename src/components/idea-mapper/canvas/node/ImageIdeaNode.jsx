@@ -5,8 +5,8 @@ export const ImageIdeaNode = ({ data }) => {
     <div
       className={'im-image-idea-node im-idea-node-wrap'}
       style={{ backgroundColor: data.colorHex }}>
-      <Handle type="target" position={Position.Top} />
-      <Handle type="source" position={Position.Bottom} />
+      <Handle className='disabled' isConnectable={false} type="target" position={Position.Top} />
+      <Handle className='disabled' isConnectable={false} type="source" position={Position.Bottom} />
       <div className="im-image-idea__image-wrap noselect">
         <img
           src={data.img_url}
