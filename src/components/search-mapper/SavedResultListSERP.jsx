@@ -34,7 +34,7 @@ import {
 } from '../../tracker/type/event/search-mapper';
 
 const MESSAGE = {
-  MOVE_LAST_RESULT: 'This is the last saved result in this theme, moving this result from the theme will also delete this theme and its notes.'
+  MOVE_LAST_RESULT: 'This is the last saved result in this IdeaTag, moving this result from the IdeaTag will also delete this IdeaTag and its IdeaNote.'
 }
 
 function SavedResultListSERP(props) {
