@@ -144,7 +144,7 @@ export const checkoutEventsV2 = async statOfQueryID => {
     }
   }
 
-  // console.log(JSON.stringify(logging, null, 4));
+  console.log(JSON.stringify(logging, null, 4));
 
   const client = axios.create({ withCredentials: true });
 

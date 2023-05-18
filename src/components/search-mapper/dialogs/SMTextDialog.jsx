@@ -4,14 +4,14 @@ import { Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { StandardButton } from '../../general/button';
 
 const TITLES = {
-  'add-idea': 'Add IdeaTag Idea',
-  'edit-idea': 'Edit IdeaTag Idea',
+  'add-idea': 'Add IdeaNote',
+  'edit-idea': 'Edit IdeaNote',
   'rename-theme': 'Rename IdeaTag',
 };
 
 const PLACEHOLDERS = {
-  'add-idea': 'Enter your idea...',
-  'edit-idea': 'Enter your idea...',
+  'add-idea': 'Enter your IdeaNote...',
+  'edit-idea': 'Enter your IdeaNote...',
   'rename-theme': 'Enter the IdeaTag name...',
 }
 
