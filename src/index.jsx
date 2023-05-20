@@ -17,7 +17,7 @@ import {
   faShareFromSquare,
   faPenToSquare,
 } from '@fortawesome/free-solid-svg-icons';
-import { AccountLayout, DefaultLayout, TestLayout } from './layouts';
+import { AccountLayout, DefaultLayout } from './layouts';
 import './theme/bootstrap-theme.scss';
 import './index.scss';
 import axios from 'axios';
@@ -45,7 +45,6 @@ root.render(
     <BrowserRouter>
       <Container id='im-root-wrap' fluid>
         <Routes>
-          <Route path='/test' element={<TestLayout />} />
           <Route path='/login' element={<AccountLayout />} />
           <Route path='/*' element={<DefaultLayout />} />
         </Routes>
