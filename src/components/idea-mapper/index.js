@@ -1,3 +1,3 @@
-import ThemeToggleModal from './ThemeToggleModal';
+import IdeaMapCanvas from './IdeaMapCanvas';
 
-export { ThemeToggleModal };
+export { IdeaMapCanvas };

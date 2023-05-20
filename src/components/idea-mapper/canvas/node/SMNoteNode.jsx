@@ -2,6 +2,7 @@ import { faNoteSticky } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Handle, Position } from 'react-flow-renderer'
+import './IdeaNode.scss';
 
 export const SMNoteNode = ({ data }) => {
   return (

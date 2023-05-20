@@ -1,2 +1,4 @@
-export { IdeaModalColorPicker } from './IdeaModalColorPicker';
-export { ThemeToggleModalColorPicker } from './ThemeToggleModalColorPicker';
+import ThemeToggleModal from './ThemeToggleModal';
+import IdeaModal from './IdeaModal';
+
+export { ThemeToggleModal, IdeaModal };
