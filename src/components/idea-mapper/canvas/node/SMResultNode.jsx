@@ -1,5 +1,6 @@
 import React from 'react';
 import { Handle, Position } from 'react-flow-renderer';
+import './IdeaNode.scss';
 
 export const SMResultNode = ({ data }) => {
   return (

@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 import config from '../config';
 import styles from './IdeaMapper.module.scss';
-import IdeaMapCanvas from '../components/idea-mapper/IdeaMapCanvas';
 import { useNavigate } from 'react-router-dom';
-import { LeftIconButton } from '../components/general/button';
-import { SavedResultListIM } from '../components/search-mapper';
 import { useTracking } from 'react-tracking';
 import { connect } from 'react-redux';
-import { closeThemeToggleModal, loadPage } from '../actions/idea';
 import { useEffect } from 'react';
-import { ThemeToggleModal } from '../components/idea-mapper';
+import { closeThemeToggleModal, loadPage } from '../actions/idea';
 import { COMP_IM } from '../tracker/type/component';
 import { EVENT_SWITCH_SM_IM } from '../tracker/type/event/general';
 import { EVENT_IM_ENTER, EVENT_IM_LEAVE } from '../tracker/type/event/idea-mapper';
+import { LeftIconButton } from '../components/general/button';
+import { SavedResultListIM } from '../components/search-mapper';
+import { ThemeToggleModal } from '../components/idea-mapper/modals';
+import { IdeaMapCanvas } from '../components/idea-mapper';
 
 function IdeaMapperPage(props) {
   const {
