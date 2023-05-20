@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from './IdeaAddingBar.module.scss';
 
-function IdeaAddingBar(props) {
+export function IdeaAddingBar(props) {
   return (
     <div className={`noselect ${styles.bar_wrap}`}>
       <p className="font-weight-bold">Add Custom Ideas</p>
@@ -41,5 +41,3 @@ IdeaAddingType.propTypes = {
   type: PropTypes.oneOf(['text', 'link', 'image']).isRequired,
   onClick: PropTypes.func.isRequired
 };
-
-export default IdeaAddingBar;

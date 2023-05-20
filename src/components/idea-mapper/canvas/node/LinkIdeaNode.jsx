@@ -1,6 +1,7 @@
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Handle, Position } from "react-flow-renderer";
+import './IdeaNode.scss';
 
 export const LinkIdeaNode = ({ data }) => {
   return (

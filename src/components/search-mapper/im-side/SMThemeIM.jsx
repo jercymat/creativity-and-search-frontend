@@ -65,14 +65,14 @@ export const SMThemeIM = props => {
         {
           theme.note !== ''
             ? `${theme.note}`
-            : 'There is no idea in this theme'
+            : 'There is no IdeaNote in this IdeaTag'
         }
       </div>
       <div className={styles.actions}>
         <OverlayTrigger
           placement="bottom"
           delay={{ show: 250 }}
-          overlay={renderTooltip(toggled ? 'Edit Theme in IdeaMapper' : 'Add to IdeaMapper')}
+          overlay={renderTooltip(toggled ? 'Edit IdeaTag in IdeaMapper' : 'Add IdeaTag to IdeaMapper')}
         >
           <div className='d-inline-block'>
             <CircleIconButton

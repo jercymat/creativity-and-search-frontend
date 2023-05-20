@@ -1,10 +1,10 @@
 import { Form, Modal } from 'react-bootstrap';
-import { IconButton, StandardButton } from '../general/button';
+import { IconButton, StandardButton } from '../../general/button';
 import PropTypes from 'prop-types';
 import { Fragment, useState } from 'react';
 import { useTracking } from 'react-tracking';
-import { IdeaModalColorPicker } from './modals';
-import { EVENT_IM_IDEA_ADD_FROM_CUSTOM, EVENT_IM_IDEA_EDIT } from '../../tracker/type/event/idea-mapper';
+import { EVENT_IM_IDEA_ADD_FROM_CUSTOM, EVENT_IM_IDEA_EDIT } from '../../../tracker/type/event/idea-mapper';
+import { IdeaModalColorPicker } from './IdeaModalColorPicker';
 
 function IdeaModal(props) {
   const { show, mode, type, onCloseModal, onAddIdea, onUpdateIdea, onDeleteIdea, node } = props
