@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { RingSpinner } from 'react-spinners-kit';
 import styles from './SERPField.module.scss';
 import { useCallback, useEffect, useState } from "react";
 import SearchField from "./SearchField";
@@ -9,6 +8,7 @@ import SearchResultList from './SearchResultList';
 import { SearchResultPaginator } from './general';
 import { connect } from 'react-redux';
 import { addQueryID, updateBufferedSearch } from '../../actions/search';
+import { Spinner } from 'react-bootstrap';
 
 function SERPField(props) {
   const {
@@ -76,7 +76,10 @@ function SERPField(props) {
         defaultQuery={queryParam} />
       {isFetching &&
         <div className={styles.loading}>
-          <RingSpinner size={60} color='#1B6B8C' />
+          <Spinner
+            animation="border"
+            variant="primary"
+            style={{ width: '4rem', height: '4rem' }} />
         </div>}
       {!isFetching &&
         <SearchResultList results={bufferedSearch.results} />}
