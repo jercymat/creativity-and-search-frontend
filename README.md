@@ -1,6 +1,8 @@
 # Creativity and Search Project - Frontend
 
-This project served as the Frontend web application of Creativity and Search Project hosted by Prof. Soo Young Rieh, School of Information, The University of Texas at Austin. The application is bootstrapped with [Create React App](https://github.com/facebook/create-react-app) and developed with React, with various state management libraries like Redux and Redux-saga to build a scalable and robust web application.
+This project served as the Frontend web application of Creativity and Search Project hosted by Prof. Soo Young Rieh, School of Information, The University of Texas at Austin. The application is bootstrapped with Create React App and developed with React, with various state management libraries like Redux and Redux-saga to build a scalable and robust web application.
+
+The result of this project has been published at [ACM SIGIR Conference on Human Information Interaction and Retrieval (CHIIR) 2023](https://dl.acm.org/doi/10.1145/3576840.3578294).
 
 ## Get Started
 
